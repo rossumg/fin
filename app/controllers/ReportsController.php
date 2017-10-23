@@ -4460,7 +4460,9 @@ echo $sql . "<br>";
 	public function activityDetailAction() {
 		$this->view->assign ( 'mode', 'count' );
 		
-			//distinct GFA list
+		//$criteria ['GFA'] = $this->getSanParam ( 'gfaInput' );
+		
+		//distinct GFA list
 		$gArray = OptionList::suggestionList( 'GFA_List', 'GFA', false, 999, false, false, true);
 		$gfaArray = array ();
 		foreach ( $gArray as $key => $val ) {
@@ -4468,20 +4470,35 @@ echo $sql . "<br>";
 			$gfaArray [] = $val;
 		}
 		
-		file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'activityDetailAction: >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
-		var_dump("gfaArray:", $gfaArray, "END");
-        $toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
-       
 		$this->viewAssignEscaped ( 'gfa', $gfaArray );
 		
 		//distinct BudgetNbr list
-		$gArray = OptionList::suggestionList ( 'GFA_List', 'BudgetNbr', false, 999, false, false, true );
+		//$gArray = OptionList::suggestionList ( 'GFA_List', 'BudgetNbr', false, 999, false, false, true );
+		$gArray = OptionList::suggestionList ( 'load_all', 'BudgetNbr', false, 999, false, false, true );
 		$gfaArray = array ();
 		foreach ( $gArray as $key => $val ) {
 			//if ($val ['id'] != 0)
 			$gfaArray [] = $val;
 		}
 		$this->viewAssignEscaped ( 'budgetNbr', $gfaArray );
+		
+		//distinct BudgetName list
+		$gArray = OptionList::suggestionList ( 'load_all', 'BudgetName', false, 999, false, false, true );
+		$gfaArray = array ();
+		foreach ( $gArray as $key => $val ) {
+			//if ($val ['id'] != 0)
+			$gfaArray [] = $val;
+		}
+		$this->viewAssignEscaped ( 'budgetName', $gfaArray );
+		
+		//distinct ProjectCode list
+		$gArray = OptionList::suggestionList ( 'load_all', 'ProjectCode', false, 999, false, false, true );
+		$gfaArray = array ();
+		foreach ( $gArray as $key => $val ) {
+			//if ($val ['id'] != 0)
+			$gfaArray [] = $val;
+		}
+		$this->viewAssignEscaped ( 'projectCode', $gfaArray );
 		
 		
 		$this->activityDetailReport ();
@@ -4500,10 +4517,14 @@ echo $sql . "<br>";
 		$criteria ['start-year'] = $parts [0];
 		$criteria ['start-month'] = $parts [1];
 		$criteria ['start-day'] = $parts [2];
-
-		$criteria ['end-year'] = date ( 'Y' );
-		$criteria ['end-month'] = date ( 'm' );
-		$criteria ['end-day'] = date ( 'd' );
+		
+		$sql = "SELECT MAX(Budget_End) as \"end\" FROM load_all ";
+		$rowArray = $db->fetchAll ( $sql );
+		$end_default = $rowArray [0] ['end'];
+		$parts = explode('-', $end_default );
+		$criteria ['end-year'] = $parts [0];
+		$criteria ['end-month'] = $parts [1];
+		$criteria ['end-day'] = $parts [2];
 
 		if ($this->getSanParam ( 'start-year' ))
 		$criteria ['start-year'] = $this->getSanParam ( 'start-year' );
@@ -4518,29 +4539,70 @@ echo $sql . "<br>";
 		if ($this->getSanParam ( 'end-day' ))
 		$criteria ['end-day'] = $this->getSanParam ( 'end-day' );
 
-		$qDate = $criteria ['start-year'] . '-' . $criteria ['start-month'] . '-' . $criteria ['start-day'];
+		$beginDate = $criteria ['start-year'] . '-' . $criteria ['start-month'] . '-' . $criteria ['start-day'];
 		$endDate = $criteria ['end-year'] . '-' . $criteria ['end-month'] . '-' . $criteria ['end-day'];
 		
-		$this->viewAssignEscaped ( 'criteria', $criteria );
-        
-        $criteria ['go'] = $this->getSanParam ( 'go' );
+		
+//id
+//timestamp
+//TDPrimaryKey
+//ProjectCode
+//TranAmount
+//GFA
+//AdjustmentLoadedDate
+//BudgetNbr
+//BudgetName
+//AccountCode
+//PCAProjectCodeOrig
+//PCAProjectCodePosting
+//Budget_Begin
+//Budget_End
+//TranDate1
+//TranDescMod
+//TranReference2
+//TranReference4
+//Modified
+
+		
+		
+		
+		
+		$criteria ['go'] = $this->getSanParam ( 'go' );
         $criteria ['doCount'] = ($this->view->mode == 'count');
         $criteria ['GFA'] = $this->getSanParam ( 'gfaInput' );
         $criteria ['BudgetNbr'] = $this->getSanParam ( 'budgetNbrInput' );
+        $criteria ['BudgetName'] = $this->getSanParam ( 'budgetNameInput' );
+        $criteria ['ProjectCode'] = $this->getSanParam ( 'projectCodeInput' );
+        
+        
+        $criteria ['showGFA'] =       true;
+        $criteria ['showBudgetNbr'] =       true;
+        $criteria ['showBudgetName'] = ($this->getSanParam ( 'showBudgetName' ));
+        
+       
+	    file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'ReportsCont:4583 >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+	    var_dump("showBudgetName=", $criteria['showBudgetName'], "END");
+	    $toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+        
+        
+        
+        
+        $criteria ['showProjectCode'] = ($this->getSanParam ( 'showProjectCode' ));
+        
+        
+		$criteria ['Budget_Begin'] = $beginDate;
+	    $criteria ['Budget_End'] =   $endDate;
+				
+		$this->viewAssignEscaped ( 'criteria', $criteria );
         
         	if ($criteria ['go']) {
         		
         		$criteria ['GFA'] = $this->getSanParam ( 'gfaInput' );
         		$criteria ['BudgetNbr'] = $this->getSanParam ( 'budgetNbrInput' );
+        		$criteria ['BudgetName'] = $this->getSanParam ( 'budgetNameInput' );
+        		$criteria ['ProjectCode'] = $this->getSanParam ( 'projectCodeInput' );
         		
-        		file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'activityDetailReport: >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
-				var_dump("criteria['GFA']", $criteria['GFA'], "END");
-				var_dump("criteria['BudgetNbr']", $criteria['BudgetNbr'], "END");
-        		$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
-        		
-        		
-
-				$sql = 'SELECT '; //todo test
+        	    $sql = 'SELECT '; //todo test
 
 			//if ($criteria ['doCount']) {
 				//$sql .= ' COUNT(pt.person_id) as "cnt", pt.facility_name ';
@@ -4548,7 +4610,7 @@ echo $sql . "<br>";
 				//$sql .= ' DISTINCT pt.id as "id", pt.facility_name, pt.training_start_date  ';
 			//}
            
-           		$sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr  ';
+           		$sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Budget_End, la.BudgetName, la.ProjectCode ';
            		
            		$sql .= ' FROM load_all la';
 				
@@ -4556,27 +4618,21 @@ echo $sql . "<br>";
            		
            		if($criteria['GFA']) $where []= ' trim(la.GFA) = \'' . $criteria ['GFA'] . '\'';
            		if($criteria['BudgetNbr']) $where []= ' trim(la.BudgetNbr) = \'' . $criteria ['BudgetNbr'] . '\'';
-           		//$where []= ' la.Budget_Begin >= \'' . $criteria ['Budget_Begin'] . '\'';
-           		//$where []= ' la.Budget_End =< \'' . $criteria ['Budget_End'] . '\'';
+           		if($criteria['BudgetName']) $where []= ' trim(la.BudgetName) = \'' . $criteria ['BudgetName'] . '\'';
+           		if($criteria['ProjectCode']) $where []= ' trim(la.ProjectCode) = \'' . $criteria ['ProjectCode'] . '\'';
+           		$where []= ' la.Budget_Begin >= \'' . $criteria ['Budget_Begin'] . '\'';
+           		$where []= ' la.Budget_End <= \'' . $criteria ['Budget_End'] . '\'';
            		
            		if ($where)
 					$sql .= ' WHERE ' . implode(' AND ', $where);
         		}   
         		
-        file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'activityDetailReport: >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
-		var_dump("sql", $sql, "END");
-        $toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
-        		
-        		
         		//$rowArray = $db->fetchAll ( $sql . ' ORDER BY facility_name ASC ' );
         		$rowArray = $db->fetchAll ( $sql  );
         		
-        file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'activityDetailReport: >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
-		var_dump("results", sizeof($rowArray), "END");
-        $toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
-        
-        		
         		$this->viewAssignEscaped ( 'results', $rowArray ); 
+        		$this->viewAssignEscaped ( 'count',  sizeOf($rowArray));
+        		$this->viewAssignEscaped ( 'criteria', $criteria );
 	}
 
 	public function facilityReport() {

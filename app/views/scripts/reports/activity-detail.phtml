@@ -59,11 +59,6 @@ if ($this->mode == 'search' ) {
 	<?php
 	    
 		foreach ( $this->gfa as $vals ) {
-		
-		//file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'activity-detail: >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
-		//var_dump("vals:", $vals, "END");
-        //$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
-        
 			echo '<option value="'.$vals['GFA'].'" '.($this->criteria['gfaInput'] == $vals['id']?'':'').'>'.$vals['GFA'].'</option>';
 	}
 	?>
@@ -85,14 +80,47 @@ if ($this->mode == 'search' ) {
 	?>
 </select>
 	    </div></div>
+	 </div>
+
+	<div id="budgetName">
+	    <div class="fieldLabel" id="budgetNameInput_lbl"><?php tp('Budget Name');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showBudgetName" checked /></div>
+	    <div  class="leftBorder"><select id="budgetNameInput" name="budgetNameInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->budgetName as $vals ) {
+			echo '<option value="'.$vals['BudgetName'].'" '.($this->criteria['budgetNameInput'] == $vals['id']?'':'').'>'.$vals['BudgetName'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	 </div>
+
+
+	<div id="projectCode">
+	    <div class="fieldLabel" id="projectCodeInput_lbl"><?php tp('Project Code');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showProjectCode" checked /></div>
+	    <div  class="leftBorder"><select id="projectCodeInput" name="projectCodeInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->projectCode as $vals ) {
+			echo '<option value="'.$vals['ProjectCode'].'" '.($this->criteria['projectCodeInput'] == $vals['id']?'':'').'>'.$vals['ProjectCode'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
 	</div>
+	
 
-
-
-
+	
+	
+	
 </div>
 	<div class="clear"></div><br/><br/>
-	
 	
 <div class="fieldLabel"><?php tp('Start date');?></div>
 <div class="fieldInput" id="startdate">
@@ -143,7 +171,7 @@ if ($this->mode == 'search' ) {
 <?php if ( $this->criteria['go'] ) { ?>
 <div class="hrGrey"></div>
 <!-- TA:80 print only trainings part -->
-    <div class="fieldIndentNoMargin"><?php echo t('Trainings matched with Facilities');?> <span class="total"><?php echo $this->count;?> <?php if ( $this->mode == 'count' ) echo t('Participants'); else echo '';?></span><?php echo $this->printAndExport("trainings");?></div>
+    <div class="fieldIndentNoMargin"><?php echo t('Expenses');?> <span class="total"><?php echo $this->count;?> <?php if ( $this->mode == 'count' ) echo t('Records'); else echo '';?></span><?php echo $this->printAndExport("trainings");?></div>
 <?php } ?>
     <div id="trainings" class="itechTable"></div>
     <script type="text/javascript">
@@ -151,7 +179,7 @@ if ($this->mode == 'search' ) {
 	            elCell.innerHTML = "<a href='<?php echo $this->base_url;?>/training/view/id/" + oRecord.getData("id") + oRecord.getData("GFA") + oRecord.getData("BudgetNbr") +"'>" + sData + "</a>";
 	        };
 
-	        var trainingData = [
+	        var expenseData = [
 <?php $isFirstRow = true;
 $cnt = 0;
 foreach($this->results as $row) {
@@ -161,58 +189,28 @@ foreach($this->results as $row) {
 		$isFirstRow = false;
 		echo '['. $row['id'];
 		if ( isset($row['id']) )
+			//echo ',"'.$row['training_start_date'].'"';
+		
+		if ( $this->criteria['showGFA'] )
 			echo ',"'.$row['GFA'].'"';
+		if ( $this->criteria['showBudgetNbr'] )
 			echo ',"'.$row['BudgetNbr'].'"';
-		if ( $this->criteria['showFacility'] )
-			echo ',"'.$row['facility_name'].'"';
-		if ( $this->criteria['showType'] )
-			echo ',"'.$row['facility_type_phrase'].'"';
-		if ( $this->criteria['showSponsor'] )
-			echo ',"'.$row['facility_sponsor_phrase'].'"';
-		if ( $this->criteria['showProvince'] )
-			echo ',"'.$row['province_name'].'"';
-		if ( $this->criteria['showDistrict'] )
-			echo ',"'.$row['district_name'].'"';
-    if ( $this->criteria['showRegionC'] )
-      echo ',"'.$row['region_c_name'].'"';
-	    if ( $this->criteria['showRegionD'] )
-    		echo ',"'.$row['region_d_name'].'"';
-	    if ( $this->criteria['showRegionE'] )
-    		echo ',"'.$row['region_e_name'].'"';
-	    if ( $this->criteria['showRegionF'] )
-    		echo ',"'.$row['region_f_name'].'"';
-	    if ( $this->criteria['showRegionG'] )
-    		echo ',"'.$row['region_g_name'].'"';
-	    if ( $this->criteria['showRegionH'] )
-    		echo ',"'.$row['region_h_name'].'"';
-	    if ( $this->criteria['showRegionI'] )
-    		echo ',"'.$row['region_i_name'].'"';
-			if ( $this->criteria['showTrainingTitle'] or ($this->mode == 'search' ))
-			echo ',"'.$row['training_title'].'"';
-		if ( $this->criteria['showLocation'] )
-			echo ',"'.$row['training_location_name'].'"';
-		if ( $this->criteria['showOrganizer'] )
-			echo ',"'.$row['training_organizer_phrase'].'"';
-		if ( $this->criteria['showLevel'] )
-			echo ',"'.$row['training_level_phrase'].'"';
-		if ( $this->criteria['showTopic'] )
-			echo ',"'.$row['training_topic_phrase'].'"';
-		if ( $this->criteria['showPepfar'] )
-			echo ',"'.$row['pepfar_category_phrase'].'"';
-		if ( $this->criteria['showTot'] )
-			echo ',"'.$row['is_tot'].'"';
-		if ( $this->criteria['showGender'] )
-			echo ',"'.$row['gender'].'"';
-		if ( $this->criteria['showAge'] )
-			echo ','.$row['age']    ;
-		if ( $this->criteria['showQual'] )
-			echo ',"'.$row['qualification_phrase'].'"';
+		if ( $this->criteria['showBudgetName'] )
+			echo ',"'.$row['BudgetName'].'"';
+		if ( $this->criteria['showProjectCode'] )
+			echo ',"'.$row['ProjectCode'].'"';
+		if ( 1 )
+			echo ',"'.$row['Budget_Begin'].'"';
+		if ( 1 )
+			echo ',"'.$row['Budget_End'].'"';
+	
 		echo "]";
 		$cnt++;
 }}
+
    ?>];
 
-var trainingColumnDefs = [
+var expenseColumnDefs = [
 <?php if (isset($this->results[0]['cnt'])) { ?>
 {key:"cnt", label: "Count", sortable:true, resizeable:true}
 <?php } else { ?>
@@ -220,95 +218,36 @@ var trainingColumnDefs = [
 <!-- {key:"GFA", label: "<?php tp('GFA');?>", sortable:true, resizeable:true} -->
 <!-- key:"BudgetNbr", label: "<?php tp('BudgetNbr');?>", sortable:true, resizeable:true} -->
 <?php } ?>
-<?php if ( 1 ) { ?>
-	{key:"GFA", label: "<?php tp('GFA');?>", sortable:true, resizeable:true}
-<?php } ?>
-<?php if ( 1 ) { ?>
-	,{key:"BudgetNbr", label: "<?php tp('BudgetNbr');?>", sortable:true, resizeable:true}
-<?php } ?>
 
 
 <?php if ( $this->criteria['showGFA'] ) { ?>
-   ,{key:"GFA", label: "<?php tp('GFA');?>", sortable:true, resizeable:true}
+   {key:"GFA", label: "<?php tp('GFA');?>", sortable:true, resizeable:true}
  <?php } ?>
 <?php if ( $this->criteria['showBudgetNbr'] ) { ?>
    ,{key:"BudgetNbr", label: "<?php tp('BudgetNbr');?>", sortable:true, resizeable:true}
- <?php } ?>
-<?php if ( $this->criteria['showSponsor'] ) { ?>
-   ,{key:"facility_sponsor_phrase", label: "<?php tp('Facility Sponsor');?>", sortable:true, resizeable:true}
- <?php } ?>
- <?php if ( $this->criteria['showProvince'] ) { ?>
-   ,{key:"province_name", label: "<?php echo (@$this->translation['Region A (Province)']); ?>", sortable:true, resizeable:true}
- <?php } ?>
-<?php if ( $this->criteria['showDistrict'] ) { ?>
-   ,{key:"district_name", label: "<?php echo (@$this->translation['Region B (Health District)']); ?>", sortable:true, resizeable:true}
- <?php } ?>
-<?php if ( $this->criteria['showRegionC'] ) { ?>
-   ,{key:"region_c_name", label: "<?php echo (@$this->translation['Region C (Local Region)']); ?>", sortable:true, resizeable:true}
- <?php } ?>
-<?php if ( $this->criteria['showRegionD'] ) { ?>
-   ,{key:"region_d_name", label: "<?php echo (@$this->translation['Region D']); ?>", sortable:true, resizeable:true}
- <?php } ?>
-<?php if ( $this->criteria['showRegionE'] ) { ?>
-   ,{key:"region_e_name", label: "<?php echo (@$this->translation['Region E']); ?>", sortable:true, resizeable:true}
- <?php } ?>
-<?php if ( $this->criteria['showRegionF'] ) { ?>
-   ,{key:"region_f_name", label: "<?php echo (@$this->translation['Region F']); ?>", sortable:true, resizeable:true}
- <?php } ?>
-<?php if ( $this->criteria['showRegionG'] ) { ?>
-   ,{key:"region_g_name", label: "<?php echo (@$this->translation['Region G']); ?>", sortable:true, resizeable:true}
- <?php } ?>
-<?php if ( $this->criteria['showRegionH'] ) { ?>
-   ,{key:"region_h_name", label: "<?php echo (@$this->translation['Region H']); ?>", sortable:true, resizeable:true}
- <?php } ?>
-<?php if ( $this->criteria['showRegionI'] ) { ?>
-   ,{key:"region_i_name", label: "<?php echo (@$this->translation['Region I']); ?>", sortable:true, resizeable:true}
- <?php } ?>
- <?php if ( $this->criteria['showTrainingTitle']  or ($this->mode == 'search' )) { ?>
-   ,{key:"training_title", label: "<?php echo (@$this->translation['Training Name']); ?>", sortable:true, resizeable:true}
- <?php } ?>
-<?php if ( $this->criteria['showLocation'] ) { ?>
-   ,{key:"training_location_name", label: "<?php echo t('Training Location');?>", sortable:true, resizeable:true} //TA:66 translation
- <?php } ?>
-<?php if ( $this->criteria['showOrganizer'] ) { ?>
-   ,{key:"training_organizer_phrase", label: "<?php echo (@$this->translation['Training Organizer']); ?>", sortable:true, resizeable:true}
- <?php } ?>
-<?php if ( $this->criteria['showLevel'] ) { ?>
-   ,{key:"training_level_phrase", label: "<?php echo (@$this->translation['Training Level']); ?>", sortable:true, resizeable:true}
- <?php } ?>
-<?php if ( $this->criteria['showTopic'] ) { ?>
-   ,{key:"training_topic_phrase", label: "<?php echo (@$this->translation['Training Topic']); ?>", sortable:true, resizeable:true}
- <?php } ?>
-<?php if ( $this->criteria['showPepfar'] ) { ?>
-   ,{key:"pepfar_category_phrase", label: "<?php tp('PEPFAR');?>", sortable:true, resizeable:true}
- <?php } ?>
-<?php if ( $this->criteria['showTot'] ) { ?>
-   ,{key:"is_tot", label: "<?php echo tp('TOT'); ?>", sortable:true, resizeable:true}
- <?php } ?>
-<?php if ( $this->criteria['showGender'] ) { ?>
-   ,{key:"gender", label: "<?php echo (@$this->translation['Gender']); ?>", sortable:true, resizeable:true}
- <?php } ?>
-<?php if ( $this->criteria['showAge'] ) { ?>
-   ,{key:"age", label: "<?php echo tp('Age'); ?>", sortable:true, resizeable:true}
- <?php } ?>
-<?php if ( $this->criteria['showQual'] ) { ?>
-   ,{key:"qualification_phrase", label: "<?php echo tp('Qualification'); ?>", sortable:true, resizeable:true}
- <?php } ?>
+ <?php }  ?>
+ <?php if ( $this->criteria['showBudgetName'] ) { ?>
+   ,{key:"BudgetName", label: "<?php tp('BudgetName');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( $this->criteria['showProjectCode'] ) { ?>
+   ,{key:"ProjectCode", label: "<?php tp('ProjectCode');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( 1 ) { ?>
+   ,{key:"Budget_Begin", label: "<?php tp('Budget_Begin');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( 1 ) { ?>
+   ,{key:"Budget_End", label: "<?php tp('Budget_End');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+
 ];
 
-
-
-
-
-
-	makeDataTable("trainings", null, trainingData, trainingColumnDefs);
+	makeDataTable("trainings", null, expenseData, expenseColumnDefs);
 </script>
 <?php if ($cnt < count($this->results)) { ?>
 <div  class="fieldIndentNoMargin">[<?php tp('Limited to 100 rows');?>]  <a href="<?php echo str_replace('limit=1','limit=0',$_SERVER['REQUEST_URI']);?>"><?php tp('Full Results');?></a></div>
 <?php } ?>
   </div>
    <div id="footer"><?php require_once('views/scripts/footer.phtml');?></div>
-
 
 </div>
 

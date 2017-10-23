@@ -1,10 +1,31 @@
 select distinct(Budget_Begin) from load_all order by Budget_Begin;
 select distinct(Budget_End) from load_all;
+select distinct(ProjectCode) from load_all;
 
 select CAST('2017-11-21' as date);
 
 select CAST('11/21/2017' as date);
 select current_date();
+
+select distinct id, GFA, BudgetNbr 
+from load_all la
+where trim(la.GFA) = 'Amy'
+;
+
+SELECT  *
+-- DISTINCT la.id as "id", la.GFA, la.BudgetNbr   
+FROM load_all la 
+WHERE  1=1  
+-- and trim(la.GFA) like '%AMY%' 
+-- and  trim(la.BudgetNbr) like  '%633418%'   
+and la.Budget_Begin >= cast('2017-07-01' as date)        
+and la.Budget_End  <= cast('2018-09-01' as date)        
+;
+
+select distinct(Budget_Begin) from load_all;
+select distinct(Budget_End) from load_all;
+select distinct(BudgetNbr) from load_all;
+SELECT DISTINCT `GFA_List`.`BudgetNbr` FROM `GFA_List` ORDER BY `BudgetNbr` ASC;
 
 select * from load_all;
 
