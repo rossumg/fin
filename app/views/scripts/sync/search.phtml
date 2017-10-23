@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title><?php echo $this->translation['Application Name'];?> | <?php tp('Data Synchronization');?></title>
+<?php
+require_once('views/helpers/ScriptContainer.php');
+print ScriptContainer::$instance->renderCSSHead();
+print ScriptContainer::$instance->renderJSHead();
+?>
+<style type=text/css">
+.status { color: #333; margin-bottom: 1em; padding: .5em; border-left: 1px dotted #333; font-style:italic; }
+</style> 
+</head>
+<body class="yui-skin-sam">
+	<div id="pageHolder">
+	  <div id="header"><?php require_once('views/scripts/header.phtml');?></div>
+	  <div id="content">
+			<h1>Search for Differences</h1>
+			<div id="message">
+			<p>Please do not close your browser window.
+			We are now searching for desktop data differences.<br>
+			When the process is complete, you'll have a chance to review and commit these changes.<br>
+			The search operation can take five minutes or more depending on uploading total data volume.
+			</p>
+			</div>
+			<p>&nbsp;</p>
+			<p class="status" id="status-box">&nbsp;</p>
+			
+			<br/><br/><br/>
+			
+			<iframe width="90%" height="400px" src="<?php echo $this->base_url;?>/sync/search/fid/<?php echo $this->fid;?>/startjob/1/outputType/text';?>"></iframe>
+	  
+	  <!-- TA:#315 -->
+	  <form style="display:none; width:50%;" id="continue" action="<?php echo $this->base_url;?>/sync/review/fid/<?php echo $this->fid;?>" method="get">
+				 <div align="center"> <br><br><input type="submit" class="submitArrow" name="go" value="<?php tp('Continue')?>" /><br><br></div>
+			</form>
+			
+			
+			
+	  </div>
+	  <div id="footer"><?php require_once('views/scripts/footer.phtml');?></div>
+	</div>
+	
+	<script type="text/javascript">
+	// http://developer.yahoo.com/yui/connection/
+	
+	var itech = 
+	{
+
+		
+		handleSuccess: function(o) {
+			// This member handles the success response
+			// and passes the response object o to itech's
+			// processResult member. 
+			if(o.responseText.indexOf('Done')) { 
+//				window.location = location.href.replace('search', 'review');
+				
+//				window.clearInterval(statusInterval);
+			}
+			this.processResult(o);
+		},
+		handleFailure: function(o) {
+			// Failure handler
+			var str = "***************************************************************************";
+			if(o.argument.messageContainer.innerHTML.lastIndexOf(str) > -1)
+				o.argument.messageContainer.innerHTML = o.argument.messageContainer.innerHTML.replace(str, "");
+			o.argument.messageContainer.innerHTML = o.argument.messageContainer.innerHTML + '*';
+		},
+		processResult: function(o) {
+			var m = o.responseText;
+			if ( m == 0) {
+			    var formObj = YAHOO.util.Dom.get('continue');
+			    //TA:#315
+			    //formObj.style.display = 'block';	
+			    formObj.style.display = 'inline	';		
+			}
+
+			//TA:#315
+			//o.argument.messageContainer.innerHTML = m + ' tables remaining<br />';
+			var mesObj = YAHOO.util.Dom.get('message');
+			mesObj.style.display = 'none';
+			o.argument.messageContainer.innerHTML = "Searching for desktop data differences is completed. <br><font color='red'><b>Please read carefully the entire output before continue with the next step.</font></b>";
+			},
+		startRequest: function(callback) {
+			YAHOO.util.Connect.asyncRequest('GET', callback.argument.getUrl, callback);
+		}	 
+	};
+		 
+	/*
+	 * Define the callback object for success and failure
+	 * handlers as well as object scope.
+	 */
+	var jobStatus = {
+			success: itech.handleSuccess,
+			failure: itech.handleFailure,
+			scope: itech,
+			timeout: 5000,
+			argument: {
+			   		messageContainer: document.getElementById('status-box'),
+			   		getUrl: location.href + '/statuscheck/1/outputType/text'
+				}
+	};
+	
+	var jobStart = {
+			success: itech.handleSuccess,
+			failure: itech.handleFailure,
+			scope: itech,
+			timeout: (1000 * 60 * 5), // five minutes http://developer.yahoo.com/yui/examples/connection/abort.html
+			argument: {
+			   		messageContainer: document.getElementById('status-box2'),
+			   		getUrl: location.href + '/startjob/1/outputType/text'
+				}
+	};
+	
+ 
+	// check for completion
+	var statusInterval = window.setInterval(function(){itech.startRequest(jobStatus);}, 2000);
+	// start the long job
+	//itech.startRequest(jobStart);
+	
+	</script>
+</body>
+</html>
+
+
+

@@ -1,0 +1,4137 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Trainsmart\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-09-24 16:58-0800\n"
+"PO-Revision-Date: \n"
+"Last-Translator: DB\n"
+"Language-Team: efellemedia <info@efellemedia.com>\n"
+"Language: ru_RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: iso-8859-1\n"
+"X-Poedit-KeywordsList: t;tp\n"
+"X-Poedit-Basepath: C:\\wamp\\www\\d\\app\n"
+"X-Generator: Poedit 1.7.4\n"
+"X-Poedit-SearchPath-0: controllers\n"
+"X-Poedit-SearchPath-1: views\n"
+
+msgid "Your settings have been updated."
+msgstr "Ваши настройки были обновлены."
+
+msgid "No future trainings found."
+msgstr "Будущие тренинги не найдены."
+
+msgid "A record already exists with this value."
+msgstr "Запись уже существует с этим значением."
+
+msgid "The evaluation could not be loaded."
+msgstr "Не удалось загрузить детали процессa определения качества"
+
+msgid "Are you sure you wish to delete this evaluation?"
+msgstr "Не удалось загрузить детали процессa определения качества"
+
+msgid "The evaluation could not be saved."
+msgstr "Вы уверены что хотите удалить процесс определения качества."
+
+msgid "Title"
+msgstr "Название"
+
+msgid "You must choose a question type for each question."
+msgstr "Для каждого вопроса вы должны выбрать тип вопроса."
+
+msgid "You must enter question text for each question."
+msgstr "Для каждого вопроса вы должны ввести текст вопроса."
+
+msgid "The new evaluation was created."
+msgstr "Новый процессе определения качества создан"
+
+msgid "This evaluation has been deleted."
+msgstr "Этот процесс определения качества удален."
+
+msgid "The trainings have been assigned."
+msgstr "Тренинги были назначены."
+
+msgid "The evaluation has been assigned."
+msgstr "Процесс определения качества назначен."
+
+msgid "Training start"
+msgstr "Начало тренинга"
+
+msgid "The person could not be saved."
+msgstr "Не удалось сохранить личность."
+
+msgid "The external course could not be saved."
+msgstr "Не удалось сохранить внешний курс."
+
+msgid "That name already exists."
+msgstr "Такое имя уже существует."
+
+msgid "Facility type"
+msgstr "Тип учреждения"
+
+msgid "That city does not appear to be located in the chosen region. If you want to create a new city, check the new city box."
+msgstr "Похоже, что город не находится в выбранном регионе. Если Вы хотите создать новый город, то поставьте отметку о новом городе."
+
+msgid "The facility could not be saved."
+msgstr "Не удалось сохранить учреждение."
+
+msgid "Could not save that city."
+msgstr "Невозможно сохранить город"
+
+msgid "The facility was saved."
+msgstr "учреждение было сохранено."
+
+msgid "ERROR: The facility could not be saved."
+msgstr "ОШИБКА: Невозможно сохранить учреждение."
+
+msgid "That facility was deleted."
+msgstr "учреждение было удалено."
+
+msgid "That facility could not be found."
+msgstr "Не удалось найти учреждение."
+
+msgid "That facility is in use and could not be deleted."
+msgstr "Это учреждение находится в использовании и не может быть удалено."
+
+msgid "That location was deleted."
+msgstr "местонахождение было удалено."
+
+msgid "That location could not be found."
+msgstr "Не удалось найти то местонахождение."
+
+msgid "That location is in use and could not be deleted."
+msgstr "это местонахождение используется и не может быть удалено."
+
+msgid "Course Name"
+msgstr "Название курса"
+
+msgid "Start Date"
+msgstr "Дата начала"
+
+msgid "Training Center"
+msgstr "Центр обучения"
+
+msgid "Training Centre"
+msgstr "Центр обучения"
+
+msgid "Created By"
+msgstr "Создано"
+
+msgid "Message"
+msgstr "Сообщение"
+
+msgid "You do not have access rights to the requested action."
+msgstr "У вас нет прав доступа для запрошенного действия."
+
+msgid "That person was deleted."
+msgstr "Эта личность была удалена."
+
+msgid "That person could not be found."
+msgstr "Не удалось найти личность."
+
+msgid "That person is an active participant or trainer and could not be deleted."
+msgstr "Эта личность является действующим участником или инструктором и не может быть удалена."
+
+msgid "The person was saved. Refreshing history..."
+msgstr "Данная личность была сохранена. Идёт обновление журнала..."
+
+msgid "The person was saved."
+msgstr "Данная личность была сохранена."
+
+msgid "Gender"
+msgstr "Пол"
+
+msgid "Professional qualification"
+msgstr "Профессиональная квалификация"
+
+msgid "Professional Qualification"
+msgstr "Профессиональная квалификация"
+
+msgid "Birthdate"
+msgstr "Дата рождения"
+
+msgid "Trainer type"
+msgstr "Тип инструктора"
+
+msgid "Trainer skill"
+msgstr "Навыки инструктора"
+
+msgid "Enter a reason, or select a different reason above."
+msgstr "Укажите причину, или выберите другую причину выше."
+
+msgid "You can not type in a reason with the reason selected above."
+msgstr "Вы не можете ввести причину выбранную выше."
+
+msgid "Facility"
+msgstr "Учереждение"
+
+msgid "That facility name could not be found."
+msgstr "Не удалось найти то название учереждения."
+
+msgid "The person was saved. Refreshing change history..."
+msgstr "Данная личность была сохранена. Идёт обновление журнала изменений..."
+
+msgid "The trainer information could not be saved."
+msgstr "Не удалось сохранить информацию инструктора."
+
+msgid "ERROR: The person could not be saved."
+msgstr "ОШИБКА: Невозможно сохранить личность."
+
+msgid "No trainings selected."
+msgstr "Не выбран тренинг."
+
+msgid "Count"
+msgstr "Количество"
+
+msgid "Language"
+msgstr "Язык"
+
+msgid "Location"
+msgstr "Местонахождение"
+
+msgid "Date"
+msgstr "Дата"
+
+msgid "Training Topic"
+msgstr "Тема тренинга"
+
+msgid "Funding"
+msgstr "Финансирование"
+
+msgid "Facility Name"
+msgstr "Название Учереждения"
+
+msgid "Facility Type"
+msgstr "Тип Учереждения"
+
+msgid "Facility Sponsor"
+msgstr "Спонсор Учереждения"
+
+msgid "Recommended classes"
+msgstr "Рекомендуемые занятия"
+
+msgid "Recommended"
+msgstr "Рекомендуемый"
+
+msgid "Qualification"
+msgstr "Квалификация"
+
+msgid "(primary)"
+msgstr "(первичный)"
+
+msgid "(secondary)"
+msgstr "дополнительный"
+
+msgid "Name"
+msgstr "Имя"
+
+msgid "Email"
+msgstr "Электронная почта"
+
+msgid "Phone"
+msgstr "Телефон"
+
+msgid "Category"
+msgstr "Категория"
+
+msgid "Type"
+msgstr "Тип"
+
+msgid "Skill"
+msgstr "Навыки"
+
+msgid "Topics Taught"
+msgstr "Прочитанные темы"
+
+msgid "Work Phone"
+msgstr "Рабочий телефон"
+
+msgid "Home Phone"
+msgstr "Домашний телефон"
+
+msgid "Mobile Phone"
+msgstr "Мобильный телефон"
+
+msgid "Participants"
+msgstr "Участников"
+
+msgid "Unique Participants"
+msgstr "Уникальные участники"
+
+msgid "Yes"
+msgstr "Да"
+
+msgid "No"
+msgstr "Нет"
+
+msgid "Unknown"
+msgstr "Неизвестный"
+
+msgid "Female"
+msgstr "Женский"
+
+msgid "Male"
+msgstr "Мужской"
+
+msgid "Dates"
+msgstr "Даты"
+
+msgid "Course Length"
+msgstr "Длительность курса"
+
+msgid "Course Trainers"
+msgstr "Инструкторы курса"
+
+msgid "Days"
+msgstr "Дней"
+
+msgid "Months"
+msgstr "Месяцев"
+
+msgid "Quarter"
+msgstr "Квартал"
+
+msgid "Course Participants"
+msgstr "Участники курса"
+
+msgid "Date of Birth"
+msgstr "Дата рождения"
+
+msgid "Primary Qualification"
+msgstr "Основная квалификация"
+
+msgid "Secondary Qualification"
+msgstr "Дополнительная квалификация"
+
+msgid "Pre-Test"
+msgstr "До теста"
+
+msgid "Post-Test"
+msgstr "После теста"
+
+msgid "Change in Score"
+msgstr "Изменение в результате"
+
+msgid "There was a problem with file types <code>"
+msgstr "Возникла проблема с типами файлов"
+
+msgid "There was a problem creating <code>"
+msgstr "Возникла проблема при создании"
+
+msgid "There was a problem moving files <code>"
+msgstr "Возникла проблема во время перемещения файлов"
+
+msgid "Sync database file uploaded."
+msgstr "Синхронизация файлов базы данных загружена."
+
+msgid "Invalid desktop database file"
+msgstr "Неверный Файл базы данных"
+
+msgid "Please upload a file to continue"
+msgstr "Пожалуйста, загрузите файл что бы продолжить"
+
+msgid "Done"
+msgstr "Завершено"
+
+msgid "Add New Training"
+msgstr "Добавить новый тренинг"
+
+msgid "View/Edit Training"
+msgstr "Посмотреть / редактировать тренинг"
+
+msgid "View Training"
+msgstr "Посмотреть тренинг"
+
+msgid "Training Length"
+msgstr "Длительность тренинга"
+
+msgid "Training Interval"
+msgstr "Интервал тренинга"
+
+msgid "Training length is required."
+msgstr "Требуется указать длительность тренинга."
+
+msgid "must be numeric."
+msgstr "должно быть числовым"
+
+msgid "must be between 1-100."
+msgstr "должно быть между 1-100"
+
+msgid "Training end"
+msgstr "Окончание тренинга"
+
+msgid "End date must be after start date."
+msgstr "Дата окончания должна быть после даты начала."
+
+msgid "Number of days is required."
+msgstr "Требуется указать количество дней."
+
+msgid "Total training length is %s, but PEPFAR category total is %d days. "
+msgstr "Общая длительность обучения, а категория ПЕПФАР составляет всего дней. "
+
+msgid "day"
+msgstr "день"
+
+msgid "days"
+msgstr "дни"
+
+msgid "This training session could not be deleted. Some participants or trainers may still be attached."
+msgstr "Данный тренинг удалить не удалось. Некоторые участники или инструкторы могут до сих пор быть участниками тренинга."
+
+msgid "This training session could not be saved."
+msgstr "Данный тренинг сохранить не удалось."
+
+msgid "This training session has been saved."
+msgstr "Данный тренинг был сохранён."
+
+msgid "Please enter your new"
+msgstr "Пожалуйста, введите свой новый"
+
+msgid "Insert new"
+msgstr "Ввести новый"
+
+msgid "Scores"
+msgstr "Результаты"
+
+msgid "Training session has been duplicated.<br>You can edit the duplicate session below."
+msgstr "Обучающая сессия продублирована. Вы можете редактировать сессию-дубликат ниже. "
+
+msgid "already exists"
+msgstr "уже существует"
+
+msgid "This trainer is already in this training session."
+msgstr "Данный инструктор уже находится в этом тренинге."
+
+msgid "Could not update this record."
+msgstr "Невозможно обновить эту запись"
+
+msgid "This participant is already in this training session."
+msgstr "Данный участник уже находится в этом тренинге."
+
+msgid "The training center has been updated."
+msgstr "Центр обучения был обновлён."
+
+msgid "The training center has been saved."
+msgstr "Центр обучения был сохранён."
+
+msgid "The training center could not be saved."
+msgstr "Не удалось сохранить центр обучения."
+
+msgid "Label"
+msgstr "Этикетка"
+
+msgid "Score"
+msgstr "Результат"
+
+msgid "select"
+msgstr "выбрать"
+
+msgid "Preview"
+msgstr "Предварительный просмотр"
+
+msgid "That partner could not be found."
+msgstr "Не удалось найти партнера."
+
+msgid "The partner was saved."
+msgstr "Партнер был сохранен."
+
+msgid "ERROR: The partner could not be saved."
+msgstr "ОШИБКА: Невозможно сохранить партнера."
+
+msgid "That partner was deleted."
+msgstr "Партнер был удален."
+
+msgid "That partner is in use and could not be deleted."
+msgstr "Данный партнер используется и не может быть удален."
+
+msgid "Starting..."
+msgstr "начало"
+
+msgid "Login"
+msgstr "Вход"
+
+msgid "Password"
+msgstr "Пароль"
+
+msgid "The system could not log you in."
+msgstr "Система не смогла принять ваш логин."
+
+msgid "That user account has been disabled."
+msgstr "Эта учётная запись пользователя была отключена."
+
+msgid "That username or password is invalid."
+msgstr "То имя пользователя или пароль недействительны."
+
+msgid "Sunday"
+msgstr "Воскресенье"
+
+msgid "Monday"
+msgstr "Понедельник"
+
+msgid "Tuesday"
+msgstr "Вторник"
+
+msgid "Wednesday"
+msgstr "Среда"
+
+msgid "Thursday"
+msgstr "Четверг"
+
+msgid "Friday"
+msgstr "Пятница"
+
+msgid "Saturday"
+msgstr "Суббота"
+
+msgid "choose"
+msgstr "Выбрать"
+
+msgid "All"
+msgstr "Все"
+
+msgid "Filename"
+msgstr "Название файла"
+
+msgid "Size"
+msgstr "Размер"
+
+msgid "Author"
+msgstr "Автор"
+
+msgid "Upload Date"
+msgstr "Дата загрузки"
+
+msgid "Allowed file extensions"
+msgstr "Разрешенные расширения файлов"
+
+msgid "Max upload size: "
+msgstr "Максимальный размер загрузки:"
+
+msgid "First Name"
+msgstr "Имя"
+
+msgid "Middle Name"
+msgstr "Отчество"
+
+msgid "Last Name"
+msgstr "Фамилия"
+
+msgid "Surname"
+msgstr "Фамилия"
+
+msgid "National ID"
+msgstr "Государственное удостоверение личности"
+
+msgid "File Number"
+msgstr "Номер файла"
+
+msgid "Phone (work)"
+msgstr "Телефон (рабочий)"
+
+msgid "Phone (mobile)"
+msgstr "Телефон (мобильный)"
+
+msgid "Fax"
+msgstr "Факс"
+
+msgid "Comments"
+msgstr "Комментарии"
+
+msgid "Deleted"
+msgstr "Удалено"
+
+msgid "Active"
+msgstr "Действующий"
+
+msgid "Responsibility"
+msgstr "Ответственность"
+
+msgid "Address"
+msgstr "Адрес"
+
+msgid "Department"
+msgstr "Департамент"
+
+msgid "City"
+msgstr "Город"
+
+msgid "Training Name"
+msgstr "Название Tренинга"
+
+msgid "Training Organizer"
+msgstr "Организатор Tренинга"
+
+msgid "Training Level"
+msgstr "Уровень Tренинга"
+
+msgid "PEPFAR topic"
+msgstr "Тема ПЕПФАР"
+
+msgid "Training of Trainers"
+msgstr "тренинг инструкторов"
+
+msgid "Course Objectives"
+msgstr "темы курса"
+
+msgid "Pre Test Score"
+msgstr "Результат до теста"
+
+msgid "Post Test Score"
+msgstr "Результат после теста "
+
+msgid "Custom field"
+msgstr "Пользовательское поле"
+
+msgid "Is Active"
+msgstr "Действующий"
+
+msgid "English"
+msgstr "Английский"
+
+msgid "French"
+msgstr "Французский"
+
+msgid "Russian"
+msgstr "Русский"
+
+msgid "Print"
+msgstr "Печатать"
+
+msgid "Export"
+msgstr "Экспортировать"
+
+msgid "Developed and funded by I-TECH. For questions or help,"
+msgstr "Разработано и профинансировано I-TECH. С вопросами или за помощью обращайтесь,"
+
+msgid "click here"
+msgstr "Нажмите здесь"
+
+msgid "Home"
+msgstr "Главная"
+
+msgid "Trainings"
+msgstr "Тренинги"
+
+msgid "Training"
+msgstr "Тренинг"
+
+msgid "People"
+msgstr "Люди"
+
+msgid "View/Edit Person"
+msgstr "Посмотреть/редактировать личность"
+
+msgid "Add New Person"
+msgstr "Добавить новую личность"
+
+msgid "View person"
+msgstr "Просмотреть личность"
+
+msgid "Places"
+msgstr "Учереждения"
+
+msgid "View/Edit Facility"
+msgstr "Посмотреть / редактировать Учереждение"
+
+msgid "View facility"
+msgstr "Посмотреть учереждение"
+
+msgid "Add Facility"
+msgstr "Добавить Учереждение"
+
+msgid "View/Edit Training Location"
+msgstr "Посмотреть / редактировать местонахождение тренинга "
+
+msgid "View Training Location"
+msgstr "Посмотреть местонахождение тренинга "
+
+msgid "Add Training Location"
+msgstr "Добавить местонахождение тренинга "
+
+msgid "Reports"
+msgstr "Отчёты"
+
+msgid "Training Reports"
+msgstr "Отчёты по тренингам"
+
+msgid "Participant Reports"
+msgstr "Отчёты по участникам"
+
+msgid "Trainer Reports"
+msgstr "Отчёты по инструкторам"
+
+msgid "Facility Reports"
+msgstr "Отчёты по учереждениям"
+
+msgid "Facility Search"
+msgstr "Поиск по учереждениям"
+
+msgid "Assessment Reports"
+msgstr "Отчёты по оцениваниям"
+
+msgid "Roster Reports"
+msgstr "Отчёты по реестрам"
+
+msgid "Data Downloads"
+msgstr "Загрузка данных"
+
+msgid "Evaluations"
+msgstr "Процесс определения качества"
+
+msgid "Pre-service"
+msgstr "Система предварительного обучения"
+
+msgid "My Account"
+msgstr "Моя учётная запись"
+
+msgid "Country Setup"
+msgstr "Настройка страны"
+
+msgid "Training Settings"
+msgstr "Настройки тренинга"
+
+msgid "People Settings"
+msgstr "Настройки людей"
+
+msgid "Facility Settings"
+msgstr "Настройки учереждения"
+
+msgid "Training Partners"
+msgstr "Партнеры тренинга"
+
+msgid "Add New User"
+msgstr "Добавление нового пользователя"
+
+msgid "Edit User"
+msgstr "Редактировать пользователя"
+
+msgid "Create App Now"
+msgstr "Создать приложение"
+
+msgid "Download Application"
+msgstr "Скачать приложение"
+
+msgid "Download"
+msgstr "Скачать"
+
+msgid "Upload Data"
+msgstr "Загрузка данных"
+
+msgid "login"
+msgstr "вход"
+
+msgid "logout"
+msgstr "Выход"
+
+msgid "Welcome"
+msgstr "Добро пожаловать"
+
+msgid "Region Setup"
+msgstr "Настройка региона"
+
+msgid "Move Regions"
+msgstr "Переместить регионы"
+
+msgid "Training Category"
+msgstr "Категория Tренинга"
+
+msgid "Assign Titles"
+msgstr "Присвоить названия"
+
+msgid "Training Title"
+msgstr "Название Tренинга"
+
+msgid "PEPFAR Category"
+msgstr "Категория ПЕПФАР"
+
+msgid "Recommended Topic"
+msgstr "Рекомендуемая Tема"
+
+msgid "Nat. Curriculum"
+msgstr "Учебный план"
+
+msgid "Training Method"
+msgstr "Метод Tренинга"
+
+msgid "Training Methods"
+msgstr "Методы Tренинга"
+
+msgid "Method"
+msgstr "Метод"
+
+msgid "Qualifications"
+msgstr "Категории персонала"
+
+msgid "Trainer Types"
+msgstr "Тип инструктора"
+
+msgid "Trainer Skills"
+msgstr "Навыки инструктора"
+
+msgid "Trainer Skill"
+msgstr "Навык Инструктора"
+
+msgid "Languages"
+msgstr "Языки"
+
+msgid "Affiliations"
+msgstr "Принадлежности"
+
+msgid "Affiliation"
+msgstr "Принадлежность"
+
+msgid "Titles"
+msgstr "Названия"
+
+msgid "Suffix"
+msgstr "Суффикс"
+
+msgid "Facilities"
+msgstr "Учереждения"
+
+msgid "Facilities Settings"
+msgstr "Настройки учреждения"
+
+msgid "Facility Types"
+msgstr "Тип учреждения"
+
+msgid "Facility Sponsors"
+msgstr "Спонсоры учреждения"
+
+msgid "Preservice"
+msgstr "Система предварительного обучения"
+
+msgid "Classes"
+msgstr "Курсы"
+
+msgid "Cadres"
+msgstr "Кадры"
+
+msgid "Degrees"
+msgstr "Степень образования"
+
+msgid "Add degree"
+msgstr "Добавить степень образования"
+
+msgid "Update degree"
+msgstr "Обновить степень образования"
+
+msgid "Degree"
+msgstr "Степень образования"
+
+msgid "Institution types"
+msgstr "Типы института"
+
+msgid "Institution type"
+msgstr "Тип института"
+
+msgid "Nationalities"
+msgstr "Национальность"
+
+msgid "Join & drop reasons"
+msgstr "Причины регистрации/отчисления"
+
+msgid "Join"
+msgstr "Pегистрация"
+
+msgid "Drop"
+msgstr "Oтчисление"
+
+msgid "Sponsors"
+msgstr "Спонсоры"
+
+msgid "Tutor types"
+msgstr "Типы инструктора"
+
+msgid "Course types"
+msgstr "Типы курсов"
+
+msgid "Course type"
+msgstr "Тип курса"
+
+msgid "Religious denominations"
+msgstr "Принадлежность к религиям"
+
+msgid "Religious denomination"
+msgstr "Принадлежность к религии"
+
+msgid "Users"
+msgstr "Пользователи"
+
+msgid "Add Users"
+msgstr "Добавление пользователей"
+
+msgid "Institutions"
+msgstr "институты"
+
+msgid "Institution Search"
+msgstr "Поиск института"
+
+msgid "Add New Institution"
+msgstr "Добавить новый институт"
+
+msgid "Course"
+msgstr "Курс"
+
+msgid "Cohorts"
+msgstr "Группы"
+
+msgid "Cohort Search"
+msgstr "Поиск группы"
+
+msgid "Add New Cohort"
+msgstr "Добавить новую группу"
+
+msgid "Cohort"
+msgstr "Группа"
+
+msgid "People Search"
+msgstr "Поиск людей"
+
+msgid "Add People"
+msgstr "Добавить людей "
+
+msgid "Students Trained"
+msgstr "Студенты, прошедшие обучение"
+
+msgid "Students By Name"
+msgstr "Студенты по имени"
+
+msgid "Graduated Students"
+msgstr "Выпускники"
+
+msgid "Course by Student Count"
+msgstr "Курс по числу студентов"
+
+msgid "Course by Name"
+msgstr "Курс по названию"
+
+msgid "PS Classes"
+msgstr "Курсы (СПО)"
+
+msgid "PS Cadres"
+msgstr "Кадры (СПО)"
+
+msgid "PS Degrees"
+msgstr "Cтепень образования (СПО)"
+
+msgid "PS Funding"
+msgstr "Финансирование (СПО)"
+
+msgid "PS Institution Types"
+msgstr "Тип института (СПО)"
+
+msgid "PS Join & Drop Reasons"
+msgstr "Причины регистрации/отчисления (СПО)"
+
+msgid "PS Languages"
+msgstr "Языки (СПО)"
+
+msgid "PS Nationalities"
+msgstr "Национальность (СПО)"
+
+msgid "PS Sponsors"
+msgstr "Спонсоры (СПО)"
+
+msgid "PS Student Types"
+msgstr "Тип студента (СПО)"
+
+msgid "PS Tutor Types"
+msgstr "Типы инструктора (СПО)"
+
+msgid "PS Course Types"
+msgstr "Типы курса (СПО)"
+
+msgid "Move"
+msgstr "Переместить"
+
+msgid "City or Town"
+msgstr "Город"
+
+msgid "Training Calendar"
+msgstr "Календарь тренинга"
+
+msgid "Print Calendar"
+msgstr "Распечатать календарь"
+
+msgid "Data"
+msgstr "Данные"
+
+msgid "Persons"
+msgstr "Личности"
+
+msgid "Database Export"
+msgstr "Экспортировать"
+
+msgid "A training was approved by "
+msgstr "Тренинг был одобрен"
+
+msgid "You have been assigned a new temporary password."
+msgstr "Вам присвоили новый временный пароль."
+
+msgid "Please change your password once you log in"
+msgstr "Пожалуйста, смените свой пароль, когда войдёте "
+
+msgid "here"
+msgstr "здесь"
+
+msgid "Your login is as follows:"
+msgstr "Ваш логин:"
+
+msgid "password:"
+msgstr "пароль:"
+
+msgid "Dear"
+msgstr "Уважаемый"
+
+msgid "Your new account has been created and is ready for use."
+msgstr "Ваша новая учётная запись создана и готова для использования."
+
+msgid "website:"
+msgstr "вебсайт:"
+
+msgid "Your password has been changed as requested."
+msgstr "Ваш пароль был изменен по просьбе."
+
+msgid "You can log into our website at: "
+msgstr "Вы можете войти на наш сайт по адресу:"
+
+msgid "A training was rejected by "
+msgstr "Тренинг  был отклонен"
+
+msgid "A training was resubmitted by "
+msgstr "Тренинг был вновь представлен в"
+
+msgid "Please change your password once you log in here"
+msgstr "Пожалуйста, смените свой пароль, как только войдёте здесь"
+
+msgid "You can log into our website at:"
+msgstr "Вы можете войти на наш сайт по адресу:"
+
+msgid "Oops"
+msgstr "Ой!"
+
+msgid "Sorry. An error just occurred. Please try again, or contact a system administrator."
+msgstr "Извините. Только что произошла ошибка. Пожалуйста, попробуйте ещё раз или обратитесь к системному администратору."
+
+msgid "Enter title of Evaluation"
+msgstr "Ввести название процессa определения качества"
+
+msgid "Number"
+msgstr "Номер"
+
+msgid "Question"
+msgstr "Вопрос"
+
+msgid "Text"
+msgstr "Текст"
+
+msgid "Add Evaluation"
+msgstr "Добавление процессa определения качества"
+
+msgid "Assign Evaluation to Training"
+msgstr "Назначить процесс определения качества для тренинга"
+
+msgid "Assign"
+msgstr "Назначить"
+
+msgid "Submit"
+msgstr "Подать"
+
+msgid "Copy"
+msgstr "Копировать"
+
+msgid "Date created"
+msgstr "Дата создания"
+
+msgid "Add New Evaluation"
+msgstr "Добавление нового процессa определения качества"
+
+msgid "Evaluation Data Entry"
+msgstr "Ввод данных процессa определения качества"
+
+msgid "Save and Exit"
+msgstr "Сохранить и выйти"
+
+msgid "Save and Continue"
+msgstr "Сохранить и продолжить"
+
+msgid "Add External Course"
+msgstr "Добавить внешний курс"
+
+msgid "Add new External Course for "
+msgstr "Добавить новый внешний курс для"
+
+msgid "Day"
+msgstr "День"
+
+msgid "Month"
+msgstr "Месяц"
+
+msgid "Year"
+msgstr "Год"
+
+msgid "Length"
+msgstr "Длительность"
+
+msgid "Who Funded"
+msgstr "Кто финансировал"
+
+msgid "Add Course"
+msgstr "Добавить курсы"
+
+msgid "Please enter training location information"
+msgstr "Пожалуйста, введите информацию о местонахождении тренинга"
+
+msgid "Add Location"
+msgstr "Добавить местонахождениие"
+
+msgid "Add new Facility"
+msgstr "Добавить новое учреждение"
+
+msgid "Address 1"
+msgstr "Адрес 1"
+
+msgid "Address 2"
+msgstr "Адрес 2"
+
+msgid "New city"
+msgstr "Новый город"
+
+msgid "Postal code"
+msgstr "Почтовый индекс"
+
+msgid "Facility sponsor"
+msgstr "Спонсор учереждения"
+
+msgid "Facility Comments"
+msgstr "Комментарии к учереждению"
+
+msgid "Delete Location"
+msgstr "Удалить местонахождение"
+
+msgid "Delete Facility"
+msgstr "Удалить учреждение"
+
+msgid "Edit Facility"
+msgstr "Редактировать учреждение"
+
+msgid "Facility name"
+msgstr "Название учереждения"
+
+msgid "Address "
+msgstr "Адрес"
+
+msgid "Save changes"
+msgstr "Сохранить изменения"
+
+msgid "Are you sure you wish to delete this facility?"
+msgstr "Вы уверены, что хотите удалить данное учреждение?"
+
+msgid "Search for Training Location"
+msgstr "Искать местонахождение тренинга"
+
+msgid "Select Criteria"
+msgstr "Выбрать критерии"
+
+msgid "Training Location Name"
+msgstr "Название местонахождения тренинга"
+
+msgid "Training locations"
+msgstr "Местонахождения тренинга"
+
+msgid "Results"
+msgstr "Результатов"
+
+msgid "Add new training location"
+msgstr "Добавить новое местонахождение тренинга"
+
+msgid "Location Name"
+msgstr "Название местонахождения"
+
+msgid "Limited to 100 rows"
+msgstr "Ограничено до 100 строк"
+
+msgid "Full Results"
+msgstr "Полный результат"
+
+msgid "Search Facilities"
+msgstr "Поиск учереждения"
+
+msgid "Add New Facility"
+msgstr "Добавить новое учреждение"
+
+msgid "ID"
+msgstr "Идентификация"
+
+msgid "UUID"
+msgstr "Уникальная идентификация"
+
+msgid "Sponsor"
+msgstr "Спонсор"
+
+msgid "unknown"
+msgstr "неизвестный"
+
+msgid "Save Changes"
+msgstr "Сохранить изменения"
+
+msgid "Are you sure you wish to delete this location?"
+msgstr "Вы уверены, что хотите удалить данное местонахождение?"
+
+msgid "View Facility"
+msgstr "Просмотр учреждения"
+
+msgid "Postal Code"
+msgstr "Почтовый индекс"
+
+msgid "Welcome to"
+msgstr "Добро пожаловать в"
+
+msgid "Training System Monitoring and Reporting Tool"
+msgstr "Инструмент мониторинга и отчётности системы обучения"
+
+msgid "Data Summary"
+msgstr "Сводка данных"
+
+msgid "unique"
+msgstr "уникальный"
+
+msgid "Trainers"
+msgstr "Инструкторы"
+
+msgid "Trainer"
+msgstr "Инструктор"
+
+msgid "Total"
+msgstr "Всего"
+
+msgid "Fiscal Year"
+msgstr "Финансовый год"
+
+msgid "Future Trainings"
+msgstr "Будущие тренинги"
+
+msgid "Future Training"
+msgstr "Будущий тренинг"
+
+msgid "Past Training"
+msgstr "Прошедший тренинг"
+
+msgid "Future"
+msgstr "Будущие"
+
+msgid "View Printable Calendar"
+msgstr "Посмотреть календарь, который можно распечатать"
+
+msgid "To be Approved"
+msgstr "Подлежит утверждению"
+
+msgid "Attached Documents"
+msgstr "Прилагаемые документы"
+
+msgid "Right-click and select \"Save Target As...\" to download."
+msgstr "Щёлкните правой кнопкой мыши и выберите /\"Сохранить как...\"/ чтобы скачать."
+
+msgid "Document Upload"
+msgstr "Загрузка документа"
+
+msgid "Please login below"
+msgstr "пожалуйста, войдите в систему ниже"
+
+msgid "User name"
+msgstr "Имя пользователя"
+
+msgid "Forgot your password?"
+msgstr "Забыли свой пароль?"
+
+msgid "Add Person"
+msgstr "Добавить личность"
+
+msgid "Assign Person to Training"
+msgstr "Записать личность на тренинг"
+
+msgid "Delete Person"
+msgstr "Удалить личность"
+
+msgid "Current Contact Information"
+msgstr "Текущая контактная информация"
+
+msgid "Insert new facility"
+msgstr "Ввести новое учреждение"
+
+msgid "Address and Phone"
+msgstr "Адрес и телефон"
+
+msgid "Work phone"
+msgstr "Рабочий телефон"
+
+msgid "Mobile phone"
+msgstr "Мобильный телефон"
+
+msgid "Email Secondary"
+msgstr "Дополнительная электронная почта"
+
+msgid "Qualification Comments"
+msgstr "Комментарии к квалификации"
+
+msgid "Trainer Information"
+msgstr "Информация об инструкторе"
+
+msgid "Show/Hide"
+msgstr "Показать / Спрятать"
+
+msgid "Is person an active trainer?"
+msgstr "Эта личность является действующим инструктором?"
+
+msgid "Trainer Affiliation"
+msgstr "Принадлежность инструктора"
+
+msgid "Trainer skills"
+msgstr "Навыки инструктора"
+
+msgid "check all that apply"
+msgstr "Отметить всё, что подходит"
+
+msgid "Primary language"
+msgstr "Основной язык"
+
+msgid "Secondary languages"
+msgstr "Дополнительные языки"
+
+msgid "Secondary language"
+msgstr "Дополнительный язык"
+
+msgid "Created by"
+msgstr "Создано"
+
+msgid "Date modified"
+msgstr "Дата внесения изменений"
+
+msgid "Modified by"
+msgstr "Изменено:"
+
+msgid "Delete this Person"
+msgstr "Удалить личность "
+
+msgid "Are you sure you wish to delete this person?"
+msgstr "Вы уверены, что хотите удалить эту личность?"
+
+msgid "Edit person's record"
+msgstr "Редактировать запись личности"
+
+msgid "Add person's record"
+msgstr "Добавить запись личности"
+
+msgid "Personal Information"
+msgstr "Личная информация"
+
+msgid "Birth date"
+msgstr "Дата рождения"
+
+msgid "Duplicate Check"
+msgstr "Проверка дубликата"
+
+msgid "Continue"
+msgstr "Продолжить"
+
+msgid "If the person already exists, please select their name below."
+msgstr "Если лицо уже существует, то, пожалуйста, выберите ниже имя."
+
+msgid "Please enter a first and last name."
+msgstr "Пожалуйста, введите имя и фамилию."
+
+msgid "Submission failed:"
+msgstr "Подача не удалась:"
+
+msgid "Primary responsibility"
+msgstr "Основная ответственность"
+
+msgid "Secondary responsibility"
+msgstr "Дополнительная ответственность"
+
+msgid "Trainer languages"
+msgstr "Языки инструктора"
+
+msgid "Recommended Training Topics"
+msgstr "Рекомендуемые темы тренинга"
+
+msgid "No recommended classes were found for the above primary qualification"
+msgstr "Рекомендованные занятия для вышеуказанной основной квалификации не найдены."
+
+msgid "Upcoming Trainings"
+msgstr "Ближайшие тренинги"
+
+msgid "Topic(s)"
+msgstr "Тема (темы)"
+
+msgid "Class History"
+msgstr "Журнал курсов"
+
+msgid "Topics(s)"
+msgstr "Темы"
+
+msgid "Topics"
+msgstr "Темы"
+
+msgid "Please add or verify the trainer information below."
+msgstr "Пожалуйста, добавьте или подтвердите ниже информацию об инструкторе."
+
+msgid "Please enter facility information"
+msgstr "Пожалуйста, введите информацию об учереждении"
+
+msgid "Assign this person to a class"
+msgstr "Зарегистрировать на занятие"
+
+msgid "External Class History"
+msgstr "Журнал внешних курсов"
+
+msgid "Add an external class"
+msgstr "Добавление внешнего класса"
+
+msgid "Change History"
+msgstr "Журнал изменений"
+
+msgid "Change"
+msgstr "Изменить"
+
+msgid "Previous entry"
+msgstr "Предыдущая запись"
+
+msgid "No duplicates found."
+msgstr "Дубликаты не найдены."
+
+msgid "Age"
+msgstr "Возраст"
+
+msgid "Edit Person"
+msgstr "Редактировать личность"
+
+msgid "Person Search"
+msgstr "Поиск личности"
+
+msgid "Trainers only"
+msgstr "Только инструктора"
+
+msgid "Participants only"
+msgstr "Только участники"
+
+msgid "Unattached only"
+msgstr "Только неприкреплённые"
+
+msgid "Everyone"
+msgstr "Каждый"
+
+msgid "View Person"
+msgstr "Просмотр личности"
+
+msgid "First name"
+msgstr "Имя"
+
+msgid "Middle name"
+msgstr "Отчество"
+
+msgid "Last name"
+msgstr "Фамилия"
+
+msgid "Trainer Type"
+msgstr "Тип Инструктора"
+
+msgid "Training History"
+msgstr "Журнал тренинга"
+
+msgid "Search"
+msgstr "Поиск"
+
+msgid "show"
+msgstr "показать"
+
+msgid "group"
+msgstr "группа"
+
+msgid "course name"
+msgstr "Название курса"
+
+msgid "Min"
+msgstr "минимальный"
+
+msgid "Max"
+msgstr "максимальный"
+
+msgid "End date"
+msgstr "Дата окончания"
+
+msgid "Start date"
+msgstr "Дата начала"
+
+msgid "Trainings with known participants only"
+msgstr "Тренинги только с известными участниками"
+
+msgid "Trainings with unknown participants only"
+msgstr "Тренинги только с неизвестными участниками"
+
+msgid "All trainings"
+msgstr "Все тренинги"
+
+msgid "End Date"
+msgstr "Дата окончания"
+
+msgid "Refresher"
+msgstr ""
+
+msgid "facility"
+msgstr "Учереждение"
+
+msgid "Trainings matched with Facilities"
+msgstr "Тренинги, сопоставленные с учреждениями "
+
+msgid "Training Location"
+msgstr "Местонахождение тренинга"
+
+msgid "PEPFAR"
+msgstr "ПЕПФАР"
+
+msgid "Evaluation Reports"
+msgstr "Отчёты по процессам определения качества"
+
+msgid "Evaluation Report"
+msgstr "Отчёт по процессам определения качества"
+
+msgid "Evaluation"
+msgstr "Процесс определения качества"
+
+msgid "Generate Report"
+msgstr "Создать отчёт"
+
+msgid "Evaluation Name"
+msgstr "Название процессa определения качества"
+
+msgid "Responses"
+msgstr "Ответы"
+
+msgid "Select facility report"
+msgstr "Выбрать отчёт об учереждении"
+
+msgid "Trainings by Facility Name"
+msgstr "Тренинги по названию учереждения"
+
+msgid "Trainings by Facility Participant Count"
+msgstr "Тренинги по количеству участников учереждения"
+
+msgid "filter"
+msgstr "фильтр"
+
+msgid "Training location"
+msgstr "Местонахождение тренинга"
+
+msgid "Report"
+msgstr "Отчёт"
+
+msgid "Select trainer report"
+msgstr "Выбрать отчёт об инструкторе"
+
+msgid "Trainers by Skill, Language, and PEPFAR"
+msgstr "Инструкторы по навыкам, языку и ПЕПФАР"
+
+msgid "Select training report"
+msgstr "Выбрать отчёт о тренинге"
+
+msgid "Trainings by Name"
+msgstr "Тренинги по названию"
+
+msgid "Trainings by Participant Count"
+msgstr "Тренинги по количеству участников "
+
+msgid "Pre-service reports"
+msgstr "Отчеты по cистеме предварительного обучения"
+
+msgid "Course By Student Count"
+msgstr "Курс по количеству студентов"
+
+msgid "Course By Name"
+msgstr "Курс по названию"
+
+msgid "Cohort By Participant Count"
+msgstr "Группа по колличестве участников"
+
+msgid "Institution Information"
+msgstr "Информация об институте"
+
+msgid "Tutor By Name"
+msgstr "Инструкторы по имени"
+
+msgid "Facility Report"
+msgstr "Отчет учреждения"
+
+msgid "primary"
+msgstr "основной"
+
+msgid "secondary"
+msgstr "дополнительный"
+
+msgid "Classes taken"
+msgstr "Пройденные курсы"
+
+msgid "Upcoming classes"
+msgstr "Ближайшие занятия"
+
+msgid "Training topic"
+msgstr "Тема Tренинга"
+
+msgid "Recommended topics"
+msgstr "Рекомендуемые темы"
+
+msgid "Combine First and Last Names"
+msgstr "Объединить имя и фамилию"
+
+msgid "Person Count"
+msgstr "Количество лиц"
+
+msgid "Select person report"
+msgstr "Выбрать отчёт о личности"
+
+msgid "Needs by Person's Name"
+msgstr "Требуется по имени личности"
+
+msgid "Needs by Person Count"
+msgstr "Требуется по количеству лиц"
+
+msgid "Unique by"
+msgstr "Уникальный по"
+
+msgid "and"
+msgstr "и"
+
+msgid "Not unique overall."
+msgstr "Не уникально в целом."
+
+msgid "Unique by "
+msgstr "Уникальный по"
+
+msgid "facility location"
+msgstr "местонахождение учереждения "
+
+msgid "Total Participants by"
+msgstr "Всего участников по"
+
+msgid "Participants Report"
+msgstr "Отчёт участников"
+
+msgid "male"
+msgstr "мужчина"
+
+msgid "female"
+msgstr "женщина"
+
+msgid "na"
+msgstr "Не относится"
+
+msgid "min"
+msgstr "минимальный"
+
+msgid "max"
+msgstr "максимальный"
+
+msgid "clear"
+msgstr "Очистить"
+
+msgid "active"
+msgstr "активный"
+
+msgid "inactive"
+msgstr "недействующий"
+
+msgid "Note: This report may contain multiple rows for participants who attended multiple trainings"
+msgstr "Примечание: в этом отчёте могут содержаться многократные строки для участников, которые посетили многократные тренинги "
+
+msgid "Participant Count"
+msgstr "Количество участников"
+
+msgid "Trainers by Name"
+msgstr "Инструкторы по имени"
+
+msgid "Show post-test scores above"
+msgstr "Показать выше результаты после теста "
+
+msgid "Show score increase above"
+msgstr "Показать выше рост результатов"
+
+msgid "Return Unique Participants"
+msgstr "Вернуть уникальных участников"
+
+msgid "Trainings Attended"
+msgstr "Посещённых тренингов"
+
+msgid "% Change"
+msgstr "% Изменение"
+
+msgid "Match primary/secondary"
+msgstr "соответствие основной / дополнительный"
+
+msgid "Recommended classes (based on topic)"
+msgstr "Рекомендуемые занятия (в зависимости от темы)"
+
+msgid "Select participant report"
+msgstr "Выбрать отчёт об участнике"
+
+msgid "Unique Participants by "
+msgstr "Уникальные участники по"
+
+msgid "Unique Participants by"
+msgstr "Уникальные участники по"
+
+msgid "Unique Participants by Qualification"
+msgstr "Уникальные участники по квалификации"
+
+msgid "Participants Trained"
+msgstr "Участники, прошедшие обучение"
+
+msgid "Participants by Facility"
+msgstr "Участники по учреждению"
+
+msgid "Participants by Name"
+msgstr "Участники по фамилии"
+
+msgid "Participants with Scores"
+msgstr "Участники с результатами"
+
+msgid "Course By Name Report"
+msgstr "Отчет курсов по названию"
+
+msgid "Course By Student Count Report"
+msgstr "Отчет курсов по количеству студентов"
+
+msgid "Graduated Students Report"
+msgstr "Отчет студентов-выпускников"
+
+msgid "Missing Cohort By Participant Count Report"
+msgstr "Отчет недостающих групп по количеству участников"
+
+msgid "Missing Cohort By Participant Count"
+msgstr "Недостающие группы по количеству участников"
+
+msgid "Missing Course By Name Report"
+msgstr "Отчет недостающих курсов по названию"
+
+msgid "Missing Course By Name"
+msgstr "Недостающие курсы по числу названию"
+
+msgid "Missing Course By Student Count Report"
+msgstr "Отчет недостающих курсов по числу студентов"
+
+msgid "Missing Course By Student Count"
+msgstr "Недостающие курсы по числу студентов"
+
+msgid "Missing Facility Report Report"
+msgstr "Отчет недостающих учереждений"
+
+msgid "Missing Facility Report"
+msgstr "Отчет недостающих учереждений"
+
+msgid "Missing Graduated Students Report"
+msgstr "Отчет недостающих студентов-выпускников"
+
+msgid "Missing Graduated Students"
+msgstr "Недостающие студенты-выпускники"
+
+msgid "Missing Institution Information Report"
+msgstr "Недостающие институты"
+
+msgid "Missing Institution Information"
+msgstr "Недостающие институты"
+
+msgid "Missing Students By Name Report"
+msgstr "Отчет недостающих студентов по имени"
+
+msgid "Missing Students By Name"
+msgstr "Недостающие студенты по имени"
+
+msgid "Missing Students Trained Report"
+msgstr "Отчет недостающих студентов, прошедших обучение "
+
+msgid "Missing Students Trained"
+msgstr "Недостающие студенты, прошедшие обучение"
+
+msgid "Missing Tutor By Name Report"
+msgstr "Отчет недостающих инструкторов по имени"
+
+msgid "Missing Tutor By Name"
+msgstr "Недостающие инструктора по имени"
+
+msgid "Students By Name Report"
+msgstr "Отчет студентов по имени"
+
+msgid "training location"
+msgstr "Местонахождение тренинга"
+
+msgid "Students Trained Report"
+msgstr "Отчет студентов, прошедших обучение"
+
+msgid "Trainings By Participants Report"
+msgstr "Тренинги только с известными участниками"
+
+msgid "Trainings By Participants"
+msgstr "Тренинги только с известными участниками"
+
+msgid "Trainings By Name Report"
+msgstr "Отчет тренингов по названию"
+
+msgid "Trainings By Name"
+msgstr "Тренинги по названию"
+
+msgid "Extended Report with Test Scores"
+msgstr "Расширенный отчёт с результатами тестов"
+
+msgid "Extended Report with Regions and Qualification"
+msgstr "Расширенный отчёт с регионами и квалификацией"
+
+msgid "Trainer Report"
+msgstr "Отчёт по инструкторам"
+
+msgid "trainer report"
+msgstr "oтчёт по инструкторам"
+
+msgid "Trainer language"
+msgstr "Язык инструктора"
+
+msgid "Select topic taught"
+msgstr "Выбрать прочитанную тему"
+
+msgid "Combine first and last names"
+msgstr "Объединить имя и фамилию"
+
+msgid "with Unknown Participants"
+msgstr "Тренинги только с неизвестными участниками"
+
+msgid "Trainings with Unknown Participants"
+msgstr "Тренинги только с неизвестными участниками"
+
+msgid "Age Range"
+msgstr "Возрастной диапазон"
+
+msgid "Mechanism ID"
+msgstr "Идентификация механизма"
+
+msgid "Mechanism"
+msgstr "Механизм"
+
+msgid "Data Synchronization"
+msgstr "Синхронизация данных"
+
+msgid "Uploaded Data"
+msgstr "Загруженные данные"
+
+msgid "Existing Data"
+msgstr "Существующие данные"
+
+msgid "Conflict(s)"
+msgstr "Ошибки"
+
+msgid "Resolution"
+msgstr "Решение"
+
+msgid "Preview Upload Data"
+msgstr "Предварительный просмотр"
+
+msgid "Import Summary"
+msgstr "Сводка данных"
+
+msgid "Record"
+msgstr "Запись"
+
+msgid "Additions"
+msgstr "Добавления"
+
+msgid "Modifications"
+msgstr "Исправления"
+
+msgid "Deletions"
+msgstr "Удаления"
+
+msgid "Add Alias (Duplicate)"
+msgstr "Добавить псевдонима (дубликат)"
+
+msgid "Conflicts"
+msgstr "Ошибки"
+
+msgid "Training Conflicts"
+msgstr "Ошибка информации о тренинге"
+
+msgid "People Conflicts"
+msgstr "Ошибка информации о личности"
+
+msgid "Facility Conflicts"
+msgstr "Ошибка информации об учереждения"
+
+msgid "Training Location Conflicts"
+msgstr "Ошибка информации  о местонахождении тренинга"
+
+msgid "Select the file that contains the exported data (*.sqlite database) you want to import."
+msgstr "Выберите файл, содержащий экспортированные данные (* .sqlite базы данных), которые вы хотите импортировать."
+
+msgid "File to upload"
+msgstr "Загрузка документа"
+
+msgid "Training Session Deleted"
+msgstr "Данный тренинг был удалён."
+
+msgid "This training session has been deleted."
+msgstr "Данный тренинг был удалён."
+
+msgid "Edit Topics"
+msgstr "Редактировать темы"
+
+msgid "Edit Trainer Topic"
+msgstr "Редактировать тему инструктора"
+
+msgid "Training Roster"
+msgstr "Реестр тренингов"
+
+msgid "Course Roster"
+msgstr "Реестр курса"
+
+msgid "Start Date:"
+msgstr "Дата начала:"
+
+msgid "End Date:"
+msgstr "Дата окончания:"
+
+msgid "Total Trainers:"
+msgstr "Всего инструкторов:"
+
+msgid "Total Trainers"
+msgstr "Всего инструкторов"
+
+msgid "Total Participants:"
+msgstr "Всего участников:"
+
+msgid "Return to training"
+msgstr "Вернуться к тренингу"
+
+msgid "Person"
+msgstr "Личность"
+
+msgid "Are you sure you wish to delete this score?"
+msgstr "Вы уверены, что хотите удалить данный результат?"
+
+msgid "Return to Training Session"
+msgstr "Вернуться к тренингу"
+
+msgid "Return to Training"
+msgstr "Вернуться к тренингу"
+
+msgid "Save Training"
+msgstr "Сохранить тренинг"
+
+msgid "Add new Training Location"
+msgstr "Добавить новое местонахождение тренинга"
+
+msgid "Please enter training location information:"
+msgstr "Пожалуйста, введите информацию о местонахождении тренинга"
+
+msgid "It looks like the training dates do not match the length. Please double check these fields."
+msgstr "Похоже, что даты тренинга не совпадают с его длительностью. Пожалуйста, перепроверьте данные полей."
+
+msgid "Cancel"
+msgstr "Отменить"
+
+msgid "Date created:"
+msgstr "Дата создания:"
+
+msgid "Created by:"
+msgstr "Создано:"
+
+msgid "Date modified:"
+msgstr "Дата внесения изменений:"
+
+msgid "Modified by:"
+msgstr "Изменено:"
+
+msgid "View/Print Training Roster"
+msgstr "Посмотреть / распечатать реестр тренинга"
+
+msgid "Enter Evaluation Data"
+msgstr "Ввести данные процессa определения качества"
+
+msgid "View Data"
+msgstr "Посмотреть данные"
+
+msgid "unassigned"
+msgstr "неназначенный"
+
+msgid "Duplicate this Training"
+msgstr "Дублировать этот тренинг"
+
+msgid "Delete this Training"
+msgstr "Удалить данный тренинг"
+
+msgid "Training start date"
+msgstr "Дата начала тренинга"
+
+msgid "Training end date"
+msgstr "Дата окончания тренинга"
+
+msgid "Training length"
+msgstr "Длительность тренинга"
+
+msgid "hours"
+msgstr "часы"
+
+msgid "weeks"
+msgstr "недели"
+
+msgid "Participants are known"
+msgstr "Известные участники "
+
+msgid "Check all that apply below"
+msgstr "Ниже отметить всё, что подходит"
+
+msgid "Please enter the name your new funding item:"
+msgstr "Пожалуйста, введите название вашего нового финансируемого элемента:"
+
+msgid "Insert"
+msgstr "Вставить"
+
+msgid "New Person Form"
+msgstr "Форма новой личности"
+
+msgid "The entered trainer name could not be found."
+msgstr "Введенное имя инструктора не найдено."
+
+msgid "The entered person could not be found."
+msgstr "Введенное имя человека не найдено."
+
+msgid "Please select one from the list or add a new person."
+msgstr "Выберите из списка или добавьте нового человека."
+
+msgid "Please enter the number of days for this trainer."
+msgstr "Пожалуйста, введите количество дней для данного инструктора."
+
+msgid "You must edit this person's trainer profile before adding them to this session.\\n\\nWould you like to do this now?"
+msgstr "Вы должны отредактировать информацию о данном инструкторе перед тем как добавить его к этой сессии.Вы хотите сделать это сейчас?"
+
+msgid "Participant Information"
+msgstr "Информация об участнике"
+
+msgid "Course Average Test Scores"
+msgstr "Средние результаты тестирования по курсу"
+
+msgid "You need to choose a qualification for all recorded participants."
+msgstr "Вам нужно выбрать квалификацию для всех записанных участников."
+
+msgid "Participant Qualifications"
+msgstr "Квалификации участника"
+
+msgid "Approval Status"
+msgstr "Утвержденный статус"
+
+msgid "Location name"
+msgstr "Название местонахождения"
+
+msgid "Add new Training Partner"
+msgstr "Добавить нового партнера тренинга"
+
+msgid "Training Sub Partner"
+msgstr "Подпартнер тренинга"
+
+msgid "Funder Name"
+msgstr "Название учредителя"
+
+msgid "Funder ID"
+msgstr "Идентификация учредителя"
+
+msgid "Delete Training Partner"
+msgstr "Удалить партнера тренинга"
+
+msgid "Edit Training Partner"
+msgstr "Редактировать партнера тренинга"
+
+msgid "Are you sure you wish to delete this partner?"
+msgstr "Вы уверены, что хотите удалить данного партнера?"
+
+msgid "Search for Training Partner"
+msgstr "Поиск партнера тренинга"
+
+msgid "Training Partner Name"
+msgstr "Название партнера тренинга"
+
+msgid "Funder"
+msgstr "Учредитель"
+
+msgid "View Training Partner"
+msgstr "Посмотреть партнера тренинга"
+
+msgid "Training organizer"
+msgstr "Организатор обучения"
+
+msgid "Activate User"
+msgstr "Активировать пользователя"
+
+msgid "Add User"
+msgstr "Добавить пользователя"
+
+msgid "User Set Up"
+msgstr "Настройки пользователя"
+
+msgid "Block User"
+msgstr "Блокировать пользователя"
+
+msgid "Edit Account"
+msgstr "Редактировать учётную запись"
+
+msgid "E-mail"
+msgstr "Электронная почта"
+
+msgid "New password"
+msgstr "Новый пароль"
+
+msgid "Confirm new password"
+msgstr "Подтвердить новый пароль"
+
+msgid "Access Level"
+msgstr "Уровень доступа"
+
+msgid "Add/Edit/Delete"
+msgstr "Добавление/изменение/удаление"
+
+msgid "View only"
+msgstr "Только просмотр"
+
+msgid "View/create reports"
+msgstr "Посмотреть / создать отчёты"
+
+msgid "Edit country options"
+msgstr "Изменить параметры страны"
+
+msgid "Add Training Titles"
+msgstr "Добавить название тренинга"
+
+msgid "Use Offline Application"
+msgstr "Использование приложения вне интернета"
+
+msgid "Add/Edit users"
+msgstr "Добавление и изменение пользователей"
+
+msgid "Approval"
+msgstr "Утверждение"
+
+msgid "Approve trainings"
+msgstr "Утвердить тренинги"
+
+msgid "Files"
+msgstr "файлы"
+
+msgid "Upload and delete"
+msgstr "Загрузить и удалить"
+
+msgid "Organizer access"
+msgstr "Доступ организатора"
+
+msgid "All Training Organizers"
+msgstr "Все организаторы обучения"
+
+msgid "Block this User"
+msgstr "Блокировать пользователя"
+
+msgid "Are you sure you wish to block this user?"
+msgstr "Вы уверены, что хотите заблокировать данного пользователя?"
+
+msgid "Activate this User"
+msgstr "Активировать пользователя"
+
+msgid "Are you sure you wish to activate this user?"
+msgstr "Вы уверены, что хотите активировать данного пользователя?"
+
+msgid "Forgot Password"
+msgstr "Забыли пароль"
+
+msgid "Enter your email address, and a new temporary password will be sent to you."
+msgstr "Введите свой адрес электронной почты и вам отправят новый временный пароль."
+
+msgid "Send Password"
+msgstr "Отправить пароль"
+
+msgid "Confirm New password"
+msgstr "Подтвердить новый пароль"
+
+msgid "User List"
+msgstr "Список пользователей"
+
+msgid "Browse Users"
+msgstr "Просмотреть пользователей"
+
+msgid "blocked"
+msgstr "заблокированный"
+
+msgid "First"
+msgstr "Первый"
+
+msgid "Last"
+msgstr "Последний"
+
+msgid "Username"
+msgstr "Имя пользователя"
+
+msgid "Status"
+msgstr "Статус"
+
+msgid "Admin"
+msgstr "Админ"
+
+msgid "Pre-Service"
+msgstr "Система предварительного обучения"
+
+msgid "Pre-service access"
+msgstr "Доступ к системе предварительного обучения"
+
+msgid "Send email with login information"
+msgstr "Отправить электронное письмо с информацией о логине"
+
+msgid "Finished"
+msgstr "Законченные"
+
+msgid "Monthly Email Reports"
+msgstr "Ежемесячные отчеты по электронной почте"
+
+msgid "View/Edit"
+msgstr "Посмотреть / редактировать"
+
+msgid "Add"
+msgstr "Добавить"
+
+msgid "Add New"
+msgstr "Добавить"
+
+msgid "City is required."
+msgstr "Поле город обязательно"
+
+msgid "Trainer affiliation"
+msgstr "Принадлежность инструктора"
+
+msgid "Your new password has been sent. Please check your email for further instructions."
+msgstr "Ваш новый пароль был отправлен. Пожалуйста, проверьте свою электронную почту для получения дальнейших инструкций."
+
+msgid "Participant"
+msgstr "Участник"
+
+msgid "Facilitator"
+msgstr "Посредник"
+
+msgid "Roster"
+msgstr "Реестр"
+
+msgid "Get Required .NET"
+msgstr "Получить требуемый .NET"
+
+msgid "Administration"
+msgstr "Администрирование"
+
+msgid "Appearance"
+msgstr "Внешний вид"
+
+msgid "Application name"
+msgstr "Имя приложения"
+
+msgid "Logo"
+msgstr "Логотип"
+
+msgid "Approximate image dimensions"
+msgstr "Приблизительные размеры логотипа"
+
+msgid "Refresh this page, or go to the home page to see changes applied."
+msgstr "Обновите эту страницу, или перейдите на главную страницу чтобы увидеть изменения."
+
+msgid "Settings"
+msgstr "Настройки"
+
+msgid "Field"
+msgstr "Поле"
+
+msgid "Actions"
+msgstr "Действия"
+
+msgid "Action"
+msgstr "Действиe"
+
+msgid "Options"
+msgstr "Опции"
+
+msgid "Option"
+msgstr "Опция"
+
+msgid "Country"
+msgstr "Страна"
+
+msgid "Region"
+msgstr "Регион"
+
+msgid "Add region"
+msgstr "Добавить регион"
+
+msgid "Delete region"
+msgstr "Удалить регион"
+
+msgid "Add/Edit"
+msgstr "Добавить/Изменить"
+
+msgid "Employee"
+msgstr "Сотрудник"
+
+msgid "Employees"
+msgstr "Сотрудники"
+
+msgid "Employer"
+msgstr "Работодатель"
+
+msgid "since"
+msgstr "с"
+
+msgid "Incomplete trainings that already occurred"
+msgstr "Незавершенные тренинги, которые уже состоялись"
+
+msgid "City/Town"
+msgstr "Город"
+
+msgid "Fiscal Year Start"
+msgstr "Начало финансового года"
+
+msgid "Modules"
+msgstr "Модули"
+
+msgid "Enable"
+msgstr "Включить"
+
+msgid "Tracking"
+msgstr "Учет"
+
+msgid "SkillSmart"
+msgstr "Навыки"
+
+msgid "Training Organizer Partners"
+msgstr "Партнеры тренинга"
+
+msgid "Attendance Tracking"
+msgstr "Учет Посещаемости"
+
+msgid "Unknown Participants"
+msgstr "Неизвестные участники"
+
+msgid "Approvals"
+msgstr "Утверждения"
+
+msgid "Default"
+msgstr "По умолчанию"
+
+msgid "German"
+msgstr "Немецкий"
+
+msgid "Ukrainian"
+msgstr "Украинский"
+
+msgid "Spanish"
+msgstr "Испанский"
+
+msgid "Portuguese"
+msgstr "Португальский"
+
+msgid "Save"
+msgstr "Сохранить"
+
+msgid "Dutch"
+msgstr "Голландский"
+
+msgid "Save & Continue"
+msgstr "Сохранить и продолжить"
+
+msgid "Refresher Course"
+msgstr "Повышение Kвалификации"
+
+msgid "Approvers"
+msgstr "Утверждающие лица"
+
+msgid "Approver"
+msgstr "Утверждающее лицо"
+
+msgid "Master Approver"
+msgstr "Главное Утверждающее лицо"
+
+msgid "Make Low Level Approver"
+msgstr "Понизить уровень"
+
+msgid "Make Master"
+msgstr "Назначить Главным"
+
+msgid "People Merge"
+msgstr "Объединение записей людей"
+
+msgid "Facilities Merge"
+msgstr "Объединение записей учереждений"
+
+msgid "Person Merge"
+msgstr "Объединение записей людей"
+
+msgid "Edit Users"
+msgstr "Изменение пользователей"
+
+msgid "Individual Report"
+msgstr "Индивидуальный отчёт"
+
+msgid "Individual Reports"
+msgstr "Индивидуальныe отчёты"
+
+msgid "Professional Reports"
+msgstr "Профессиональные отчёты"
+
+msgid "Competence Overview Report"
+msgstr "Обзорный отчёт компетентности"
+
+msgid "Competence Compare Reports"
+msgstr "Сравнительные отчёты компетентности"
+
+msgid "Question Compare Reports"
+msgstr "Вопрос сравнительных отчётов"
+
+msgid "Budget Code Reports"
+msgstr "Отчёты по бюджетам"
+
+msgid "Budget Code Report"
+msgstr "Отчёт бюджета"
+
+msgid "Student Reports"
+msgstr "Отчеты об учащихся"
+
+msgid "Course Reports"
+msgstr "Отчёты по курсам"
+
+msgid "Select course report"
+msgstr "Выбрать oтчёт по курсу"
+
+msgid "Cohort Reports"
+msgstr "Отчёты по группам"
+
+msgid "Institution Reports"
+msgstr "Отчёты по институтам"
+
+msgid "Tutor Reports"
+msgstr "Отчёты по инструкторам"
+
+msgid "Partners"
+msgstr "Партнеры"
+
+msgid "Partner"
+msgstr "Партнер"
+
+msgid "Add Partner"
+msgstr "Добавить партнера"
+
+msgid "View/Edit Partner"
+msgstr "Посмотреть/редактировать партнера"
+
+msgid "Add Employee"
+msgstr "Добавить cотрудникa"
+
+msgid "View/Edit Employee"
+msgstr "Посмотреть / редактировать cотрудникa"
+
+msgid "PS Field labels"
+msgstr "Поля для Системы предварительного обучения (СПО)"
+
+msgid "Field labels"
+msgstr "Поля для Системы предварительного обучения (СПО)"
+
+msgid "PS Religions"
+msgstr "Религии (СПО)"
+
+msgid "Enter locations for this country or import a CSV file."
+msgstr "Введите месторасположение для этой страны или импортируйте CSV-файл."
+
+msgid "Import"
+msgstr "Импорт"
+
+msgid "Select the Region below to add values"
+msgstr "Выберите регион ниже для добавления значений"
+
+msgid "Please select a location"
+msgstr "Пожалуйста выберите местонахождение"
+
+msgid "Filter by"
+msgstr "Фильтр по:"
+
+msgid "options"
+msgstr "Настройки"
+
+msgid "State"
+msgstr "Область/Край"
+
+msgid "Geopolitical Zone"
+msgstr "Геополитическая Зона"
+
+msgid "Local Government Area"
+msgstr "Местноe самоуправление"
+
+msgid "Duplicate entry"
+msgstr "Повторяющаяся запись"
+
+msgid "Merge into one"
+msgstr "Объединить в один"
+
+msgid "Merge Selected"
+msgstr "Объединение выбранных"
+
+msgid "Unable to merge phrases."
+msgstr "Не удается объединить фразы."
+
+msgid "The phrases below will be merged into one.  Please select the primary phrase you wish to use:"
+msgstr "Ниже фразы будут объединены в одну.  Пожалуйста, выберите основную фразу, которую вы хотите использовать:"
+
+msgid "Edit"
+msgstr "Редактировать"
+
+msgid "edit"
+msgstr "редактировать"
+
+msgid "Evaluations Reports"
+msgstr "Отчеты по процессам определения качества"
+
+msgid "Select the region level you want to move"
+msgstr "Выберите уровень региона, который вы хотите переместить"
+
+msgid "Select the region to move to"
+msgstr "Выберите регион, чтобы переместить в"
+
+msgid "Local Region"
+msgstr "Локальный регион"
+
+msgid "Turn on Level 1 of Reports"
+msgstr "Включить 1-ый уровень отчетов"
+
+msgid "Turn on Level 2 of Reports"
+msgstr "Включить 2-ой уровень отчетов"
+
+msgid "Turn on Level 3 of Reports"
+msgstr "Включить 3-ий уровень отчетов"
+
+msgid "Federal Level Users"
+msgstr "Федеральный уровень пользователей"
+
+msgid "State Level Users"
+msgstr "Областной/Краевой уровень пользователей"
+
+msgid "LGA Level Users"
+msgstr "Районный уровень пользователей"
+
+msgid "Enter Emails of Federal Level Recipients, separated by a comma"
+msgstr "Введите адреса электронной почты федерального уровня получателей, разделенных запятыми"
+
+msgid "Enter Emails of State Level Recipients, separated by a comma"
+msgstr "Введите адреса электронной почты областного/краевого уровня получателей, разделенных запятыми"
+
+msgid "Enter Emails of LGA Level Recipients, separated by a comma"
+msgstr "Введите адреса электронной почты районного уровня получателей, разделенных запятыми"
+
+msgid "View/Edit Cohort"
+msgstr "Просмотр/редактирование группы"
+
+msgid "Add Cohort"
+msgstr "Добавить группу"
+
+msgid "In-service"
+msgstr "Cистемa обучения без отрыва от производства"
+
+msgid "Please select the TrainSmart module to enter"
+msgstr "Пожалуйста, выберите TrainSmart модуль"
+
+msgid "In-Service Training Tracking System"
+msgstr "Мониторинг системы обучения без отрыва от производства"
+
+msgid "In-Service"
+msgstr "Cистемa обучения без отрыва от производства"
+
+msgid "In-service access"
+msgstr "Доступ к cистемe обучения без отрыва от производства"
+
+msgid "Pre-Service Training Tracking System"
+msgstr "Мониторинг системы предварительного обучения (СПО)"
+
+msgid "Training Centre Reports"
+msgstr "Отчеты по центрам обучения"
+
+msgid "Training Center Reports"
+msgstr "Отчеты по центрам обучения"
+
+msgid "Центр обучения Reports"
+msgstr "Отчеты по центрам обучения"
+
+msgid "Select criteria"
+msgstr "Выбрать критерии"
+
+msgid "Institution Name"
+msgstr "Название института"
+
+msgid "Institution Sponsor"
+msgstr "Спонсор института"
+
+msgid "Institution Type"
+msgstr "Тип института"
+
+msgid "Select"
+msgstr "Выбрать"
+
+msgid "Select..."
+msgstr "Выбрать..."
+
+msgid "Any"
+msgstr "Любой"
+
+msgid "N/A"
+msgstr "Отсутствует"
+
+msgid "Add Institution"
+msgstr "Добавить институт"
+
+msgid "Institution details"
+msgstr "Детали института"
+
+msgid "Cadres Trained"
+msgstr "Обученные кадры"
+
+msgid "Qualification Attained"
+msgstr "Профессиональная квалификация"
+
+msgid "Number of Computers"
+msgstr "Количество компьютеров"
+
+msgid "Dormitories"
+msgstr "Общежития"
+
+msgid "y/n"
+msgstr "Да/Нет"
+
+msgid "Number of Dormitories"
+msgstr "Количество общежитий"
+
+msgid "Number of beds (students)"
+msgstr "Количество спальных мест (студенты)"
+
+msgid "Tutor housing"
+msgstr "Жилье для инструкторов"
+
+msgid "Number of Tutor houses"
+msgstr "Количество жилья для инструкторов"
+
+msgid "Year Founded"
+msgstr "Финансовый год"
+
+msgid "Edit/View Institution Record"
+msgstr "Редактирование/просмотр записи института"
+
+msgid "Enter details"
+msgstr "Введите детали"
+
+msgid "Institution ID"
+msgstr "Идентификация института"
+
+msgid "Back"
+msgstr "Назад"
+
+msgid "Update Institution"
+msgstr "Обновить детали институтa"
+
+msgid "Principal/Key Staff Members"
+msgstr "Главныe/ключевыe сотрудники"
+
+msgid "Add/Edit Staff Members"
+msgstr "Добавить/редактировать сотрудников"
+
+msgid "Tutor to Student Ratio"
+msgstr "Отношение количества инструкторов к количеству студентов"
+
+msgid "Number of Tutors"
+msgstr "Количество инструкторов"
+
+msgid "Number of Students"
+msgstr "Количество студентов"
+
+msgid "Cohort Name"
+msgstr "Название группы"
+
+msgid "Cohort ID"
+msgstr "Идентификация группы"
+
+msgid "Cohort Start Date"
+msgstr "Дата начала группы"
+
+msgid "Cohort Graduation Date"
+msgstr "Дата окончания группы"
+
+msgid "Institution"
+msgstr "Институт"
+
+msgid "Cadre"
+msgstr "Кадры"
+
+msgid "Graduation Date"
+msgstr "Дата окончания"
+
+msgid "Number of members"
+msgstr "Количество членов"
+
+msgid "Add Cohort Record"
+msgstr "Добавить запись группы"
+
+msgid "Enter Criteria"
+msgstr "Введите критерии"
+
+msgid "Edit/View Cohort Record"
+msgstr "Просмотр/редактирование группы"
+
+msgid "Cohort details"
+msgstr "Детали группы"
+
+msgid "Degree Information"
+msgstr "Степень образования"
+
+msgid "Cohort Participants at Start"
+msgstr "Участники группы в начале"
+
+msgid "Cohort Participants Dropped Out"
+msgstr "Участники группы бросивщие обучение"
+
+msgid "Cohort Current or Graduating Number"
+msgstr "Участники группы обучающиеся или окончившие обучение"
+
+msgid "Update"
+msgstr "Обновить"
+
+msgid "Students associated with the cohort"
+msgstr "Студенты, ассоциированные с группой"
+
+msgid "Student ID"
+msgstr "Идентификация студента"
+
+msgid "DOB"
+msgstr "Дата рождения"
+
+msgid "Date of birth"
+msgstr "Дата рождения"
+
+msgid "Update associated students"
+msgstr "Обновить студентов, ассоциированных с группой"
+
+msgid "Graduated"
+msgstr "Выпускник"
+
+msgid "Dropped"
+msgstr "Бросивщие обучение"
+
+msgid "License / Registration"
+msgstr "Лицензия / Регистрация"
+
+msgid "Add a license"
+msgstr "Добавить лицензию"
+
+msgid "Add license"
+msgstr "Добавить лицензию"
+
+msgid "Classes associated with the Cohort"
+msgstr "Курсы, ассоциированные с группой"
+
+msgid "Class Name"
+msgstr "Наименование курса"
+
+msgid "Tutor"
+msgstr "Инструктор"
+
+msgid "Update associated classes"
+msgstr "Обновить занятия, ассоциированные с группой"
+
+msgid "Clinical Allocation"
+msgstr "Клиническое Распределение"
+
+msgid "Advisor"
+msgstr "Консультант"
+
+msgid "Hours Required"
+msgstr "Часов требуется"
+
+msgid "Add a practicum"
+msgstr "Добавьте практикум"
+
+msgid "Assessment associated with Cohort"
+msgstr "Оценки, ассоциированные с группой"
+
+msgid "Update students"
+msgstr "Обновить запись студента"
+
+msgid "All form fields are required"
+msgstr "Все поля формы обязательны"
+
+msgid "Update classes"
+msgstr "Обновить занятия"
+
+msgid "Instructor"
+msgstr "Инструктор"
+
+msgid "Delete"
+msgstr "Удалить"
+
+msgid "delete"
+msgstr "удалить"
+
+msgid "Student cadre"
+msgstr "Студенческие кадры"
+
+msgid "Return"
+msgstr "Вернуть"
+
+msgid "Students"
+msgstr "Студенты"
+
+msgid "Personal"
+msgstr "Личная информация"
+
+msgid "Add a person"
+msgstr "Добавить личность"
+
+msgid "Add person"
+msgstr "Добавить личность"
+
+msgid "Add a New Student or Tutor Record"
+msgstr "Добавить запись нового студента или инструктора"
+
+msgid "Local address"
+msgstr "Локальный адрес"
+
+msgid "Local Address"
+msgstr "Локальный адрес"
+
+msgid "Edit Student Record"
+msgstr "Редактировать запись студента"
+
+msgid "Nationality"
+msgstr "Национальность"
+
+msgid "Marital Status"
+msgstr "Семейное Положение"
+
+msgid "Single"
+msgstr "Неженатый/Незамужем"
+
+msgid "Married"
+msgstr "Женатый/Замужем"
+
+msgid "Divorced"
+msgstr "Разведен(а)"
+
+msgid "Widowed"
+msgstr "Вдова/Вдовец"
+
+msgid "Other Contact Information"
+msgstr "Дополнительная контактная информация"
+
+msgid "Postal Code / ZIP"
+msgstr "Почтовый Индекс"
+
+msgid "Postal Code/ZIP"
+msgstr "Почтовый Индекс"
+
+msgid "ZIP"
+msgstr "Почтовый Индекс"
+
+msgid "ZIP Code"
+msgstr "Почтовый Индекс"
+
+msgid "Residential Address"
+msgstr "Адрес места жительства"
+
+msgid "Next of Kin"
+msgstr "Ближайший"
+
+msgid "Permanent Address"
+msgstr "Постоянный адрес"
+
+msgid "Cellphone"
+msgstr "Мобильный телефон"
+
+msgid "Emergency Contact"
+msgstr "Контакт для экстренных случаев"
+
+msgid "Student Information"
+msgstr "Информация о студенте"
+
+msgid "Religious Denomination 2"
+msgstr "Принадлежность к религии 2"
+
+msgid "Date of Enrollment"
+msgstr "Дата регистрации"
+
+msgid "Reason for Enrollment"
+msgstr "Причина регистрации"
+
+msgid "Reason"
+msgstr "Причина"
+
+msgid "Date of Separation"
+msgstr "Дата отчисления"
+
+msgid "Clear date"
+msgstr "Очистить дату"
+
+msgid "Clear"
+msgstr "Очистить"
+
+msgid "Reason for Separation"
+msgstr "Причина отчисления"
+
+msgid "Years of Study"
+msgstr "Количество лет учебы"
+
+msgid "Remove separation date"
+msgstr "Очистить дату отчисления"
+
+msgid "Program Enrolled In"
+msgstr "Зарегистрированный в программе"
+
+msgid "Prior Education"
+msgstr "Ранее полученное образование"
+
+msgid "Facility After Graduation"
+msgstr "Место работы/учебы после окончания учебы "
+
+msgid "High School Completion Date"
+msgstr "Дата завершения средней школы"
+
+msgid "Last School Attended"
+msgstr "Школа, посещаемая в последний раз"
+
+msgid "Admission to School Date"
+msgstr "Дата Приема в школу"
+
+msgid "Equivalence"
+msgstr "Эквивалентность"
+
+msgid "Last University Attended"
+msgstr "Университет, посещаемый в последний раз"
+
+msgid "Person In Charge"
+msgstr "Ответственное лицо"
+
+msgid "Topic"
+msgstr "Тема"
+
+msgid "Grade"
+msgstr "Оценка"
+
+msgid "Exam Mark"
+msgstr "Оценка за экзамен"
+
+msgid "Credits"
+msgstr "Кредиты"
+
+msgid "Practicum name"
+msgstr "Название практикума"
+
+msgid "Hours required"
+msgstr "Часов требуется"
+
+msgid "Hours completed"
+msgstr "Укомплектованные часы"
+
+msgid "License name"
+msgstr "Название Лицензии"
+
+msgid "Update exams"
+msgstr "Обновить детали экзаменa"
+
+msgid "Update clinical allocation"
+msgstr "Обнавить Клиническое Распределение"
+
+msgid "Practicum date"
+msgstr "Дата практикума"
+
+msgid "School ID"
+msgstr "Идентификация школы"
+
+msgid "Student Transcript Report"
+msgstr "Отчет по успеваемости студентов"
+
+msgid "Date updated"
+msgstr "Дата обновления"
+
+msgid "Updated by"
+msgstr "Обновлено"
+
+msgid "Insert New"
+msgstr "Ввести новый"
+
+msgid "Commodity Information"
+msgstr "Информация о товаре"
+
+msgid "Commodity Report"
+msgstr "Отчет по товарам"
+
+msgid "Commodity Reports"
+msgstr "Отчеты по товарам"
+
+msgid "Total Commodities"
+msgstr "Всего товаров"
+
+msgid "Commodity Name"
+msgstr "Наименование Tовара"
+
+msgid "Consumption"
+msgstr "Расход"
+
+msgid "Out of Stock"
+msgstr "Не имеется в наличии на складе"
+
+msgid "Y/N"
+msgstr "Да/Нет"
+
+msgid "Y"
+msgstr "Да"
+
+msgid "N"
+msgstr "Нет"
+
+msgid "MM/YY"
+msgstr "ММ/ГГ"
+
+msgid "MM"
+msgstr "ММ"
+
+msgid "YY"
+msgstr "ГГ"
+
+msgid "Import facility from Excel"
+msgstr "Импорт учреждение из файла Excel"
+
+msgid "Please enter your new Facility sponsor"
+msgstr "Пожалуйста, введите нового спонсора учереждения"
+
+msgid "to"
+msgstr "до"
+
+msgid "Go back to Facility Edit Page"
+msgstr "Вернуться к странице редактирования Учереждения"
+
+msgid "Employee Tracking"
+msgstr "Учет cотрудников"
+
+msgid "Site Data Share"
+msgstr "Страница общих данных"
+
+msgid "Change our password"
+msgstr "Изменение пароля"
+
+msgid "Drag me down"
+msgstr "Перетащите вниз"
+
+msgid "Order"
+msgstr "Порядок"
+
+msgid "Parent"
+msgstr "Исходник"
+
+msgid "Favorite color"
+msgstr "Любимый цвет"
+
+msgid "Display"
+msgstr "Показать"
+
+msgid "TOT"
+msgstr "Обучение инструкторов"
+
+msgid "Mutiple checkbox field"
+msgstr "Поле для нескольких флажков"
+
+msgid "Funding Amount"
+msgstr "Сумма финансирования"
+
+msgid "Nat. Curriculum Comment"
+msgstr "Комментарии к Национальному учебному плану"
+
+msgid "National Curriculum"
+msgstr "Национальный Учебный План"
+
+msgid "Pre test score"
+msgstr "Результат до теста"
+
+msgid "Post test score"
+msgstr "Результат после теста "
+
+msgid "Particpant Training Completion"
+msgstr "Завершение тренинга участника"
+
+msgid "Training Completion"
+msgstr "Завершение тренинга"
+
+msgid "Particpant Viewing Location"
+msgstr "Просмотр местоположения участника"
+
+msgid "Participant Budget Code"
+msgstr "Код Бюджета участника"
+
+msgid "Budget Code"
+msgstr "Код Бюджета"
+
+msgid "Training score"
+msgstr "Оценка тренинга"
+
+msgid "Complete Status"
+msgstr "Статус завершения"
+
+msgid "Person Qualification"
+msgstr "Квалификация"
+
+msgid "Primary Responsibility"
+msgstr "Основная ответственность"
+
+msgid "Secondary Responsibility"
+msgstr "Дополнительная ответственность"
+
+msgid "Specialty"
+msgstr "Специальность"
+
+msgid "Contract Type"
+msgstr "Тип контракта"
+
+msgid "Commodity Type"
+msgstr "Тип Tовара"
+
+msgid "Highest Education Level"
+msgstr "Уровень oбразования"
+
+msgid "Reason Attending"
+msgstr "Причина регистрации"
+
+msgid "Occupational Category"
+msgstr "Профессиональная категория"
+
+msgid "Partner Type"
+msgstr "Тип партнера"
+
+msgid "Staff Category"
+msgstr "Категория Персонала"
+
+msgid "Base"
+msgstr "Основание"
+
+msgid "Full Time"
+msgstr "Полный рабочий день"
+
+msgid "Race"
+msgstr "Раса"
+
+msgid "Primary Role"
+msgstr "Основная роль"
+
+msgid "Primary Roles for employees"
+msgstr "Основные Pоли Cотрудников"
+
+msgid "Intended Transitions"
+msgstr "Предназначеный Переход"
+
+msgid "Relationship"
+msgstr "Связь/Отношение"
+
+msgid "Referral Mechanism"
+msgstr "Механизм перенаправления"
+
+msgid "Training Provided"
+msgstr "Предоставленный Tренинг"
+
+msgid "Importance"
+msgstr "Значение"
+
+msgid "Agency"
+msgstr "Агентство"
+
+msgid "Subpartner"
+msgstr "Суб-Партнер"
+
+msgid "Funding End Date"
+msgstr "Дата окончания Финансирования"
+
+msgid "Funding  Mechanisms"
+msgstr "Механизмы Финансирования"
+
+msgid "Mechanisms"
+msgstr "Механизмы"
+
+msgid "Merge?"
+msgstr "Объединить?"
+
+msgid "Merge"
+msgstr "Объединить"
+
+msgid "Allow multiple PEPFAR categories"
+msgstr "Разрешается несколько категорий ПЕПФАР"
+
+msgid "Allow multiple Training topics"
+msgstr "Разрешается несколько учебных тем"
+
+msgid "Display recommended trainings per individual"
+msgstr "Показать Рекомендуемые тренинги для человека"
+
+msgid "Require at least one trainer skill per trainer"
+msgstr "Требуется по меньшей мере один навык для инструктора"
+
+msgid "Assign Training Titles to Categories"
+msgstr "Присвоить название тренинга к категории"
+
+msgid "Add/edit Recommended Training Topics"
+msgstr "Добавить/Изменить Рекомендуемые тренинг темы"
+
+msgid "Select the recommended topics for this qualification"
+msgstr "Выберите Рекомендуемые темы для этой квалификации"
+
+msgid "Are you sure you wish to remove these recommendations?"
+msgstr "Вы уверены, что вы хотите удалить эти рекомендации?"
+
+msgid "Are you sure you wish to unasign this?"
+msgstr "Вы уверены, что вы хотите убрать это назначение?"
+
+msgid "Two Levels of Approval"
+msgstr "Два уровня утверждающих"
+
+msgid "That user is now a regular approver"
+msgstr "В данный момент этот пользователь является регулярным утверждающим"
+
+msgid "Unable to remove that user as a master approve"
+msgstr "Не удается удалить этого пользователя как Главного  Утверждаюшего"
+
+msgid "That user is now a master approver"
+msgstr "В данный момент этот пользователь является Главным Утверждающим"
+
+msgid "Unable to make that user a master approve"
+msgstr "Не удается сделать этого пользователя Главным Утверждающим"
+
+msgid "That user is no longer an approver"
+msgstr "Этот пользователь уже не является утверждающим"
+
+msgid "Unable to delete that approver"
+msgstr "Не удается удалить утверждающего"
+
+msgid "Home Address"
+msgstr "Домашний Address"
+
+msgid "External Classes"
+msgstr "Внешние курсы"
+
+msgid "Second email"
+msgstr "Дополнительный электронный адрес"
+
+msgid "M&E Responsibility"
+msgstr "Ответственность за мониторинг и процесс определения качества"
+
+msgid "Active trainer"
+msgstr "Действующий Инструктор"
+
+msgid "Active Trainer"
+msgstr "Действующий инструктор"
+
+msgid "Facilitator Information"
+msgstr "Информация посредника"
+
+msgid "People Approval"
+msgstr "Утверждающие людей"
+
+msgid "Display Last"
+msgstr "Показать последним"
+
+msgid "Enabled"
+msgstr "Включено"
+
+msgid "People Awaiting Approval"
+msgstr "Люди, ожидающие утверждения"
+
+msgid "Unapproved People"
+msgstr "Неутвержденные люди"
+
+msgid "look for duplicates"
+msgstr "искать дубликаты"
+
+msgid "approve"
+msgstr "утвердить"
+
+msgid "Both Names"
+msgstr "По имени и фамилии"
+
+msgid "That person has been approved"
+msgstr "Эта личность была утверждена"
+
+msgid "Error approving person: That account could not be found."
+msgstr "Ошибка утверждения личности: не удалось найти учетную запись."
+
+msgid "Government employee"
+msgstr "Государственный служащий"
+
+msgid "Professional bodies"
+msgstr "Профессиональные организации"
+
+msgid "Professional Registration Number"
+msgstr "Профессиональный регистрационный номер"
+
+msgid "Registration Number"
+msgstr "Pегистрационный номер"
+
+msgid "Disability"
+msgstr "Инвалидность"
+
+msgid "Nurse Trainer Type"
+msgstr "Тип инструктора"
+
+msgid "Year you started providing care"
+msgstr "Год когда вы начали обеспечивать уход"
+
+msgid "Rank patient groups based on time"
+msgstr "Ранг группы пациентов, основанные на времени"
+
+msgid "Pregnant women"
+msgstr "Беременные женщины"
+
+msgid "Adults"
+msgstr "Взрослые"
+
+msgid "Children"
+msgstr "Дети"
+
+msgid "Supervised"
+msgstr "Обеспечение контроля"
+
+msgid "Indicate the training you received"
+msgstr "Укажите тренинг, который вы получили"
+
+msgid "Import person from Excel"
+msgstr "Импорт личности из файла Excel"
+
+msgid "Training Institution"
+msgstr "Институт тренинга"
+
+msgid "Import a person"
+msgstr "Импорт личности"
+
+msgid "Select the file that contains the data (Excel Comma Seperated Values database - CSV) you want to import."
+msgstr "Выберите файл, содержащий данные (значения, разделенные запятыми Excel база данных - CSV) вы хотите импортировать."
+
+msgid "Get sample template"
+msgstr "Получить образец файла"
+
+msgid "Max file upload size"
+msgstr "Максимальный размер передаваемого файла"
+
+msgid "If facility is a hospital, please click specific department"
+msgstr "Если учереждение является больницей, пожалуйста, выберите специальный Департамент"
+
+msgid "Residential Address?"
+msgstr "Адрес места жительства?"
+
+msgid "Reason (if Other selected above)"
+msgstr "Причина (если Другие выбраны выше)"
+
+msgid "required"
+msgstr "обязательное поле"
+
+msgid "Required"
+msgstr "обязательное поле"
+
+msgid "Show me Trainings From"
+msgstr "Показать тренинги за"
+
+msgid "Trainings by Participants Viewing Location"
+msgstr "Тренинги по местонахождению участников"
+
+msgid "Days Attended"
+msgstr "Дней посещения"
+
+msgid "Complete"
+msgstr "Завершенo"
+
+msgid "Participant Test Scores"
+msgstr "Результаты участников тестирования"
+
+msgid "Approved"
+msgstr "Утверждить"
+
+msgid "Rejected"
+msgstr "Отклонить"
+
+msgid "Import Scores"
+msgstr "Импортировать результаты"
+
+msgid "Test scores"
+msgstr "Результаты тестирования"
+
+msgid "Score Import"
+msgstr "Импорт результатов"
+
+msgid "Enter scores by importing a CSV file."
+msgstr "Введите оценки путем импорта файла CSV."
+
+msgid "Get sample Excel template"
+msgstr "Получить образец Excel файла"
+
+msgid "No Trainings selected"
+msgstr "Никакой тренинг не выбран"
+
+msgid "The Training (s) have been assigned."
+msgstr "Тренинги были назначены."
+
+msgid "Merge From"
+msgstr "Объединить с"
+
+msgid "Merge To"
+msgstr "Объединить в"
+
+msgid "You must select a valid person to merge"
+msgstr "Необходимо выбрать какую-нибудь личность для объедененения записей"
+
+msgid "You must select a valid facility to merge"
+msgstr "Необходимо выбрать какое-нибудь учереждение для объедененения записей"
+
+msgid "Enter Secondary Qualifications for this qualification."
+msgstr "Введите дополнительную квалификацию для этой квалификации."
+
+msgid "Allow Multiple Facility Sponsors"
+msgstr "Разрешить несколько спонсоров для учереждения"
+
+msgid "Facility Approval"
+msgstr "Утверждающие учереждений"
+
+msgid "Commodity Table"
+msgstr "Таблица товаров"
+
+msgid "Commodity Table Column: Commodity Name"
+msgstr "Столбец таблицы Товаров: Имя товара"
+
+msgid "Commodity Table Column: Date"
+msgstr "Столбец таблицы Товаров: Дата"
+
+msgid "Commodity Table Column: Consumption"
+msgstr "Столбец таблицы Товаров: Расход"
+
+msgid "Commodity Table Column: Out of Stock"
+msgstr "Столбец таблицы Товаров: Не имеется в наличии на складе"
+
+msgid "Latitude and Longitude"
+msgstr "Широта и долгота"
+
+msgid "Latitude"
+msgstr "Широта"
+
+msgid "Longitude"
+msgstr "Долгота"
+
+msgid "Sponsor Date"
+msgstr "Даты спонсирования"
+
+msgid "Commodity Names"
+msgstr "Названия товара"
+
+msgid "Commodity Types"
+msgstr "Типы товаров"
+
+msgid "Update Labels"
+msgstr "Обновить поля"
+
+msgid "License And Registration"
+msgstr "Лицензия / Регистрация"
+
+msgid "Type Of Contract"
+msgstr "Тип контракта"
+
+msgid "ps custom field"
+msgstr "Пользовательское поле"
+
+msgid "Spouse Names"
+msgstr "Имена супругов"
+
+msgid "CA Mark"
+msgstr "Отметка"
+
+msgid "Add class"
+msgstr "Добавить курс"
+
+msgid "Add cadre"
+msgstr "Добавить кадр"
+
+msgid "All form fields are required."
+msgstr "Все поля формы являются обязательными."
+
+msgid "Cadre name"
+msgstr "Наименование кадра"
+
+msgid "Class name"
+msgstr "Наименование курса"
+
+msgid "The end date cannot be before the start date"
+msgstr "Дата окончания не может быть раньше даты начала"
+
+msgid "Update class"
+msgstr "Обновить курс"
+
+msgid "Update cadre"
+msgstr "Обновить кадр"
+
+msgid "Employee Tracking System"
+msgstr "Система мониторинга сотрудников"
+
+msgid "Funding sources"
+msgstr "Источники финансирования"
+
+msgid "Funding source"
+msgstr "Источник финансирования"
+
+msgid "Add funding"
+msgstr "Добавить источник финансирования"
+
+msgid "Update funding"
+msgstr "Обновить источник финансирования"
+
+msgid "Add institution type"
+msgstr "Добавить тип института"
+
+msgid "Update institution type"
+msgstr "Обновить тип института"
+
+msgid "Abbreviation"
+msgstr "Aббревиатура"
+
+msgid "Add language"
+msgstr "Добавить язык"
+
+msgid "Update language"
+msgstr "Обновить язык"
+
+msgid "Add nationality"
+msgstr "Добавить национальность"
+
+msgid "Update nationality"
+msgstr "Обновить национальность"
+
+msgid "Add reason"
+msgstr "Добавить причину"
+
+msgid "Update reason"
+msgstr "Обновить причину"
+
+msgid "Add sponsor"
+msgstr "Добавить cпонсорa"
+
+msgid "Update sponsor"
+msgstr "Обновить cпонсорa"
+
+msgid "Add tutor type"
+msgstr "Добавить тип инструктора"
+
+msgid "Update tutor type"
+msgstr "Обновить тип инструктора"
+
+msgid "Tutor type"
+msgstr "Tип инструктора"
+
+msgid "Add course type"
+msgstr "Добавить тип курса"
+
+msgid "Update course type"
+msgstr "Обновить тип курса"
+
+msgid "Add religious denomination"
+msgstr "Добавить религию"
+
+msgid "Update religious denomination"
+msgstr "Обновить религию"
+
+msgid "Employee Module"
+msgstr "Модуль cотрудникoв"
+
+msgid "Access Employees"
+msgstr "Доступ к модулю cотрудникoв"
+
+msgid "Restrict Access"
+msgstr "Ограничение доступа"
+
+msgid "All organizations data"
+msgstr "Все данные организаций"
+
+msgid "Only selected organizations"
+msgstr "Только отдельных организаций"
+
+msgid "Ability to duplicate Training"
+msgstr "Способность дублировать тренинг"
+
+msgid "Approve people and facilities"
+msgstr "Утвердить людей и учереждения"
+
+msgid "All Institutions"
+msgstr "Все институты"
+
+msgid "User is Administrator or can edit drop down lists, titles, and data, or import excel records"
+msgstr "Пользователь является администратором или можно редактировать раскрывающемся списков, заголовков и данных, или импорта Excel отчеты"
+
+msgid "Next User"
+msgstr "Следующий пользователь"
+
+msgid "SkillSmart Main Settings"
+msgstr "Главные настройки навыков"
+
+msgid "Professional Bodies"
+msgstr "Профессиональные организации"
+
+msgid "Supervision"
+msgstr "Обеспечение контроля"
+
+msgid "Add supervised"
+msgstr "Добавить oбеспечение контроля"
+
+msgid "Update supervised"
+msgstr "Обновить oбеспечение контроля"
+
+msgid "Supervision frequency"
+msgstr "Обеспечение частоты контроля"
+
+msgid "Add supervision frequency"
+msgstr "Добавить oбеспечение частоты контроля"
+
+msgid "Update supervision frequency"
+msgstr "Обновить oбеспечение частоты контроля"
+
+msgid "Training received"
+msgstr "Полученный тренинг"
+
+msgid "Add training received"
+msgstr "Добавить полученный тренинг"
+
+msgid "Add trainings"
+msgstr "Добавить тренинги"
+
+msgid "Update training received"
+msgstr "Обновить полученный тренинг"
+
+msgid "Facility Departments"
+msgstr "Отделы учереждения"
+
+msgid "Facility department"
+msgstr "Отдел учереждения"
+
+msgid "Add facility department"
+msgstr "Добавить oтдел учереждения"
+
+msgid "Update facility department"
+msgstr "Обновить oтдел учереждения"
+
+msgid "Competencies"
+msgstr "Компетенции"
+
+msgid "Competency"
+msgstr "Компетенция"
+
+msgid "Add competency"
+msgstr "Добавить компетенцию"
+
+msgid "Update competency"
+msgstr "Обновить компетенцию"
+
+msgid "Nurse trainer type"
+msgstr "Тип инструктора"
+
+msgid "Occupational Categories"
+msgstr "Профессиональные категории"
+
+msgid "Add race"
+msgstr "Добавить расу"
+
+msgid "Update race"
+msgstr "Обновить расу"
+
+msgid "Add disability"
+msgstr "Добавить инвалидность"
+
+msgid "Update disability"
+msgstr "Обновить инвалидность"
+
+msgid "Add professional body"
+msgstr "Добавить профессиональную организацию"
+
+msgid "Update professional body"
+msgstr "Обновить профессиональную организацию"
+
+msgid "Professional body"
+msgstr "Профессиональная организация"
+
+msgid "Question, A-E options"
+msgstr "Вопрос, варианты A-E"
+
+msgid "Question, yes/no options"
+msgstr "Вопрос, варианты да/нет"
+
+msgid "Question, textbox"
+msgstr "Вопрос, текстовое поле"
+
+msgid "Field order"
+msgstr "Порядок полей"
+
+msgid "Text header"
+msgstr "Текст заголовка"
+
+msgid "Field type"
+msgstr "Тип поля"
+
+msgid "Qualification group"
+msgstr "Квалификационная группа"
+
+msgid "Link to qualification"
+msgstr "Ссылка на квалификацию"
+
+msgid "Edit name"
+msgstr "Редактировать название"
+
+msgid "Employee Settings"
+msgstr "Настройки cотрудникa"
+
+msgid "Partner Importance"
+msgstr "Значение партнера"
+
+msgid "Build Funding"
+msgstr "Механизм финансирования"
+
+msgid "Delete Funding"
+msgstr "Удалить финансирование"
+
+msgid "Local Currency"
+msgstr "Региональная валюта"
+
+msgid "Sub Partner"
+msgstr "Подпартнер"
+
+msgid "Type of Partner"
+msgstr "Тип партнера"
+
+msgid "Employee Base"
+msgstr "База сотрудникa"
+
+msgid "Site Type"
+msgstr "Тип страницы общих данных"
+
+msgid "Funded hours per week"
+msgstr "Финансирование часов в неделю"
+
+msgid "Disability Comments"
+msgstr "Kомментарии к инвалидности"
+
+msgid "Annual Cost"
+msgstr "Ежегодные расходы"
+
+msgid "Benefits"
+msgstr "Льготы"
+
+msgid "Additional Expenses"
+msgstr "Дополнительные расходы"
+
+msgid "Stipend"
+msgstr "Стипендия"
+
+msgid "Landing Page Comments"
+msgstr "Комментарии к основной странице"
+
+msgid "Hours per Mechanism"
+msgstr "Часов в механизмe"
+
+msgid "Annual Cost to Mechanism"
+msgstr "Ежегодные расходы механизмa"
+
+msgid "Site Name"
+msgstr "Страница общих данных"
+
+msgid "CHW Supervisor"
+msgstr "Руководитель"
+
+msgid "Actual Transition Date"
+msgstr "Дата фактического перехода"
+
+msgid "Actual Transition"
+msgstr "Фактический переход"
+
+msgid "Transition confirmed"
+msgstr "Подтвердил переход"
+
+msgid "Intended Transition"
+msgstr "Предполагаемый переход"
+
+msgid "Agreement end date"
+msgstr "Дата окончания договора"
+
+msgid "Contract end date"
+msgstr "Дата окончания контракта"
+
+msgid "ID/Passport Number"
+msgstr "Государственное удостоверение личности"
+
+msgid "Incoming partner"
+msgstr "Входящий партнер"
+
+msgid "What training do you provide"
+msgstr "Какое обучение вы предоставляете"
+
+msgid "Courses Completed"
+msgstr "Укомплектованные курсы"
+
+msgid "Salary"
+msgstr "Зарплата"
+
+msgid "Add/edit questions"
+msgstr "Добавить/редактировать вопросы"
+
+msgid "Occupational category"
+msgstr "Профессиональная категория"
+
+msgid "Past"
+msgstr "Прошедшие"
+
+msgid "Legend"
+msgstr "Легенда"
+
+msgid "Today"
+msgstr "Сегодня"
+
+msgid "January"
+msgstr "Январь"
+
+msgid "February"
+msgstr "Февраль"
+
+msgid "March"
+msgstr "Март"
+
+msgid "April"
+msgstr "Апрель"
+
+msgid "May"
+msgstr "Maй"
+
+msgid "June"
+msgstr "Июнь"
+
+msgid "July"
+msgstr "Июль"
+
+msgid "August"
+msgstr "Август"
+
+msgid "September"
+msgstr "Сентябрь"
+
+msgid "October"
+msgstr "Октябрь"
+
+msgid "November"
+msgstr "Ноябрь"
+
+msgid "December"
+msgstr "Декабрь"
+
+msgid "Import trainings from Excel"
+msgstr "Импортировать тренинг из файла Excel"
+
+msgid "Import location from Excel"
+msgstr "Импортировать Местонахождение тренингa из файла Excel"
+
+msgid "Please enter Training location information"
+msgstr "Пожалуйста, введите информацию о местонахождении тренинга"
+
+msgid "Personal number"
+msgstr "Персональный номер"
+
+msgid "Competence Overview Reports"
+msgstr "Обзорный отчёт компетентности"
+
+msgid "Please select a competence"
+msgstr "Пожалуйста выберите компетентность"
+
+msgid "Select All"
+msgstr "Выбрать все"
+
+msgid "Competence"
+msgstr "Kомпетентность"
+
+msgid "Select an occupational category first"
+msgstr "Сначала выберите профессиональную категорию"
+
+msgid "Please select an occupational category first"
+msgstr "Пожалуйста выберите cначала профессиональную категорию"
+
+msgid "Province"
+msgstr "Провинция"
+
+msgid "District"
+msgstr "Город"
+
+msgid "Sub-district"
+msgstr "Район"
+
+msgid "Add Criteria"
+msgstr "Добавить критерий"
+
+msgid "Trainer by Name"
+msgstr "По имени иструктора"
+
+msgid "Partcipant or Trainer"
+msgstr "Участник или иструктор"
+
+msgid "All People Data"
+msgstr "Данные по всем людям"
+
+msgid "All Facilities Data"
+msgstr "Данные по всем учереждениям"
+
+msgid "All Training Data"
+msgstr "Данные по всем тренингам"
+
+msgid "Select Trainings"
+msgstr "Выбрать тренинг"
+
+msgid "Question Number"
+msgstr "Номер вопроса"
+
+msgid "Question Type"
+msgstr "Тип вопроса"
+
+msgid "Question Text"
+msgstr "Текст вопроса"
+
+msgid "Average"
+msgstr "Среднеe"
+
+msgid "Response"
+msgstr "Ответ"
+
+msgid "Select student report"
+msgstr "Выберите отчет студента"
+
+msgid "Terminated early"
+msgstr "Прекращенo досрочно"
+
+msgid "Facility @ graduation"
+msgstr "Учереждение окончания учебы"
+
+msgid "Tutor advisor"
+msgstr "Консультант"
+
+msgid "Return unique participants"
+msgstr "Вернуть уникальных участников"
+
+msgid "Start date between"
+msgstr "Дата начала между"
+
+msgid "Course Name And Exam Scores To Date"
+msgstr "Название курсoв и результаты экзаменoв на сегодняшний день"
+
+msgid "Graduation date"
+msgstr "Дата окончания"
+
+msgid "Graduation date between"
+msgstr "Дата окончания между"
+
+msgid "Grades"
+msgstr "Оценки"
+
+msgid "# of Exams"
+msgstr "Количество экзаменов"
+
+msgid "Year In School"
+msgstr "Количество лет в школе"
+
+msgid "# of Students"
+msgstr "Количество студентов"
+
+msgid "Student Count"
+msgstr "Количество студентов"
+
+msgid "Student names"
+msgstr "Имена студентов"
+
+msgid "Student"
+msgstr "Cтудент"
+
+msgid "Participation"
+msgstr "Посещаемость"
+
+msgid "Your search criteria returned no results"
+msgstr "Ваши критерии поиска не дали результатов"
+
+msgid "Output"
+msgstr "Выход"
+
+msgid "# of Computers"
+msgstr "Количество компютеров"
+
+msgid "Computer Count"
+msgstr "Количество компютеров"
+
+msgid "# of Tutors"
+msgstr "Количество инструкторов"
+
+msgid "Tutor Count"
+msgstr "Количество инструкторов"
+
+msgid "# of Beds"
+msgstr "Количество спальных мест"
+
+msgid "Tutor Student Ratio"
+msgstr "Отношение количества инструкторов к количеству студентов"
+
+msgid "Bed Count"
+msgstr "Количество спальных мест"
+
+msgid "Dorm Count"
+msgstr "Количество oбщежитий"
+
+msgid "Tutor Advisor"
+msgstr "Консультант"
+
+msgid "# of Graduates"
+msgstr "Количество выпускников"
+
+msgid "# of Patients"
+msgstr "Количество пациентов"
+
+msgid "Year of Graduates"
+msgstr "Год выпуска"
+
+msgid "Tutors By Name Report"
+msgstr "Отчет инструкторов по именам"
+
+msgid "Tutors By Name"
+msgstr "Инструкторы по именам"
+
+msgid "Facility (work)"
+msgstr "Учереждение (место работы)"
+
+msgid "Degree Institution"
+msgstr "Институт окончания"
+
+msgid "Degree year"
+msgstr "Год окончания"
+
+msgid "Languages Spoken"
+msgstr "Языки общения"
+
+msgid "# of Students Advised"
+msgstr "Количество проконсультированных студентов"
+
+msgid "Tutor Length"
+msgstr "Длительность курса"
+
+msgid "Length with Curr. Inst."
+msgstr "Длительность обучения в текущем институте"
+
+msgid "Employees Access"
+msgstr "Доступ к модулю 'Сотрудники'"
+
+msgid "Institution access"
+msgstr "Доступ к модулю 'Институты'"
+
+msgid "Program access"
+msgstr "Доступ к модулю 'Программы'"
+
+msgid "Your account information was saved."
+msgstr "Данные вашей учетной записи были сохранены."
+
+msgid "Your account information could not be saved."
+msgstr "Данные вашей учетной записи не сохранены."
+
+msgid "All Programs"
+msgstr "Все программы"
+
+msgid "Admin access"
+msgstr "Административный доступ"
+
+msgid "select all admin capabilities"
+msgstr "Выберите все возможности администратора"
+
+msgid "de-select all"
+msgstr "отменить выбор всех"
+
+msgid "Restricted Settings"
+msgstr "Ограниченные настройки"
+
+msgid "Fields on/off and Labels"
+msgstr "Поля вкл/выкл и метки"
+
+msgid "Delete Student/Tutor"
+msgstr "Удалить студентa/инструкторa"
+
+msgid "Student/Tutor/Cadre/Institution"
+msgstr "Студент/инструктор/кадры/институт"
+
+msgid "Sponsor Dates"
+msgstr "Даты спонсирования"
+
+msgid "Employees Settings"
+msgstr "Настройки сотрудников"
+
+msgid "Training institution"
+msgstr "Институт тренинга"
+
+msgid "# of students"
+msgstr "Количество студентов"
+
+msgid "# of tutors"
+msgstr "Количество инструкторов"
+
+msgid "Student/Tutor Ratio"
+msgstr "Отношение количества инструкторов к количеству студентов"
+
+msgid "# of grads"
+msgstr "Количество выпускников"
+
+msgid "Early terminations"
+msgstr "Прекращенo досрочно"
+
+msgid "Инструктор Reports"
+msgstr "Oтчеты по инструкторам"
+
+msgid "Download Complete Excel Data for these trainings"
+msgstr "Скачать полные данные в формате Excel для этих тренингов"
+
+msgid "Answer"
+msgstr "Oтвет"
+
+msgid "Re-Label Answers"
+msgstr "Переназвать ответы"
+
+msgid "Re-Label Likert Answers"
+msgstr "Переназвать лайкерт ответов"
+
+msgid "Add 20 more rows"
+msgstr "Добавить еще 20 строк"
+
+msgid "Paste"
+msgstr "Вставить"
+
+msgid "Copy to All"
+msgstr "Копировать все"
+
+msgid "Physical Questions"
+msgstr "Физические вопросы"
+
+msgid "Not Applicable"
+msgstr "Не применимо"
+
+msgid "Likert"
+msgstr "Лайкерт"
+
+msgid "Sign In"
+msgstr "Войти в"
+
+msgid "Select the file that contains the data in MS Excel format (*.xlsx) you want to import."
+msgstr "Выберите файл в формате MS Excel (*.xlsx), содержащий данные, которые вы хотите импортировать."
+
+msgid "Import a training"
+msgstr "Импортировать тренинг"
+
+msgid "County"
+msgstr "Область"

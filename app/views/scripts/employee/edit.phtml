@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><?php echo $this->translation['Application Name'] . " | " . $this->pageTitle; ?></title>
+    <?php
+    require_once('views/helpers/Location.php');
+    require_once('views/helpers/ScriptContainer.php');
+    require_once('views/helpers/FormHelper.php');
+    print ScriptContainer::$instance->renderCSSHead();
+    print ScriptContainer::$instance->renderJSHead();
+    ?>
+    <style>
+        .dataTables_wrapper {
+            min-height: 24px;
+        }
+
+        table.display td {
+            border: 1px solid #D3D3D3;
+        }
+
+        table.dataTable tr.odd {
+            background-color: #CFFFCF;
+        }
+
+        table.dataTable tr.odd td.sorting_1 {
+            background-color: #ACCCAC;
+        }
+
+        h2.mechanismsHeader {
+            font-size: 14px;
+            color: #51965B;
+            margin-bottom: 0.5em;
+        }
+
+        .newMechanism {
+            color: #749a02;
+            font-weight: bold;
+        }
+
+        .toDeleteMechanism {
+            text-decoration: line-through;
+            color: #ff0202;
+            font-style: italic;
+        }
+
+        .mechanismTableFooter {
+            background-color: #cccccc;
+        }
+
+        .totalMechanismPercentageYes {
+            background-color: #749a02;
+        }
+
+        .totalMechanismPercentageNo {
+            background-color: #ff0202;
+        }
+    </style>
+    <script type="application/javascript">
+        $(document).ready(function () {
+
+        	var SITE_ROWS_COUNT = 0;//TA:#438
+        	
+            $('#select_partner').on('change', availableMechanisms);
+            window.ITECH.totalPercent = 0;
+
+            /* Init the table */
+            $('#employee_mechanism_table').dataTable({
+                "bJQueryUI": true,
+                "bPaginate": false,
+                "bSort": true,
+                "bInfo": false,
+                "bFilter": false,
+                "bAutoWidth": false
+            });
+
+            /*TA:#224 Init the table */
+            $('#multi_sites_table').dataTable({
+                "bJQueryUI": true,
+                "bPaginate": false,
+                "bSort": true,
+                "bInfo": false,
+                "bFilter": false,
+                "bAutoWidth": false
+            });
+
+            window.ITECH.mechData = <?php echo json_encode($this->mechanismData, JSON_HEX_APOS); ?>;
+            <?php
+            $disassociateIDs = isset($this->employee['disassociateMechanisms']) ? json_encode(explode(',', $this->employee['disassociateMechanisms']), JSON_HEX_APOS) : '[]';
+            $associateIDs = isset($this->employee['associateMechanisms']) ? json_encode(explode(',', $this->employee['associateMechanisms']), JSON_HEX_APOS) : '[]';
+            $mechanismPercentages = isset($this->employee['mechanismPercentages']) ? json_encode(explode(',', $this->employee['mechanismPercentages']), JSON_HEX_APOS) : '[]';
+            echo "            var disassociateIDs = $disassociateIDs;", PHP_EOL;
+            echo "            var associateMechanisms = $associateIDs;", PHP_EOL;
+            echo "            var mechanismPercentages = $mechanismPercentages;", PHP_EOL;
+            ?>
+
+            $("#disassociateMechanisms").data("ids", disassociateIDs);
+            $("#associateMechanisms").data("ids", associateMechanisms);
+            $("#mechanismPercentages").data("percents", mechanismPercentages);
+
+            if (disassociateIDs.length > 0) {
+                var selectorString = '';
+                var i;
+                for (i in disassociateIDs) {
+                    selectorString = selectorString + '#table_mechanism_delete_toggle_' + disassociateIDs[i] + ',';
+                }
+
+                // jQuery ignores the trailing comma in the string, nice.
+                $(selectorString).each(function(i, element) {
+                    element.checked = true;
+                    deleteToggle(element);
+                });
+            }
+
+            if ((associateMechanisms.length > 0) && (associateMechanisms.length == mechanismPercentages.length)) {
+                for (i in associateMechanisms) {
+                    addMechanismToTable(associateMechanisms[i], mechanismPercentages[i]);
+                }
+            }
+            availableMechanisms();
+            calculateMechanismTable();
+
+            calculateSiteTable();//TA:#438
+            setDefaultSitesFields(); //TA:#438
+            setActive();//TA:#411
+        });
+
+        //TA:#411
+        function basedAtOther() {
+            $('#based_at_other_container').toggle($("#employee_base_option_id option:selected").text() === "<?php echo t('Other'); ?>");
+            if($("#employee_base_option_id option:selected").text() !== "<?php echo t('Other'); ?>"){
+            	$('#based_at_other').val('');
+            }
+        }
+
+        $(document).ready(function () {  /* doc ready */
+
+            itech_save_confirm_on_leave();
+
+            basedAtOther();
+
+            var validCHWids = <?php echo json_encode($this->validCHWids); ?>;
+            $('#select_employee_qualification_option').change(function () { /* watch Cadre field and show/hide CHW divs on CHW fields */
+
+                if (validCHWids.lastIndexOf(parseInt($(this).val())) != -1) { // found in the valid list
+                    $('#chw,#classWrapper').show();
+                } else {
+                    $('#chw,#classWrapper').hide();
+                }
+            });
+
+            $('#disability_option_id').change(function () { /* watch disability field */
+                var objs = $('#disability_comments').parent();
+                if ($(this).val() == 1) { // show or hide based on value
+                    objs.show();
+                    objs.prev().show();
+                } else {
+                    objs.prev().hide();
+                    objs.hide();
+                }
+            }).change(); // fire once
+
+            $('#id').attr({readonly: 'readonly'});
+            $('#partner_employee_number').attr({readonly: 'readonly'});
+            $('#annual_cost').attr({readonly: 'readonly'});
+
+            $('.datepicker').datepicker({
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-90:+50",
+                dateFormat: "dd/mm/yy"
+            });
+            $('.calendarbtn').click(openNearestDatePicker);
+
+            $('#salary,#benefits,#additional_expenses,#stipend').change(function () { /* calc amounts */
+                $('#annual_cost').calcFieldsMoney('#salary,#benefits,#additional_expenses,#stipend', '#annual_cost');
+                calculateMechanismTable();
+            });
+
+            $('#funded_hours_per_week').change(function () {
+                calculateMechanismTable();
+            });
+
+            $('#select_employee_transition_option').change(function (e) { /* watch the two transition drop downs */
+                var selected = $(this).find('option:selected').text();
+                if (selected == 'Other, Specify') { //TA:#398 use whole string for condition
+                    $('.transition_other,#transition_other').show();
+                } else {
+                    $('.transition_other,#transition_other').hide();
+                    $('.transition_other,#transition_other').val(' '); //TA:#408
+                }
+            }).change(); // fire once
+
+            $('select[name=employee_transition_complete_option_id]').change(function (e) { /* watch the two transition drop downs */
+                var selected = $(this).find('option:selected').text();
+                if (selected == 'Other, Specify') { //TA:#398 use whole string for condition
+                    $('.transition_complete_other,#transition_complete_other').show();
+                } else {
+                    $('.transition_complete_other,#transition_complete_other').hide();
+                    $('.transition_complete_other,#transition_complete_other').val(' '); //TA:#408
+                }
+            }).change(); // fire once
+        });
+
+        (function ($) {
+
+            $.fn.calcFieldsMoney = function (selector, errField) {
+                var flds = $(selector);
+                if (!flds.length)
+                    return;
+
+                var total = 0;
+                $('.dec_warning').remove();
+                flds.each(function (i, val) {
+                    //TA:#282 accept decimal values
+                    var new_val = ($(this).val()) ? parseFloat($(this).val()) : 0;
+                    total += new_val;
+                });
+
+                if (isNaN(total))
+                    total = '?';
+
+                if (total > 2000000) {
+                    alert('<?php echo t('Annual Cost'); ?>' + ' - total cannot be greater than 2,000,000');
+                    $(this).val(null);
+                }
+                else {
+                    $(this).val(total);
+                }
+                return this;
+
+            };
+        })(jQuery);
+
+        
+
+        /**
+         * calculate values for mechanism table hours and cost based on mechanism percentages
+         * and employee funded hours and annual cost
+         * Sets page global variable window.ITECH.totalPercent to use for validating added mechanisms
+         * @returns {boolean}
+         */
+        var calculateMechanismTable = function () {
+            //TA:327
+            var hours = parseFloat($('#funded_hours_per_week').val());
+            //TA:#282
+            var cost = parseFloat($('#annual_cost').val());
+
+            if (isNaN(hours) || isNaN(cost)) {
+                return false;
+            }
+
+            // calculate from existing table cells, this is called when hours or cost change
+            // so all hours and cost need to be re-calculated
+
+            var $rows = $("#employee_mechanism_table > tbody > tr");
+            var len = $rows.length;
+            var percentAccumulate = 0;
+            for (var i = 0; i < len; i++) {
+                //TA:#327
+                var pcent = parseFloat($($rows[i]).children().first().next().text());
+                var $node = $($rows[i]).children().first().next();
+
+                var pcent = parseFloat($node.text());
+                if (!isNaN(pcent) && (!$node.hasClass('toDeleteMechanism'))) {
+                    percentAccumulate += pcent;
+                    $node = $node.next();
+                    $node.text(((pcent / 100.0) * hours).toFixed(1));
+                    $node = $node.next();
+                    $node.text(((pcent / 100.0) * cost).toFixed(2));
+                }
+            }
+
+            // update the footer with totals
+            var $footerChildren = $("#employee_mechanism_table > tfoot > tr:first-child").children();
+            var fpercent = percentAccumulate / 100.0;
+            var $totalPercent = $footerChildren.first().next();
+            $totalPercent.text(percentAccumulate);
+            var $totalHours = $totalPercent.next();
+            $totalHours.text((fpercent * hours).toFixed(1));
+            var $totalCost = $totalHours.next();
+            $totalCost.text((fpercent * cost).toFixed(2));
+            if (percentAccumulate > 100) {
+                $("#mechanismTableFooterPercent").attr('class', "totalMechanismPercentageNo");
+            }
+            else {
+                $("#mechanismTableFooterPercent").attr('class', "totalMechanismPercentageYes");
+            }
+            window.ITECH.totalPercent = percentAccumulate;
+        };
+
+
+        /**
+         * handles the action when the delete checkbox is pressed
+         * @param element - the checkbox element clicked on by the user
+         * @returns {boolean}
+         */
+        function deleteToggle(element) {
+            // get jQuery version of the element
+            var $element = $(element);
+            var $siblings = $element.parent().siblings('td');
+            var idList = $("#disassociateMechanisms").data("ids");
+            var mechData = window.ITECH.mechData;
+            var mechID = $element.parent().parent().attr("id").split('_').pop();
+
+            if (element.checked) {
+                if ($element.parent().parent().hasClass('newMechanism')) {
+                    var mechIndex = $.inArray(mechID, $("#associateMechanisms").data('ids'));
+                    $("#associateMechanisms").data('ids').splice(mechIndex, 1);
+                    $("#mechanismPercentages").data('percents').splice(mechIndex, 1);
+                    $('#employee_mechanism_table').dataTable().fnDeleteRow($element.parent().parent()[0]);
+                }
+                else {
+                    idList.push(mechID);
+                    $siblings.addClass('toDeleteMechanism');
+                }
+
+                window.ITECH.mechData.assigned_mechanisms[mechID] = undefined;
+            }
+            else {
+                if (typeof mechID != 'undefined') {
+                    $siblings.removeClass('toDeleteMechanism');
+                    // use jQuery's inArray because IE <9 doesn't support indexOf in arrays
+                    idList.splice($.inArray(mechID, idList), 1);
+                    $element.parent().parent().removeData('toDelete');
+                    window.ITECH.mechData.assigned_mechanisms[mechID] = {'mechanism_option_id' : mechID,
+                        'percentage' : $element.parent().siblings('td.percent').html(),
+                        'mechanism_phrase' : mechData['byMechanism'][mechID]['mechanism_phrase']};
+                }
+            }
+
+            calculateMechanismTable();
+            availableMechanisms();
+
+            return true;
+        }
+        
+
+        /**
+         * add new mechanism and percentage to mechanism table and store data for saving on form submission
+         * @returns {boolean}
+         */
+        function addMechanism() {
+            $(".dataTables_empty").remove();
+            var $percentBox = $("#percentage");
+            //TA:#327
+            var percent = parseFloat($percentBox.val());
+
+            if (isNaN(percent) || (percent < 1)) {
+                alert("Invalid value for percentage");
+                return false;
+            }
+            if ((percent + window.ITECH.totalPercent) > 100) {
+                alert("Total percentage must be 100 or less.");
+                return false;
+            }
+            if ($("#new_mechanism").val() === "") {
+            	//TA:#413
+                alert("Mechanism selection is required.");
+                return false;
+            }
+
+            var $selectedMechanism = $("#new_mechanism option:selected");
+            var mechID = $selectedMechanism.val();
+
+            addMechanismToTable(mechID, percent);
+
+            $("#associateMechanisms").data("ids").push(mechID);
+            $("#mechanismPercentages").data("percents").push(percent);
+            window.ITECH.mechData.assigned_mechanisms[mechID] = {'mechanism_option_id' : mechID, 'percentage' : percent, 'mechanism_phrase' : window.ITECH.mechData['byMechanism'][mechID]['mechanism_phrase']};
+
+            $percentBox.val("");
+            calculateMechanismTable();
+            availableMechanisms();
+
+            return true;
+        }
+
+        function addMechanismToTable(mechID, percent) {
+            //TA:#327
+            var hours = parseFloat($('#funded_hours_per_week').val());
+            //TA:#327
+            var cost = parseFloat($('#annual_cost').val());
+            var fpercent = percent / 100.0;
+            if (isNaN(hours) || isNaN(cost)) {
+                return false;
+            }
+            var $oTable = $('#employee_mechanism_table').dataTable();
+            var newRowIDs = $oTable.fnAddData([window.ITECH.mechData['byMechanism'][mechID]['mechanism_phrase'], percent,
+                (fpercent * hours).toFixed(1), (fpercent * cost).toFixed(2), '<input type="checkbox" onclick="deleteToggle(this);"/>']);
+            var newRow = $($oTable.fnSettings().aoData[newRowIDs[0]].nTr);
+            newRow.addClass('newMechanism');
+            newRow.prop('id', 'table_mechanism_row_' + mechID);
+            newRow.children().last().children()[0].id = 'table_mechanism_delete_toggle_' + mechID;
+            newRow.children().first().data("mechID", mechID);
+        }
+
+        /**
+         * prepare stored data from mechanism table changes for submission to backend
+         * @returns {boolean}
+         */
+        function processMechanismAssociations() {
+            var $associate = $("#associateMechanisms");
+            var $percentages = $("#mechanismPercentages");
+            var $disassociate = $("#disassociateMechanisms");
+
+            if ($associate.data("ids").length && $percentages.data("percents").length) {
+                $associate.val($associate.data("ids").join(','));
+                $percentages.val($percentages.data("percents").join(','));
+            }
+            else {
+                $associate.val("");
+                $percentages.val("");
+            }
+            if ($disassociate.data("ids").length) {
+                $disassociate.val($disassociate.data("ids").join(','));
+            }
+            else {
+                $disassociate.val("");
+            }
+            return true;
+        }
+        var availableMechanisms = function () {
+            var optList = '<option value="">--choose--</option>';
+            var partnerID = $('#select_partner').val();
+            var mechData = window.ITECH.mechData;
+            var mech;
+
+            if (mechData['byPartner'].hasOwnProperty(partnerID)) {
+                var partnerMechanisms = window.ITECH.mechData['byPartner'][partnerID];
+                var numMechs = partnerMechanisms.length;
+                for (var i = 0; i < numMechs; i++) {
+                    if (!mechData.assigned_mechanisms.hasOwnProperty(partnerMechanisms[i]) || mechData.assigned_mechanisms[partnerMechanisms[i]] === undefined) {
+                        mech = mechData['byMechanism'][partnerMechanisms[i]]['mechanism_phrase'];
+                        optList += '<option value="' + partnerMechanisms[i] + '">' + mechData['byMechanism'][partnerMechanisms[i]]['mechanism_phrase'] + '</option>';
+                    }
+                }
+            }
+
+            $('#new_mechanism').html(optList);
+        }
+
+        //TA:#224   TA:#416
+        function addSite() {    
+            var $oTable = $('#multi_sites_table').dataTable();
+            
+            var dsd_model_id = $('#dsd_model option:selected' ).val();
+            if(dsd_model_id == ""){
+        		alert("Specify value for '<?php tp('Service Delivery Model');?>'.");
+        		return false;
+        	}
+            var dsd_model = $('#dsd_model option:selected' ).text();
+            var dsd_team_id = $('#dsd_team option:selected' ).val();
+            if(dsd_team_id != ""){
+            	dsd_team_id = dsd_team_id.split("_")[1];
+           	    dsd_team = $('#dsd_team option:selected' ).text();
+            }
+            if(dsd_model == 'Facility site - Roving') {
+            	if(dsd_team_id == ""){
+            		alert("Specify value for '<?php tp('Service Delivery Team');?>'.");
+            		return false;
+            	}
+            }
+            if(dsd_team_id == ""){
+            	dsd_team = "";
+            }
+            
+            var province = '';
+            var province_id = $('#province_id').val();
+            if(province_id){
+            	province = $('#province_id option:selected' ).text();
+            }else{
+            	alert("Specify value for '<?php tp('Region A (Province)');?>'.");
+                return false;
+            }    
+            var district = '';
+            var district_id = $('#district_id').val();
+            if(district_id){
+            	district = $('#district_id option:selected' ).text();
+            }else{
+            	alert("Specify value for '<?php tp('Region B (Health District)');?>'.");
+                return false;
+            } 
+            var region = '';
+            var region_id = $('#region_c_id').val();
+            if(region_id){
+            	region = $('#region_c_id option:selected' ).text();
+            }else{
+            	alert("Specify value for '<?php tp('Region C (Local Region)');?>'.");
+                return false;
+            } 
+            
+            var site_name = '';
+            var site_id = $('#facilityInput').val();
+                if(site_id){
+                	site_name = $('#facilityInput option:selected' ).text();
+                }else{
+                	//TA:#441
+                	if(dsd_model == 'Facility site - Roving' || dsd_model == 'Facility site - Surge' ||
+                    		dsd_model == 'Facility site - Seconded'){ 
+                	alert("Specify value for '<?php tp('Site Name');?>'.");
+                    return false;
+                	}
+                } 
+            
+            var site_type = '';
+            if($('#facilityType').val()){
+            	site_type = $('#facilityType option:selected' ).text();
+            }
+            //TA:#441 remove those lines
+//             var site_name = '';
+//             var site_id = $('#facilityInput').val();
+//             if(site_id){
+//             	site_name = $('#facilityInput option:selected' ).text();
+//             }else{
+   //alert("Specify value for '<?php //tp('Site Name');?>'.");
+//                 return false;
+//             } 
+            
+             var hiv_fte_related = $('#hiv_fte_related' ).val();
+             if(hiv_fte_related == ""){
+            	 alert("Specify value for '<?php tp('Hours Worked per Week');?>'.");
+            	 return false;
+             }else{
+                if(isNaN(hiv_fte_related)){
+                    //TA:#439
+                	alert("Specify integer value for '<?php tp('Hours Worked per Week');?>'.");
+                    $('#hiv_fte_related' ).val('');
+                    return false;
+                }else{
+                	hiv_fte_related = parseInt(hiv_fte_related);
+                	if(hiv_fte_related > 45 || hiv_fte_related <1){
+                		alert("Value for '<?php tp('Hours Worked per Week');?>' should be between 1 and 45.");
+                		return false;
+                	}
+                }
+            }
+            
+             //TA:#438
+             var model_options = "<select id='dsd_model" + SITE_ROWS_COUNT + "' name='dsd_model" + SITE_ROWS_COUNT + "' style='max-width: 200px; min-width: 200px; width: 200px !important'>";
+                 model_options += "<option value=''>-- select --</option>"; 
+                 <?php foreach ($this->dsd_model as $ID => $model) {?>
+                             model_options += "<option value='<?php echo $model['id']; ?>' ";
+                             if(dsd_model_id == '<?php echo $model['id'];?>'){
+                               model_options += " selected='selected' ";
+                             }
+                             model_options +=  "><?php echo $model['dsdmodel'];?></option>";
+                 <?php }?>
+                 model_options += "</select>";
+             var team_options = "<select id='dsd_team" + SITE_ROWS_COUNT + "' name='dsd_team" + SITE_ROWS_COUNT + "' style='max-width: 200px; min-width: 200px; width: 200px !important'>";
+                 team_options += "<option value=''>-- select --</option>"; 
+                 <?php foreach ($this->dsd_team as $ID => $team) {?>
+                         team_options += "<option value='<?php echo $team['team_id']; ?>' ";
+                             if(dsd_team_id == '<?php echo $team['team_id'];?>'){
+                               team_options += " selected='selected' ";
+                             }
+                             team_options +=  "><?php echo $team['dsdteam'];?></option>";
+                 <?php }?>
+                 team_options += "</select>";
+             var newRowIDs = $oTable.fnAddData([model_options, team_options, province, district, region, site_name, site_type, 
+                          '<input type="text" value="' + hiv_fte_related + '" style="width:50px;" onkeypress="return isIntegerNumber(event);" onchange="validateIntRange(this);"/>', 
+                                                '<input type="checkbox" onclick="deleteToggleSite(this);"/>']);
+             ///
+             
+              var newRow = $($oTable.fnSettings().aoData[newRowIDs[0]].nTr);
+
+              //TA:#438
+              newRow.children().first()[0].setAttribute("id",dsd_model_id);
+              newRow.children().first().next()[0].setAttribute("id",dsd_team_id);
+              newRow.children().first().next().next().next().next().next()[0].setAttribute("id", site_id);
+              calculateSiteTable(); 
+              setDefaultSitesFields(); 
+             $( "#site_script" ).append("<script>" + 
+                     "var eldsdmodel_field" + SITE_ROWS_COUNT + " = YAHOO.util.Dom.get('dsd_model" + SITE_ROWS_COUNT + "'); " +
+                     "var eldsdteam_field" + SITE_ROWS_COUNT + " = YAHOO.util.Dom.get('dsd_team" + SITE_ROWS_COUNT + "'); " +
+                     "eldsdmodel_field" + SITE_ROWS_COUNT + ".onchange = function () {" +
+                              "var selected = $(this).find('option:selected').text(); " +
+                                                 "if (selected == 'Facility site - Roving') {" +
+                                                 	"eldsdteam_field" + SITE_ROWS_COUNT + ".disabled = false; " +
+                                               "  }else{" + 
+                                                 "	eldsdteam_field" + SITE_ROWS_COUNT + ".disabled = true; "+
+                                                 	" $('#dsd_team" + SITE_ROWS_COUNT + "').val(''); " +
+                                              "   }}; " +
+                     "eldsdmodel_field" + SITE_ROWS_COUNT + ".onchange();<\/script>");
+
+              SITE_ROWS_COUNT++;
+              ///
+                  	
+                return true;   
+        }
+
+        //TA:#394 They want to make validation on client side, do not lose entered data if validation is failed
+        var validateRequiredFields = function () { 
+        	$('#statusBox').remove();
+            var validated = true;   
+            if(!validateSelectField(validated, 'select_employee_role_option', '<?php echo t("Primary Role");?>')){
+            	validated = false;
+            }
+            if(!validateSelectField(validated, 'employee_qualification_option_id', '<?php echo t('Occupational Classification'); ?>')){
+            	validated = false;
+            }
+            if(!validateTextField(validated, 'employee_code', '<?php echo t("Employee Code");?>')){
+            	validated = false;
+            }
+            if(!validateSelectField(validated, 'select_partner', '<?php echo t("Employer");?>')){
+            	validated = false;
+            }
+            if(!validateSelectField(validated, 'employee_base_option_id', '<?php echo t("Employee Based at");?>')){
+            	validated = false;
+            }
+            if($('#employee_base_option_id option:selected').text() === 'Other'){
+            	if(!validateTextField(validated, 'based_at_other', '<?php echo t("Other, Specify");?>')){
+                	validated = false;
+                }
+            }
+            if($("#multi_sites_table_data_count").val() =='0'){
+            	displayErrorMessage('agreement_end_date', '<?php echo t("Site Name");?> (required)');
+            	validated = false;
+            }
+            
+            if(!validateTextField(validated, 'agreement_start_date', '<?php echo t("Contract Start Date");?>')){
+            	validated = false;
+            }
+            if(!validateTextField(validated, 'agreement_end_date', '<?php echo t("Contract End Date");?>')){
+            	validated = false;
+            }
+            //TA:#409 validates dates
+            var date_start =$('#agreement_start_date').val();
+            var date_end =$('#agreement_end_date').val();
+            //TA:#411 Contract end date must be after the current date
+            if($("#is_active").is(":checked")){
+                //new Date() generates month starts with 0
+            	var today = new Date();
+                if(new Date(today.getFullYear(), today.getMonth() + 1, today.getDate()) > new Date(date_end.split("/")[2], date_end.split("/")[1], date_end.split("/")[0])){
+                	displayErrorMessage('agreement_end_date', 'Contract End Date must be after Today.');
+               	   validated = false;
+            	}
+            }
+            if(new Date(date_start.split("/")[2], date_start.split("/")[1], date_start.split("/")[0]) > new Date(date_end.split("/")[2], date_end.split("/")[1], date_end.split("/")[0])){
+            	displayErrorMessage('agreement_end_date', 'Contract Start Date can be less than or equal to Contract End Date.');
+            	validated = false;
+            }                
+            if(!validateSelectField(validated, 'select_employee_transition_option', '<?php echo t("Intended Transition");?>')){
+            	validated = false;
+            }
+            if($('#select_employee_transition_option option:selected').text() == 'Other, Specify'){
+            	if(!validateTextField(validated, 'transition_other', '<?php echo t("Intended Transition Other");?>')){
+                	validated = false;
+                }
+            }
+            if(!validateTextField(validated, 'transition_date', '<?php echo t("Intended Transition Date");?>')){
+            	validated = false;
+            }
+            if($("#funded_hours_per_week").val() == 0 || $("#funded_hours_per_week").val() == ''){
+            	displayErrorMessage('', '<?php echo t("Funded hours per week");?> (required)');
+            	validated = false;
+            }
+            //TA:#411 Date of intended transition should be after the current date
+            if($("#is_active").is(":checked")){
+                //new Date() generates month starts with 0
+            	var today = new Date();
+                if(new Date(today.getFullYear(), today.getMonth() + 1, today.getDate()) > new Date($('#transition_date').val().split("/")[2], $('#transition_date').val().split("/")[1], $('#transition_date').val().split("/")[0])){
+                	displayErrorMessage('transition_date', 'Date of Intended Transition must be after Today.');
+               	   validated = false;
+            	}
+            }
+            if(!validateTextField(validated, 'salary', '<?php echo t("Salary");?>')){
+            	validated = false;
+            }
+            if(!validateTextField(validated, 'benefits', '<?php echo t("Benefits");?>')){
+            	validated = false;
+            }
+            if(!validateTextField(validated, 'additional_expenses', '<?php echo t("Additional Expenses");?>')){
+            	validated = false;
+            }
+            if(!validateTextField(validated, 'stipend', '<?php echo t("Stipend");?>')){
+            	validated = false;
+            }
+            
+            //TA:#413 mechanism is required
+            var $rows = $("#employee_mechanism_table > tbody > tr");
+            var mechanism_count = 0;
+            for (var i = 0; i < $rows.length; i++) {
+            	var $node = $($rows[i]).children().first().next();
+                if (!$node.hasClass('toDeleteMechanism')) {
+                	mechanism_count++;
+                }
+            }
+            if($("#employee_mechanism_table > tbody").children().first().children().first().text() == 'No data available in table' || mechanism_count == 0){
+            	displayErrorMessage('', '<?php echo t("Mechanism");?> (required)');
+            	validated = false;
+            }
+            ////
+
+            //TA:#411 
+            if(!$("#is_active").is(":checked")){
+            	//Actual transition outcome should be filled in
+            	if($('select[name=employee_transition_complete_option_id]').find('option:selected').val() == ''){
+            		$labelElement = $('#employee_transition_complete_option_id_lbl');
+            		$labelElement.addClass("errorText");
+            		displayStatus('<?php echo t("Actual Transition Outcome");?> (required)', true);
+                	validated = false;
+            	}
+            	if($('select[name=employee_transition_complete_option_id] option:selected').text() == 'Other, Specify'){
+                	if(!validateTextField(validated, 'transition_complete_other', '<?php echo t("Actual Transition Outcome Other");?>')){
+                    	validated = false;
+                    }
+                }
+            	//Actual transition date should be filled in
+            	if(!validateTextField(validated, 'transition_complete_date', '<?php echo t("Actual Transition Date");?>')){
+                	validated = false;
+                }
+            	//new Date() generates month starts with 0
+            	var today = new Date();
+                if(new Date(today.getFullYear(), today.getMonth() + 1, today.getDate()) < new Date($('#transition_complete_date').val().split("/")[2], 
+                        $('#transition_complete_date').val().split("/")[1], $('#transition_complete_date').val().split("/")[0])){
+                	displayErrorMessage('transition_complete_date', '<?php echo t("Actual Transition Date");?> should be before or equal to Today.');
+               	   validated = false;
+            	}
+            }
+
+            //TA:#447
+            if(parseInt($('#funded_hours_per_week').val())< 1 || parseInt($('#funded_hours_per_week').val()) > 45){
+            	displayErrorMessage('funded_hours_per_week', '<?php echo t('Funded hours per week');?> should be between 1 and 45');
+            	validated = false;
+            }
+
+            //TA:438
+            getSiteTableData();
+            if(parseInt($('#funded_hours_per_week').val()) < parseInt($('#multi_sites_table_data_fte_total').val())){
+            	displayErrorMessage('funded_hours_per_week', "The total 'Hours Worked per Week per site' should be less or equal to 'Hours Worked per Week for Annual Cost To Company'.");
+            	var $rows = $("#multi_sites_table > tfoot > tr");
+            	$($rows[0]).children().first().next().next().next().next().next().next().next()[0].style.color = 'red';
+         	    validated = false;
+            }
+            ///
+
+            window.scroll(0,0);
+            return validated;
+        }
+
+        //TA:#411
+        var validateSelectField = function (validated, field_id, field_name) {
+       	 if($('#' + field_id + " option:selected").val() == ''){
+         	   displayErrorMessage(field_id, field_name + ' (required)');
+          	   validated = false;
+            }else{
+        	    removeErrorMessage(field_id);
+            }
+          return validated;  
+        }
+
+        //TA:#411
+        var validateTextField = function (validated, field_id, field_name) {
+         	 if($('#' + field_id).val() == ''){
+           	   displayErrorMessage(field_id, field_name + ' (required)');
+            	   validated = false;
+              }else{
+          	    removeErrorMessage(field_id);
+              }
+            return validated;  
+          }
+
+        //TA:#438
+        var getSiteTableData = function () {
+        	$('#multi_sites_table_data').val("");
+        	var $rows = $("#multi_sites_table > tbody > tr");
+        	var hiv_fte_Accumulate = 0; 
+        	for (var i = 0; i < $rows.length; i++) {
+        		var table_cell_obj = $($rows[i]).children().first().next().next().next().next().next().next().next()[0];
+          	   var input_obj = $(table_cell_obj).children().first()[0];
+          	   var hiv_fte = parseInt($(input_obj).val());
+            	 hiv_fte_Accumulate = hiv_fte_Accumulate + hiv_fte;
+        		var site_id = $($rows[i]).children().first().next().next().next().next().next()[0].id;
+                var dsd_model_id = $($($rows[i]).children().first()[0]).children().first()[0].value;
+                var dsd_team_id = $($($rows[i]).children().first().next()[0]).children().first()[0].value;
+                var data = site_id + "," + dsd_model_id  + "," +  dsd_team_id  + "," +  hiv_fte;
+                if($('#multi_sites_table_data').val() != ''){
+                   	$('#multi_sites_table_data').val($('#multi_sites_table_data').val() + ";");
+                }
+                $('#multi_sites_table_data').val($('#multi_sites_table_data').val() + data);
+        	}
+        	$('#multi_sites_table_data_fte_total').val(hiv_fte_Accumulate);
+        	return true; 
+        }
+
+        //TA:#224, #438
+        var calculateSiteTable = function () {
+            var sites_count = 0;
+        	var $rows = $("#multi_sites_table > tbody > tr");
+            var hiv_fte_Accumulate = 0;
+           for (var i = 0; i < $rows.length; i++) {
+        	   var table_cell_obj = $($rows[i]).children().first().next().next().next().next().next().next().next()[0];
+        	   var input_obj = $(table_cell_obj).children().first()[0];
+        	   var hiv_fte = parseInt($(input_obj).val());
+               hiv_fte_Accumulate = hiv_fte_Accumulate + hiv_fte;
+           }
+           if (isNaN(hiv_fte_Accumulate)){
+        	   $('#hiv_related_fte_total').text("0");
+        	   sites_count = 0;
+           } else{            
+               $('#hiv_related_fte_total').text(hiv_fte_Accumulate);
+               sites_count = $rows.length;
+           }
+           $("#multi_sites_table_data_count").val(sites_count);
+
+          //TA:#438 setDefaultSitesFields(); 
+            
+           return true;
+        };
+
+        //TA:#416
+        function setDefaultSitesFields(){
+       	 $('#province_id').val('0');
+         $('#province_id').attr('disabled', true);
+         $('#district_id').val('0');
+         $('#district_id').attr('disabled', true);
+         $('#region_c_id').val('0');
+         $('#region_c_id').attr('disabled', true);
+         $('#facilityType').val('');//TA:#416
+         $('#facilityType').attr('disabled', true);
+         $('#facilityInput').val('0');
+         $('#facilityInput').attr('disabled', true);
+         $('#hiv_fte_related').val('');
+         $('#hiv_fte_related').attr('disabled', true);
+         $('#dsd_model').val('');
+         $('#dsd_team').val('');
+         $('#dsd_team').attr('disabled', true);
+        }
+
+        //TA:#224, //TA:#438
+        function deleteToggleSite(element) {
+        	var $element = $(element);  
+            var id = $element.parent().parent().attr("id");   	
+        	$('#multi_sites_table').dataTable().fnDeleteRow($element.parent().parent()[0]);
+            calculateSiteTable();
+            setDefaultSitesFields(); 
+            return true;
+        }
+
+        //TA:#411
+        function setActive(){
+        	if($("#is_active").is(":checked")){
+            	$("#transition_complete_date").val('');
+            	$("#transition_complete_date").attr('disabled', true);
+            	$('.transition_complete_date_calendar_link').hide();
+            	$('#transition_complete_other').val('');
+            	$("#transition_complete_other").attr('disabled', true);
+            	$('select[name=employee_transition_complete_option_id]').attr('disabled', true);
+            	$('select[name=employee_transition_complete_option_id] option[value=""]').attr("selected", "selected");
+            	$('.transition_complete_other,#transition_complete_other').hide();
+                $('.transition_complete_other,#transition_complete_other').val(''); 
+            }else{
+            	$("#transition_complete_date").attr('disabled', false);
+            	$('.transition_complete_date_calendar_link').show();
+            	$("#transition_complete_date").prop("readonly", false);
+            	$("#transition_complete_other").attr('disabled', false);
+            	$('select[name=employee_transition_complete_option_id]').attr('disabled', false);   	
+            }
+        }
+
+        //TA:#438
+        function validateIntRange(el){
+       	    var v = parseInt(el.value);
+        	if(isNaN(v) || (v < 1 || v > 45)){
+        	    alert("Value for '<?php tp('Hours Worked per Week');?>' should be between 1 and 45.");
+        	    el.style.color = 'red';
+        	}else{
+        		el.style.color = 'black';
+        	}
+        	calculateSiteTable();
+        }
+
+    </script>
+
+</head>
+<body class="yui-skin-sam">
+
+<div id="pageHolder">
+
+    <div id="header"><?php require_once('views/scripts/header.phtml'); ?></div>
+    <div id="content">
+
+        <?php require_once 'views/scripts/status.phtml' ?>
+
+        <h1><?php $this->mode == 'add' ? print(t('Add') . space . t('Employee')) : print(t('Edit') . space . t('Employee')); ?></h1>
+        <form action="" method="post" class="form_employee"  onsubmit='return validateRequiredFields();'>
+            <legend></legend>
+
+            <?php if ($this->employee['id'] && $this->hasACL('edit_employee') && $this->hasACL('delete_employee')): ?>
+                <div class="historyDiv">
+                    <a href="<?php echo $this->base_url; ?>/employee/delete/id/<?php echo $this->employee['id']; ?>"><?php echo t('Delete this') . space . t('Employee'); ?></a>
+                </div>
+                <?php
+            endif; // fi historyDiv
+
+            //TA:#279.2 add 'transition_other' and 'transition_complete_other' to required fields
+            //TA:#374 add 'agreement_start_date'
+            //TA:#383 add 'transition_date'
+            //TA:#411 add 'employee_transition_complete_option_id', 'transition_complete_date'
+            $this->required_fields = array('employee_code', 'partner_id', 'employee_base_option_id',
+                'employee_qualification_option_id', 'salary', 'benefits', 'additional_expenses', 'stipend',
+                'employee_transition_option_id', 'employee_role_option_id', 'disability_option_id',
+                'disability_comments', 'funded_hours_per_week', 'agreement_start_date', 'agreement_end_date', 'facilityInput',
+                'transition_other', 'transition_complete_other', 'transition_date', 'employee_transition_complete_option_id', 'transition_complete_date');
+            
+            if (!$this->hasACL('edit_employee')) {
+                $this->viewonly = true;
+            }
+            ?>
+
+            <!-- TA:#256 -->
+            <table style="width:100%" border=0>
+                <tr><td>
+
+                        <!-- TA:#309 -->
+                        <div class="fieldLabel"><label><?php echo t('Active'); ?> HRH</label></div>
+                        <!-- TA:#411 by default is off and add action on check-->
+                        <!-- TA:#428 by default is on -->
+                        <input type="checkbox" name="is_active" id="is_active" style="margin : 4px 5px 12px 0px;" <?php echo ($this->employee['is_active'] === '1' || $this->mode == 'add')?'checked="checked"':'';?> onchange=setActive();>
+                        
+                        <?php
+                        //TA:#329 change order those two fields and add filter
+                        if ($this->setting['display_employee_primary_role']) {
+                            echo labelAndField($this, t('Primary Role'), $this->roles, 'employee_role_option_id');
+                        }
+                        ?>
+                        <div class="fieldLabel employee_qualification_option_id"><span class="required">*</span>Occupational Classification</div>
+	                    <div class="fieldInput">
+	                    <select id="employee_qualification_option_id" name="employee_qualification_option_id">
+                        <option value="">&mdash; <?php tp('select'); ?> &mdash;</option>
+                        <?php
+                        foreach ($this->cadres_data as $vals) { 
+                            $isSelected = ($vals['id'] && $vals['id'] === $this->employee['employee_qualification_option_id']) ? ' selected="selected"' : '';
+                            echo '<option value="' . $vals['role_option_id'] . '_' . $vals['id'] . '"' . $isSelected . '>' . $vals['qualification_phrase'] . '</option>';
+                        }
+                        ?>
+                    </select></div>
+                         <script>
+                         //TA:#329
+                    elCategory = YAHOO.util.Dom.get("select_employee_role_option");
+                    elTitle = YAHOO.util.Dom.get("employee_qualification_option_id");
+                    elCategory.onchange = function () {
+                    	setFilteredOption(this.selectedIndex, 'select_employee_role_option', 'employee_qualification_option_id');
+                    }
+                    setFilteredOption(elCategory.selectedIndex, 'select_employee_role_option', 'employee_qualification_option_id');
+                    training_title_id = "<?php print $this->cadres_data['employee_role_id'];?>";
+                    if (training_title_id) {
+                        for (var i = 0; i < elTitle.options.length; i++) {
+                            if (elTitle.options[i].value == elCategory.options[elCategory.selectedIndex].value + "_" + training_title_id) {
+                                elTitle.options[i].selected = true;
+                            }
+                        }
+                    }
+                </script>
+                        <?php
+                         
+                        echo labelAndField($this, '<span class="required">*</span>' . t('Employee Code'),
+                            $this->formText('employee_code', $this->employee['employee_code'], array('maxlength' => '15')));
+
+                        if ($this->setting['display_employee_dob']) {
+                            echo labelAndField($this, t('Employee Date of Birth') . space . ('(dd/mm/yyyy)'), 'date', 'dob', $this->employee['dob']);
+                        }
+                        if ($this->setting['display_employee_disability']) {
+                            $store = $this->viewonly;
+                            $this->viewonly = true;
+                            echo confirmDropdown($this, t('Disability'), 'disability_option_id', $this->employee['disability_option_id']);
+                            echo labelAndField($this, t('Nature of Disability'), 'text', 'disability_comments', $this->employee['disability_comments']);
+                            echo '<div class="clear"></div><br /><br />' . PHP_EOL;
+                            if ($this->hasACL('edit_employee')) {
+                                $this->viewonly = $store;
+                            }
+                        }
+
+                        if ($this->setting['display_partner_employee_number']) {
+                            if ($this->mode != 'add' && $this->employee['partner_employee_number'])
+                                $store = $this->viewonly;
+                            $this->viewonly = true;
+                            echo labelAndField($this, t('Employee') . space . t('Number'), 'text', 'partner_employee_number', $this->employee['partner_employee_number']);
+                            $this->viewonly = $store;
+                        }
+
+                        if ($this->setting['display_employee_partner']) {
+                            echo labelAndField($this, t('Employer'), $this->partners, 'partner_id');
+                        }
+
+                        if ($this->setting['display_employee_base']) {
+                            echo '<div class="fieldLabel"><span class="required">*</span>' . t('Employee Based at') . '</div>';
+                            echo '<div class="fieldInput">';
+                            echo $this->formSelect('employee_base_option_id',
+                                isset($this->employee['employee_base_option_id']) ? $this->employee['employee_base_option_id'] : null,
+                                array('disable' => !$this->hasACL("edit_employee"), 'onclick' => 'basedAtOther();'),
+                                $this->bases);
+                            echo '</div>';
+
+                            echo '<div id="based_at_other_container">';
+                            echo '<div class="fieldLabel"><span class="required">*</span>' . t('Other, Specify') . '</div>';
+                            echo '<div class="fieldInput">';
+                            echo $this->formText('based_at_other', $this->employee['based_at_other'], array("maxlength" => "50"));
+                            echo '</div></div>';
+
+                        }
+                        
+                        //TA:#224 => START
+                        ?>
+                        </td>
+                        <td style="width:20%" valign='top' align='left'>
+                        <div class="historyDiv">
+                            <b><?php echo t("Date created");?></b>&nbsp;<?php echo str_replace(' ','&nbsp;',$this->escape($this->dateCreated));?><br>
+                            <b><?php echo t("Created by");?></b>&nbsp;<?php echo $this->creator; ?><br>
+                            <b><?php echo t("Date updated");?></b>&nbsp;<?php echo str_replace(' ','&nbsp;',$this->escape($this->dateModified));?><br>
+                            <b><?php echo t("Updated by");?></b>&nbsp;<?php echo $this->updater; ?><br>
+                        </div>
+                    </td></tr></table>
+                    
+                    <!-- TA#438: -->
+                    <input type='hidden' id='multi_sites_table_data' name='multi_sites_table_data'/>
+                    <input type='hidden' id='multi_sites_table_data_fte_total' name='multi_sites_table_data_fte_total'/>
+                    <div id='site_script'></div>
+                    <input type='hidden' id='multi_sites_table_data_count' name='multi_sites_table_data_count'/>
+                    <!--  <table style="width:100%"><tr><td>-->
+                        <table cellpadding="0" cellspacing="0" border="1" class="display tablegrid" id="multi_sites_table" style="width:100%">
+                   <thead>
+                <tr>
+                    <th width='10%'><?php echo "<font color='red'>*</font>" . t('Service Delivery Model'); ?></th><!-- TA:#416 -->
+                    <th width='5%'><?php echo t('Service Delivery Team'); ?></th><!-- TA:#416 -->
+                    <th width='10%'><?php echo "<font color='red'>*</font>" . t('Region A (Province)'); ?></th>
+                    <th width='10%'><?php echo "<font color='red'>*</font>" . t('Region B (Health District)'); ?></th>
+                    <th width='10%'><?php echo "<font color='red'>*</font>" . t('Region C (Local Region)'); ?></th>
+                    <th><?php echo "<font color='red'>*</font>" .t('Site Name'); ?></th>
+                    <th width='10%'><?php echo "<font color='red'>*</font>" . t('Site Type'); ?></th>
+                    <th width='5%'><?php echo "<font color='red'>*</font>" . t('Hours Worked per Week'); ?></th><!-- TA:#439 -->
+                    <th width='5%'><?php tp("Delete?"); ?></th>               
+                </tr>
+                </thead>
+                <tfoot>
+                <tr style="font-weight:bold; background-color:#f2f2f2;">
+                    <td class="siteTableFooter">Totals:</td>
+                    <td class="siteTableFooter"></td>
+                    <td class="siteTableFooter"></td>
+                    <td class="siteTableFooter"></td>
+                    <td class="siteTableFooter"></td>
+                    <td class="siteTableFooter"></td><!-- TA:#416 -->
+                    <td class="siteTableFooter"></td><!-- TA:#416 -->
+                    <td class="siteTableFooter" id="hiv_related_fte_total">0</td>
+                    <td class="siteTableFooter"></td>
+                </tr>
+                </tfoot>
+                <tbody id="multi_sites_table_body">
+                <?php
+                //print_r($this->dsd_team);
+                $rows = 0;
+                foreach ($this->employee['sites'] as $id => $siteData) {
+                    ?>
+                    <tr id='<?php echo $siteData['site_link_id'];?>'>
+                         <!-- TA:#438 START -->
+                        <td id='<?php echo $siteData['dsd_model_id'];?>'>
+                        <select id='dsd_model<?php echo $rows;?>' name='dsd_model<?php echo $rows;?>' style='max-width: 200px; min-width: 200px; width: 200px !important'>
+                        <option value=''>-- select --</option>
+                        <?php
+                        foreach ($this->dsd_model as $ID => $model) {
+                            $selected_model = "";
+                            if($model['id'] === $siteData['dsd_model_id']){
+                                $selected_model = " selected='selected' ";
+                            }
+                            echo "<option value='" . $model['id'] . "' " . $selected_model . ">" . $model['dsdmodel'] . "</option>";
+                        } 
+                        ?>
+                        </select>
+                        </td>
+                        <td id='<?php echo $siteData['dsd_team_id'];?>'>
+                        <select id='dsd_team<?php echo $rows;?>' name='dsd_team<?php echo $rows;?>'style='max-width: 200px; min-width: 200px; width: 200px !important'>
+                        <option value=''>-- select --</option>
+                        <?php
+                        foreach ($this->dsd_team as $ID => $team) {
+                            $selected_team = "";
+                            if($team['team_id'] === $siteData['dsd_team_id']){
+                                $selected_team = " selected='selected' ";
+                            }
+                            echo "<option value='" . $team['team_id'] . "' " . $selected_team . ">" . $team['dsdteam'] . "</option>";
+                        } 
+                        ?>
+                        </select>
+                        </td>
+                        <td><?php echo $siteData['province_name']; ?></td>
+                        <td><?php echo $siteData['district_name']; ?></td>
+                        <td><?php echo $siteData['region_name']; ?></td>
+                        <td id='<?php echo $siteData['facility_id'];?>'><?php echo $siteData['facility_name']; ?></td>
+                        <td><?php echo $siteData['facility_type_phrase']; ?></td>
+                        <td><input type="text" value="<?php echo $siteData['hiv_fte_related']; ?>" style="width:50px;" onkeypress="return isIntegerNumber(event);" onchange="validateIntRange(this);"/></td>
+                        <td><input type="checkbox" onclick="deleteToggleSite(this);"/></td>
+                    </tr>
+                    <script>
+                    var eldsdmodel_field<?php echo $rows;?> = YAHOO.util.Dom.get('dsd_model<?php echo $rows;?>');
+                    var eldsdteam_field<?php echo $rows;?> = YAHOO.util.Dom.get('dsd_team<?php echo $rows;?>');
+                    eldsdmodel_field<?php echo $rows;?>.onchange = function () {
+                                            if(this.selectedIndex == 0){
+                                            	//setDefaultSitesFields(); 
+                                            }else{
+                                            	var selected = $(this).find('option:selected').text();
+                                                if (selected == 'Facility site - Roving') {
+                                                	eldsdteam_field<?php echo $rows;?>.disabled = false;
+                                                }else{
+                                                	eldsdteam_field<?php echo $rows;?>.disabled = true;
+                                                	$('#dsd_team<?php echo $rows;?>').val('');
+                                                }
+                                            	//selectNASiteName();
+                                               // elSubProvince.disabled = false; 
+                                            }
+                                            // eldsdteam_field.onchange();
+                                        }
+                    eldsdmodel_field<?php echo $rows;?>.onchange();
+                    </script>
+                <?php $rows++;
+                } ?>
+                <script>SITE_ROWS_COUNT = <?php echo $rows;?>;</script>
+                <!-- TA:#438 END -->
+                </tbody>
+                   </table>
+                   <!--  </td></tr></table>   -->   
+                   <table border=0 style='width: 700px;'>
+                   <tr>
+                   <?php
+                   $helper = new Helper();
+                   $db_locations_arr = $helper->get3TiersLocationsParentIds();
+                   $label = "<span style='font-size:11px; font-weight:bold; color:#696969;'>";
+                   //TA:#416
+                   echo "<td width='80px' style='padding-right: 10px;' valign='bottom'>" . $label . t('Service Delivery Model') . "</span><br>";
+                   echo "<select id='dsd_model' name='dsd_model' style='max-width: 100px; min-width: 100px; width: 100px !important'>";
+                   echo "<option value=''>-- select --</option>";
+                   foreach ($this->dsd_model as $ID => $model) {
+                       echo "<option value='" . $model['id'] . "'>" . $model['dsdmodel'] . "</option>";
+                   }
+                   echo "</select>";
+                   echo "<td width='80px' style='padding-right: 10px;' valign='bottom'>" . $label . t('Service Delivery Team') . "</span><br>";
+                   echo "<select id='dsd_team' name='dsd_team' style='max-width: 100px; min-width: 100px; width: 100px !important'>";
+                   echo "<option value=''>-- select --</option>";
+                   foreach ($this->dsd_team as $ID => $team) {
+                       echo "<option value='" . $team['partner_id'] . "_" . $team['team_id'] . "'>" . $team['dsdteam'] . "</option>";
+                   }
+                   echo "</select>";
+                   //
+                   echo  "<td width='150px' style='padding-right: 10px;' valign='bottom'>" . $label . t('Region A (Province)') . "</span><br>";
+                   renderFilter($this->locations, 1,'province_id', '', 'district_id', false, $this->viewonly);
+                   echo "</td>";
+                   echo "<td width='150px' style='padding-right: 10px;' valign='bottom'>" . $label . t('Region B (Health District)') . "</span><br>";
+                   renderFilter($this->locations, 2, 'district_id', '', 'region_c_id', false, $this->viewonly); 
+                   echo "</td>";
+                   echo "<td width='150px' style='padding-right: 10px;' valign='bottom'>" . $label . t('Region C (Local Region)') . "</span><br>";
+                   renderFilter($this->locations, 3, 'region_c_id', '', 'region_d_id', false, $this->viewonly);
+                   echo "</td>";
+                   echo "<td width='230px' style='padding-right: 10px;' valign='bottom'>" . $label . t('Site Name') . "</span><br>";
+                   echo renderFacilityDropDownWithType($db_locations_arr, $this->facilities, '', $this->viewonly, '', true);
+                   echo "</td>";
+                   echo "<td width='150px' style='padding-right: 10px;' valign='bottom'>" . $label . t('Site Type') . "</span><br>";
+                   echo renderFacilityTypesDropDown($this->site_types, '', $this->viewonly, '');
+                   echo "</td>";
+                   //TA:#439
+                   echo "<td width='50px' style='padding-right: 10px;' valign='bottom'>" . $label . t('Hours Worked per Week') . "</span><br>";
+                   //TA: #438
+                   echo "<input type='text' id='hiv_fte_related' name='hiv_fte_related' value='' style='width:90px;' onkeypress='return isIntegerNumber(event)' onchange='validateIntRange(this);'/>";
+                   echo "</td>";
+                   echo "<td style='padding-right: 10px;' valign='bottom'>" . $label . "&nbsp;" . "</span><br>";
+                   echo '<input type="button" name="multiSite" value="'. t("Add") . '" class="insert"
+                       id="siteInsertButton" onclick="addSite();"/>';
+                   echo "</td>";
+                   ?>
+                   </tr>
+                   <tr><td></td><td></td><td></td><td></td><td></td><td colspan=2>
+                   <!-- TA:#381 TA:#436
+                   <a href='<?php echo$this->base_url;?>/site/add'><?php echo t('Insert a New') . space . t('Site');?></a>&nbsp;&nbsp;
+                   <a href='<?php echo$this->base_url;?>/site/search'><?php echo t('View/Edit') . space . t('Site');?></a>&nbsp;&nbsp;
+                   -->
+                   </td></tr>
+                   </table>
+                   <br><br>
+                   <script>
+                    $('#province_id').attr('style', 'width: 150px !important; min-width: 150px; max-width: 150px;');
+                    $('#district_id').attr('style', 'width: 150px !important; min-width: 150px; max-width: 150px;');
+                    $('#region_c_id').attr('style', 'width: 150px !important; min-width: 150px; max-width: 150px;');
+                    $('#facilityInput').attr('style', 'width: 230px !important; min-width: 230px; max-width: 230px;');
+                    $('#facilityType').attr('style', 'width: 150px !important; min-width: 150px; max-width: 150px;');
+                    elSubProvince = YAHOO.util.Dom.get('province_id');
+                    elSubDistrict = YAHOO.util.Dom.get('region_c_id');
+                    elFacilityType = YAHOO.util.Dom.get('facilityType');
+                    elFacilityName = YAHOO.util.Dom.get('facilityInput');
+                    elHIV_field = YAHOO.util.Dom.get('hiv_fte_related');
+                    eldsdmodel_field = YAHOO.util.Dom.get('dsd_model');//TA:#416
+                    eldsdteam_field = YAHOO.util.Dom.get('dsd_team');//TA:#416
+                    YAHOO.util.Event.onDOMReady(function () {
+                            elSubDistrict.onchange();
+                    });
+                    //TA:#441
+                    elSubDistrict.onchange = function () {
+                        if(this.selectedIndex == 0){
+                        	setDefaultSitesFields();
+                        }else{
+                        	selectNASiteName();
+                            elHIV_field.disabled = false;
+                        }
+                    }
+                    //TA:#416 TA:#441
+                    eldsdmodel_field.onchange = function () {
+                        if(this.selectedIndex == 0){
+                        	setDefaultSitesFields(); 
+                        }else{
+                        	var selected = $(this).find('option:selected').text();
+                            if (selected == 'Facility site - Roving') {
+                            	eldsdteam_field.disabled = false;
+                            }else{
+                            	eldsdteam_field.disabled = true;
+                            	$('#dsd_team').val('');//TA:#443
+                            }
+                        	selectNASiteName();
+                            elSubProvince.disabled = false; 
+                        }
+                         eldsdteam_field.onchange();
+                    }
+
+                   
+                    //TA:#416.2
+               elPartner = YAHOO.util.Dom.get("select_partner");
+               elSDSTeam = YAHOO.util.Dom.get("dsd_team");
+               elPartner.onchange = function () {
+                  setFilteredOption(this.selectedIndex, 'select_partner', 'dsd_team');
+               }
+               //it seems taht we do not need this, otherwise team list is empty setFilteredOption(elPartner.selectedIndex, 'select_partner', 'dsd_team');
+               ///
+
+               //TA:#441
+               function selectNASiteName(){
+            	   var selected = $("#dsd_model").find('option:selected');
+                   if(selected.val() != ''){
+                       if (selected.text() == 'Community site' ||
+                               selected.text().startsWith('Health Systems Strengthening') ||
+                   		selected.text() == 'Partner management and operations'   ||
+                   		selected.text() == 'HSS - Not Seconded'){ //TA:#450
+                    	   $("#facilityInput option:contains(N/A)").attr('selected', true);
+                    	   $("#facilityType option:contains(N/A)").attr('selected', true);
+                    	   $("#facilityInput").attr('disabled', 'disabled');
+                           $("#facilityType").attr('disabled', 'disabled');
+                   	    }else{
+                        	  if( $("#region_c_id").find('option:selected').val() != ''){
+                        	   $("#facilityInput").removeAttr('disabled');
+                        	  }
+                        	  $("#facilityInput").val('');
+                        	  $("#facilityType").val('');
+                   	    }
+                   }
+               }
+          
+           
+                    </script>
+                        <?php
+                        //TA:#224 => END
+
+                        if ($this->setting['display_employee_staff_category']) {
+                            echo labelAndField($this, t('Staff Category'), $this->categories);
+                        }
+                        if ($this->setting['display_employee_registration_number']) {
+                            echo labelAndField($this, t('Registration Number'), 'text', 'registration_number', $this->employee['registration_number']);
+                        }
+                        //TA:#374
+                        echo labelAndField($this, t('Contract Start Date'), 'date', 'agreement_start_date', $this->employee['agreement_start_date']);
+                        if ($this->setting['display_employee_contract_end_date']) {
+                            echo labelAndField($this, t('Contract End Date'), 'date', 'agreement_end_date', $this->employee['agreement_end_date']);
+                        }
+                        if ($this->setting['display_employee_intended_transition']) {
+                            echo labelAndField($this, t('Intended Transition'), $this->transitions, 'employee_transition_option_id');
+                        }
+                        //TA:#279.2 change label
+                        echo labelAndField($this, t('Intended Transition Other'), 'text', 'transition_other', $this->employee['transition_other']); // hidden field
+                        if ($this->setting['display_employee_transition_confirmed']) {
+                            echo confirmDropdown($this, t('Transition Confirmed'), 'transition_confirmed', $this->employee['transition_confirmed']);
+                        }
+                        echo labelAndField($this, t('Intended Transition Date'), 'date', 'transition_date', $this->employee['transition_date']);
+                        if ($this->setting['display_employee_complete_transition']) {
+                            echo labelAndField($this, t('Actual Transition Outcome'), $this->transitions_complete, 'employee_transition_complete_option_id');
+                        }
+                        //TA:#279.2 change label
+                        echo labelAndField($this, t('Actual Transition Outcome Other'), 'text', 'transition_complete_other', $this->employee['transition_complete_other']); // hidden field
+
+                        if ($this->setting['display_employee_actual_transition_date']) {
+                            //TA:#411
+                            //echo labelAndField($this, t('Actual Transition Date'), 'date', 'transition_complete_date', $this->employee['transition_complete_date']);
+                            echo '<div class="fieldLabel transition_complete_date" id="transition_complete_date_lbl"><span class="required">*</span>' . t('Actual Transition Date') . '</div>';
+                            echo '<div class="fieldInput"><input type="text" class="datepicker" id="transition_complete_date" name="transition_complete_date" value="' . $this->employee['transition_complete_date'] . '" />';
+                            echo '<a class="calendarbtn transition_complete_date_calendar_link" href="#"><img src="'. $this->base_url. '/js/yui/assets/calbtn.gif"></a>';
+                            echo '</div><div class="clear"></div>';   
+                        }
+
+
+                        // fields for only community health workers and community based workers
+                        echo '<div class="clear"></div><br /><br />';
+
+                        echo '<div id="chw"' . ($this->expandCHWFields ? '' : ' style="display:none;"') . '>';
+                        if ($this->setting['display_employee_relationship']) {
+                            echo labelAndField($this, t('Relationship between CHW and formal health services'), $this->relationships);
+                        }
+                        if ($this->setting['display_employee_referral_mechanism']) {
+                            echo labelAndField($this, t('Referral Mechanism'), $this->referrals);
+                        }
+                        if ($this->setting['display_employee_chw_supervisor']) {
+                            echo labelAndField($this, t('CHW Supervisor'), $this->supervisors);
+                        }
+                        if ($this->setting['display_employee_trainings_provided']) {
+                            echo labelAndField($this, t('Trainings provided'), $this->provided);
+                        }
+                        echo '</div>';
+
+                        // yearly costs of employee
+                        echo '<div class="clear"></div><br /><br />';
+                        if ($this->setting['display_employee_salary']
+                            || $this->setting['display_employee_benefits']
+                            || $this->setting['display_employee_additional_expenses']
+                            || $this->setting['display_employee_stipend']
+                        ) {
+                            echo '<h2>' . t('Annual Cost to Company (CTC) funded by PEPFAR only Amount') . '</h2>';
+
+                            if ($this->translation['Employee Local Currency'] && $this->translation['Employee Local Currency'] != 'Employee Local Currency') {
+                                echo "<br>" . t('Currency:') . space . $this->translation['Employee Local Currency'] . '<br clear="all"/>'; #TODO rework
+                            }
+                        }
+                        if ($this->setting['display_employee_full_time']) {
+                            echo labelAndField($this, t('Full Time'), $this->fulltime);
+                        }
+
+                        echo labelAndField($this, t('Funded hours per week'), 'text', 'funded_hours_per_week', $this->employee['funded_hours_per_week']);
+
+                        //TA:#282 use currency format for the next fields
+                        if ($this->setting['display_employee_salary']) {
+                            echo labelAndField($this, t('Salary'), 'currency', 'salary', $this->employee['salary']);
+                        }
+                        if ($this->setting['display_employee_benefits']) {
+                            echo labelAndField($this, t('Benefits'), 'currency', 'benefits', $this->employee['benefits']);
+                        }
+                        if ($this->setting['display_employee_additional_expenses']) {
+                            echo labelAndField($this, t('Additional Expenses'), 'currency', 'additional_expenses', $this->employee['additional_expenses']);
+                        }
+                        if ($this->setting['display_employee_stipend']) {
+                            echo labelAndField($this, t('Stipend'), 'currency', 'stipend', $this->employee['stipend']);
+                        }
+                        if ($this->setting['display_employee_annual_cost']) {
+                            echo labelAndField($this, t('Annual Cost'), 'currency', 'annual_cost', $this->employee['annual_cost']);
+                        }
+
+                        echo '<div class="clear"></div><br /><br />';
+
+                        /////////////////////////// data table - course history - and UI javascript ///////////////////////////
+                        ?>
+
+                        <!-- TA:#256 -->
+
+            <div class="clear"></div>
+            <br/><br/>
+
+            <?php if ($this->setting['display_employee_courses_completed']) require_once('employee_course_table.phtml'); ?>
+
+            <h2 class="mechanismsHeader"><?php tp('Mechanisms'); ?>:</h2>
+
+            <table cellpadding="0" cellspacing="0" border="1" class="display tablegrid" id="employee_mechanism_table"
+                   style="width:100%">
+                <thead>
+                <tr>
+                    <th><?php tp('Mechanism'); ?></th>
+                    <th><?php tp('Percent'); ?></th>
+                    <?php if ($this->setting['display_hours_per_mechanism']) { ?>
+                        <th><?php tp('Hours'); ?></th>
+                    <?php }
+                    if ($this->setting['display_annual_cost_to_mechanism']) { ?>
+                        <th><?php tp('Annual Cost'); ?></th>
+                    <?php } ?>
+                    <th><?php tp("Delete?"); ?></th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <td class="mechanismTableFooter"><?php tp('Mechanism'); ?> Totals:</td>
+                    <td class="mechanismTableFooter" id="mechanismTableFooterPercent">0</td>
+                    <?php if ($this->setting['display_hours_per_mechanism']) { ?>
+                        <td class="mechanismTableFooter">0</td>
+                    <?php }
+                    if ($this->setting['display_annual_cost_to_mechanism']) { ?>
+                        <td class="mechanismTableFooter">0</td>
+                    <?php } ?>
+                    <td class="mechanismTableFooter"></td>
+                </tr>
+                </tfoot>
+                <tbody id="employee_mechanism_table_body">
+                <?php
+                $percent_total = 0;
+                foreach ($this->employeeMechanisms as $mechanismID => $mechData) {
+                    $percent_total += $mech['percentage'];
+                    ?>
+                    <tr id="table_mechanism_row_<?php echo $mechanismID; ?>">
+                        <td><?php echo $mechData['mechanism_phrase']; ?></td>
+                        <td class="percent"><?php echo $mechData['percentage']; ?></td>
+                        <?php if ($this->setting['display_hours_per_mechanism']) { ?>
+                            <td><?php echo sprintf('%0.1f', $mechData['percentage'] / 100.0 * $this->employee['funded_hours_per_week']); ?></td>
+                        <?php }
+                        if ($this->setting['display_annual_cost_to_mechanism']) { ?>
+                            <td><?php echo sprintf('%0.2f', $mechData['percentage'] / 100.0 * $this->employee['annual_cost']); ?></td>
+                        <?php } ?>
+                        <td><input id="table_mechanism_delete_toggle_<?php echo $mechanismID;?>" type="checkbox" onclick="deleteToggle(this);"/></td>
+                    </tr>
+                <?php } ?>
+
+                </tbody>
+            </table>
+
+            <input type="hidden" id="disassociateMechanisms" name="disassociateMechanisms" <?php
+            if (isset($this->employee['disassociateMechanisms'])) {
+                echo 'value="' . $this->employee['disassociateMechanisms'] . '"';
+            }
+            ?>/>
+
+            <?php if (isset($this->employee['associateMechanisms']) && isset($this->employee['mechanismPercentages'])) {
+                echo '<input type = "hidden" id = "associateMechanisms" name = "associateMechanisms" value="' . $this->employee['associateMechanisms'] . '" />';
+                echo '<input type = "hidden" id = "mechanismPercentages" name = "mechanismPercentages" value="' . $this->employee['mechanismPercentages'] . '" />';
+            }
+            else {
+                echo '<input type = "hidden" id = "associateMechanisms" name = "associateMechanisms" />';
+                echo '<input type = "hidden" id = "mechanismPercentages" name = "mechanismPercentages" />';
+            }
+            ?>
+            <br/>
+            <div class="clear"></div>
+            <div>
+            <!-- TA:#413 required -->
+                <label class="label"><span class="required">*</span>Add Mechanism</label>
+                <select id="new_mechanism" name="new_mechanism"></select>
+                <span>
+                        <label class="label">Percentage</label>
+                        <input type="text" id="percentage" name="percentage" value=""/>
+                      </span>
+                <input type="button" name="associateMechanism" value="<?php tp("Add"); ?>" class="insert"
+                       id="mechanismInsertButton" onclick="addMechanism();"/>
+            </div>
+
+            <div class="clear"></div>
+            <input type="hidden" name="limit" id="limit" value="1"/>
+
+            <input type="submit" class="submitNoArrow" name="saveonly" onclick="processMechanismAssociations();"
+                   value="<?php tp('Save'); ?>"/>
+
+
+        </form>
+        <div class="clear"></div>
+
+        <div class="clear"></div>
+    </div>
+</body>
+</html>

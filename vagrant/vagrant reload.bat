@@ -1,0 +1,2 @@
+vagrant reload
+pause

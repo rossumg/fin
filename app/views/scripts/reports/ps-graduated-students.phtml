@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title><?php echo $this->translation['Application Name'];?> | <?php tp('Graduated Students Report');?></title>
+		<?php
+		require_once('views/helpers/Location.php');
+		require_once('views/helpers/ScriptContainer.php');
+		print ScriptContainer::$instance->renderCSSHead();
+		print ScriptContainer::$instance->renderJSHead();
+		?>
+		<script type="text/javascript" charset="utf-8">
+			$(document).ready(function() {
+				/* Init the table */
+				oTable = $('.tablegrid').dataTable({
+					"bJQueryUI": true,
+					"sPaginationType": "full_numbers"
+				});
+			} );
+			function gotoPage(objId) {
+				var reportSelector = YAHOO.util.Dom.get(objId);
+				if ( reportSelector[reportSelector.selectedIndex].value ) {
+					window.location = '<?php echo $this->base_url;?>' + reportSelector[reportSelector.selectedIndex].value + '?<?php echo $_SERVER['QUERY_STRING'];?>';
+				}
+			}
+		</script>
+        <style>
+            .termination {
+                display: none;
+            }
+        </style>
+
+    </head>
+	<body class="yui-skin-sam" >
+		<div id="pageHolder">
+			<div id="header"><?php require_once('views/scripts/preheader.phtml');?></div>
+			<div id="content">
+				<div id="subcontent">
+					<?php
+					echo $this->partial('reports/student-report-types-partial.phtml', array('site_style' => $this->site_style));
+					?>
+					<div class="clear"></div>
+					<div id="contentheader">
+						<h2><?php tp('Graduated Students');?></h2><br>
+					</div>
+					<div class="pad50 clear"></div>
+					<form  action="" method="get">
+						<div class="mainformholder" style="height:100%;">
+					<input type="hidden" name="process" id="process" value="1">
+					<?php tp('Select Criteria');?><br>
+							<div class="fieldquestion"><?php echo t('Institution'); ?></div>
+							<div class="fieldshow"><input type="checkbox" name="showinstitution" id="showinstitution" value="1"<?php echo $_GET['showinstitution'] ? " checked" : "" ?>></div>
+							<div class="fieldselect"><select name="institution" id="institution" style="" size="10">
+	<?php
+		foreach ($this->institutions as $item){
+			echo "<option value=\"" . $item['id'] . "\">" . $item['institutionname'] . "</option>\n";
+		}
+	?>
+							</select></div>
+							<div class="clear pad20">&nbsp;</div>
+	
+							<div class="fieldquestion"><?php echo t('Cadre'); ?></div>
+							<div class="fieldshow"><input type="checkbox" name="showcadre" id="showcadre" value="1"<?php echo $_GET['showcadre'] ? " checked" : "" ?>></div>
+							<div class="fieldselect"><select name="cadre" id="cadre" style="" size="10">
+	<?php
+		foreach ($this->cadres as $item){
+			echo "<option value=\"" . $item['id'] . "\">" . $item['cadrename'] . "</option>\n";
+		}
+	?>
+							</select></div>
+							<div class="clear pad20">&nbsp;</div>
+	
+							<div class="fieldquestion"><?php echo t('Cohort'); ?></div>
+							<div class="fieldshow"><input type="checkbox" name="showcohort" id="showcohort" value="1"<?php echo $_GET['showcohort'] ? " checked" : "" ?>></div>
+							<div class="fieldselect"><select name="cohort" id="cohort" style="" size="10">
+	<?php
+		foreach ($this->cohorts as $item){
+			echo "<option value=\"" . $item['id'] . "\">" . $item['cohortname'] . "</option>\n";
+		}
+	?>
+							</select></div>
+							<div class="clear pad20">&nbsp;</div>
+	
+							<div class="fieldquestion"><?php echo t('Degree'); ?></div>
+							<div class="fieldshow"><input type="checkbox" name="showdegrees" id="showdegrees" value="1"<?php echo $_GET['showdegrees'] ? " checked" : "" ?>></div>
+							<div class="fieldselect"><select name="degrees" id="degrees" style="" size="10">
+	<?php
+		foreach ($this->degrees as $item){
+			echo "<option value=\"" . $item['id'] . "\">" . $item['degree'] . "</option>\n";
+		}
+	?>
+							</select></div>
+							<div class="clear pad20">&nbsp;</div>
+	
+							<div class="fieldquestion"><?php echo t('Gender'); ?></div>
+							<div class="fieldshow"><input type="checkbox" name="showgender" id="showgender" value="1"<?php echo $_GET['showgender'] ? " checked" : "" ?>></div>
+							<div class="fieldselect"><select name="gender" id="gender" style="" size="10">
+	<?php
+			echo "<option value=\"0\"" . ($_GET['gender'] == 0 ? " checked" : "") . ">All</option>\n";
+			echo "<option value=\"1\"" . ($_GET['gender'] == 1 ? " checked" : "") . ">Male</option>\n";
+			echo "<option value=\"2\"" . ($_GET['gender'] == 2 ? " checked" : "") . ">Female</option>\n";
+	?>
+							</select></div>
+							<div class="clear pad20">&nbsp;</div>
+							
+							<!-- TA:#251 -->
+							<div class="fieldquestion"><?php echo t('Marital Status'); ?></div>
+							<div class="fieldshow">
+							<input type="checkbox" name="show_marital_status" id="show_marital_status" value="1"<?php echo $this->criteria['show_marital_status'] ? " checked" : "" ?>></div>
+							<div class="fieldselect"></div>
+							<div class="clear pad20">&nbsp;</div>
+	
+							<div class="fieldquestion"><?php echo t('Nationality'); ?></div>
+							<div class="fieldshow"><input type="checkbox" name="shownationality" id="shownationality" value="1"<?php echo $_GET['shownationality'] ? " checked" : "" ?>></div>
+							<div class="fieldselect"></div>
+							<div class="clear pad20">&nbsp;</div>
+							
+							<!-- TA:#400 -->
+							<div class="fieldquestion"><?php echo t('Index Number'); ?></div>
+							<div class="fieldshow"><input type="checkbox" name="showindexnumber" id="showindexnumber" value="1"<?php echo $this->criteria['showindexnumber'] ? " checked" : "" ?>></div>
+							<div class="fieldselect"></div>
+							<div class="clear pad20">&nbsp;</div>
+							
+							<!-- TA:#251 -->
+							<div class="fieldquestion"><?php tp("Date of Birth"); ?></div>
+							<div class="fieldshow">
+							<input type="checkbox" name="showdob" id="showdob" value="1"<?php echo $this->criteria['showdob'] ? " checked" : "" ?>></div>
+							<div class="fieldselect"></div>
+							<div class="clear pad20">&nbsp;</div>
+	
+							<div class="fieldquestion"><?php echo t('Age'); ?></div>
+							<div class="fieldshow"><input type="checkbox" name="showage" id="showage" value="1"<?php echo $_GET['showage'] ? " checked" : "" ?>></div>
+							<div class="fieldselect"><input type="text" name="agemin" id="agemin" value="" style="width : 50px;" placeholder="<?php tp('Min')?>"> 
+							<input type="text" name="agemax" id="agemax" value="" style="width : 50px;" placeholder="<?php tp('Max')?>"></div>
+							<div class="clear pad20">&nbsp;</div>
+	
+							<div class="fieldquestion"><?php echo t('Facility @ graduation'); ?></div>
+							<div class="fieldshow"><input type="checkbox" name="showfacility" id="showfacility" value="1"<?php echo $_GET['showfacility'] ? " checked" : "" ?>></div>
+							<div class="fieldselect"><select name="facility" id="facility" style="" size="10">
+	<?php
+		foreach ($this->facilities as $item){
+			echo "<option value=\"" . $item['id'] . "\">" . $item['facility_name'] . "</option>\n";
+		}
+	?>
+							</select></div>
+							
+							<div class="fieldquestion"><?php echo t('Funding source'); ?></div>
+<div class="fieldshow">
+    <input type="checkbox" name="showfunding" id="showfunding"
+           value="1"<?php if (isset($this->criteria['showfunding']) && $this->criteria['showfunding']) { echo " checked"; } ?>></div>
+<div class="fieldselect"></div>
+
+
+							<div class="clear pad20">&nbsp;</div>
+	
+							<div class="fieldquestion"><?php echo t('Tutor advisor'); ?></div>
+							<div class="fieldshow"><input type="checkbox" name="showtutor" id="showtutor" value="1"<?php echo $_GET['showtutor'] ? " checked" : "" ?>></div>
+							<div class="fieldselect"><select name="tutor" id="tutor" style="" size="10">
+	<?php
+		foreach ($this->tutors as $item){
+			echo "<option value=\"" . $item['id'] . "\">" . $item['first_name'] . " " . $item['last_name'] . "</option>\n";
+		}
+	?>
+							</select></div>
+							<div class="clear pad20">&nbsp;</div>
+							
+							<!-- TA:#251 -->
+							<div class="fieldquestion"><?php echo t('Start date'); ?></div>
+							<div class="fieldshow"><input type="checkbox" name="showstartdate" id="showstartdate" value="1"<?php echo $_GET['showstartdate'] ? " checked" : "" ?>></div>
+							<div class="fieldselect"></div>
+							<div class="clear pad20">&nbsp;</div>
+	
+							<div class="fieldquestion"><?php echo t('Graduation date between'); ?></div>
+							<div class="fieldshow"><input type="checkbox" name="showgraduation" id="showgraduation" value="1"<?php echo $_GET['showgraduation'] ? " checked" : "" ?>></div>
+							<div class="fieldselect"><input type="text" name="gradstartday" id="gradstartday" value="" placeholder="<?php tp('Day')?>" style="width : 30px; margin-right : 10px; margin-left : 0px;">
+							<input type="text" name="gradstartmonth" id="gradstartmonth" value="" placeholder="<?php tp('Month')?>" style="width : 30px; margin-right : 10px; margin-left : 0px;"> 
+							<input type="text" name="gradstartyear" id="gradstartyear" value="" placeholder="<?php tp('Year')?>" style="width : 50px; margin-right : 10px; margin-left : 0px;"><br>
+							<br><?php tp('and')?><br><br>
+							<input type="text" name="gradendday" id="gradendday" value="" placeholder="<?php tp('Day')?>" style="width : 30px; margin-right : 10px; margin-left : 0px;"> 
+							<input type="text" name="gradendmonth" id="gradendmonth" value="" placeholder="<?php tp('Month')?>" style="width : 30px; margin-right : 10px; margin-left : 0px;"> 
+							<input type="text" name="gradendyear" id="gradendyear" value="" placeholder="<?php tp('Year')?>" style="width : 50px; margin-right : 10px; margin-left : 0px;"></div>
+							<div class="clear pad20">&nbsp;</div>
+						</div>
+						<div class="pad20 clear"></div>
+						<div class="mainformholder" style="height : 100px;">
+							<div  style="float : right;" >
+								<input type="submit" name="go" value="<?php tp('Preview');?> &raquo;" class="tsbutton green large"> 				
+							</div>
+							<div class="clear pad20">&nbsp;</div>
+						</div>
+						<div class="clear pad20">&nbsp;</div>
+					</form>
+        <?php if (isset($this->output)) {
+            echo $this->partial('reports/ps-jquery-table-search-results-preview-partial.phtml',
+                array('output' => $this->output, 'headers' => $this->headers));
+            ?>
+            <input type="button" name="go" value="<?php tp('Download');?> &raquo;" class="tsbutton green large"
+                   onclick="window.open('<?php echo $_SERVER['REQUEST_URI'] . "&format=csv"?>')">
+        <?php } ?>
+					<div class="clear" style=""></div>
+				</div>
+				<div class="clear" style=""></div>
+			</div>   
+			<div class="clear" style="height : 100px;"></div>
+			<div class="clear" style=""></div>
+							
+	
+			<div id="footer"><?php require_once('views/scripts/footer.phtml');?></div>
+			</div>
+		</div>
+	</body>
+</html>
+
+
+

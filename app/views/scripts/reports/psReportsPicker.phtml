@@ -1,0 +1,24 @@
+<script language="javascript">
+	function gotoPage(objId) {
+                var reportSelector = YAHOO.util.Dom.get(objId);
+                if ( reportSelector[reportSelector.selectedIndex].value ) {
+                    window.location = '<?php echo $this->base_url;?>' + reportSelector[reportSelector.selectedIndex].value + '?<?php echo $_SERVER['QUERY_STRING'];?>';
+                }
+            }
+</script>
+    	<div class="fieldLabel" id="training_lbl"><?php tp('Select PS report');?></div>
+                    <select id="pstraining" name="pstraining" onchange="gotoPage('pstraining');">
+                        <optgroup label="Student Reports">
+                        <option value="/reports/ps-students-trained" <?php if ( strstr($_SERVER['REQUEST_URI'],'ps-students-trained')) echo 'SELECTED';?> ><?php tp('Students Trained ');?> </option>
+                        <option value="/reports/ps-students-by-name"<?php if ( strstr($_SERVER['REQUEST_URI'],'ps-students-by-name')) echo 'SELECTED';?> ><?php tp('Students By Name ');?> </option>
+                        <option value="/reports/ps-graduated-students"<?php if ( strstr($_SERVER['REQUEST_URI'],'ps-graduated-students')) echo 'SELECTED';?> ><?php tp('Graduated Students ');?> </option>
+                        </optgroup>
+                        <optgroup label="Course Reports">
+                        <option value="/reports/ps-course-by-name" <?php if ( strstr($_SERVER['REQUEST_URI'],'ps-course-by-name')) echo 'SELECTED';?> ><?php tp('Course By Name ');?> </option>
+                        <option value="/reports/ps-course-by-student-count"<?php if ( strstr($_SERVER['REQUEST_URI'],'ps-course-by-student-count')) echo 'SELECTED';?> ><?php tp('Course By Student Count ');?> </option>
+                        </optgroup>
+                        <option value="/reports/ps-cohort-by-participant-count" <?php if ( strstr($_SERVER['REQUEST_URI'],'ps-cohort-by-participant-count')) echo 'SELECTED';?> ><?php tp('Cohort By Participant Count ');?> </option>
+                        <option value="/reports/ps-institution-information" <?php if ( strstr($_SERVER['REQUEST_URI'],'ps-institution-information')) echo 'SELECTED';?> ><?php tp('Institution Information ');?> </option> 
+                         <option value="/reports/ps-tutor-by-name" <?php if ( strstr($_SERVER['REQUEST_URI'],'ps-tutor-by-name')) echo 'SELECTED';?> ><?php tp('Tutors By Name ');?> </option>
+                         <option value="/reports/ps-facility-report" <?php if ( strstr($_SERVER['REQUEST_URI'],'ps-facility-report')) echo 'SELECTED';?> ><?php tp('Facility ');?> </option>      
+                    </select><br/><br/>

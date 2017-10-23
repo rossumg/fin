@@ -1,0 +1,16 @@
+
+<div class="fieldLabel" id="training_lbl">
+<?php echo t('Employee') . ' ' . t('Reports');?>
+</div>
+
+<?php
+//TA:#452
+$options = array(
+    "" => "--" . t('choose') . "--",
+    "/reports/employees" => t('Custom')
+);
+
+$r = Zend_Controller_Front::getInstance()->getRequest();
+$selected = "/" . $r->getControllerName() . "/" .$r->getActionName();
+echo $this->formSelect('employees', $selected, array('id' => 'employee-reports', 'onchange' => "window.location = '$this->base_url' + $(this).val();"), $options);
+echo "<br/><br>";

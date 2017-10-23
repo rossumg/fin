@@ -1,0 +1,1384 @@
+<html>
+	<head>
+		<title><?php echo $this->escape($this->title);?></title>
+		<link href="//fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+
+	<?php
+	require_once('views/helpers/Location.php');
+	require_once('views/helpers/ScriptContainer.php');
+	print ScriptContainer::$instance->renderCSSHead();
+	print ScriptContainer::$instance->renderJSHead();	?>
+
+        <style>
+            .dataTables_wrapper { min-height: 0; }
+        </style>
+		<script type="text/javascript" charset="utf-8">
+
+		var cohort_ids = [];
+		var prior_courses = <?php echo json_encode(array_flip($this->prior_education_courses), JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>;
+		//TA:#388
+	    var funding = <?php echo json_encode(array_flip($this->lookupfunding), JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>;
+	    
+			$(document).ready(function() {
+
+			    $('#prior_courses_to_delete').data('assoc_ids', []);
+			    $('#funding_to_delete').data('assoc_ids_funding', []);//TA:#388
+
+				/* Funding - set checkbox if not empty*/
+				$("input[name^=fundingamount]").keyup(function (e) {
+					var id = $(this).attr('id');
+					$('input[name="' + id + '"]').attr('checked', ( ( $(this).val() == "") ? null : 'checked'));
+				});
+				$( ".calendarbox" ).datepicker({
+					changeMonth: true,
+					changeYear: true,
+					yearRange:"-100:+0"
+				});
+				/* Add a click handler to the rows - this could be used as a callback */
+				$(".tablegrid tbody").click(function(event) {
+					$(oTable.fnSettings().aoData).each(function (){
+						$(this.nTr).removeClass('row_selected');
+					});
+					$(event.target.parentNode).addClass('row_selected');
+				});
+
+				/* Add a click handler for the delete row */
+				$('#delete').click( function() {
+					var anSelected = fnGetSelected( oTable );
+					oTable.fnDeleteRow( anSelected[0] );
+				} );
+
+				/* Init the tables */
+				oTable = $('.tablegrid').dataTable({
+					"bJQueryUI": true,
+					"sPaginationType": "full_numbers"
+				});
+
+                <?php
+                /* init non-paging tables - workaround for the checkboxes that are not registering because they
+                    are not visible
+                */
+                ?>
+                var fullTable = $('.tablegrid_show_all').dataTable({
+                    "bJQueryUI": true,
+                    "bFilter": false,
+                    "iDisplayLength": -1,
+                    "bLengthChange": false
+                });
+
+                $("#prior_course_transcript tbody").click(function(event) {
+                    var $n = $(event.target.parentNode);
+                    var children = $n.children('td');
+                    var oTable = $('#prior_course_transcript').dataTable();
+
+                    if (confirm("Do you want to delete the " + children[0].innerText + " course?")) {
+                        var associd = $n.data('associd');
+                        if ((associd !== null) && (typeof associd !== 'undefined')) {
+                            $('#prior_courses_to_delete').data('assoc_ids').push(associd);
+                        }
+                        else {
+                            delete $('#prior_courses_to_add').data('new_courses')[prior_courses[children[0].innerText]];
+                        }
+                        oTable.fnDeleteRow($n[0]);
+                    }
+                    $(oTable.fnSettings().aoData).each(function (){
+                        $(this.nTr).removeClass('row_selected');
+                    });
+                    $(event.target.parentNode).addClass('row_selected');
+                });
+
+                //TA:#388
+                $("#funding tbody").click(function(event) {
+                    var $n = $(event.target.parentNode);
+                    var children = $n.children('td');
+                    var oTable = $('#funding').dataTable();
+                    var year = children[0].innerText;
+                    var year_txt = "";
+                    if(year != ""){
+                    	year_txt = " " + year + " year of study ";
+                    }
+                    if (confirm("Do you want to delete the '" + children[1].innerText + "' funding" + year_txt + "?")) {
+                        var associd = $n.data('associd');
+                        if ((associd !== null) && (typeof associd !== 'undefined')) {
+                            if($('#funding_to_delete').val() !=""){
+                            	$('#funding_to_delete').val($('#funding_to_delete').val() + "|");
+                            }
+                            $('#funding_to_delete').val($('#funding_to_delete').val() + associd);
+                        }else {
+                            var add_data = ($('#funding_to_add').val()).split("|");
+                            $('#funding_to_add').val("");
+                            for(i=0; i<add_data.length; i++){
+                                var d = add_data[i].split("=");
+                                if(!(d[0] == year && d[2] ==  children[1].innerText)){
+                                	if($('#funding_to_add').val() !=""){
+                                    	$('#funding_to_add').val($('#funding_to_add').val() + "|");
+                                    }
+                                    $('#funding_to_add').val($('#funding_to_add').val() + add_data[i]);
+                                }
+                            }
+                            
+                        }
+                        oTable.fnDeleteRow($n[0]);
+                    }
+                    $(oTable.fnSettings().aoData).each(function (){
+                        $(this.nTr).removeClass('row_selected');
+                    });
+                    $(event.target.parentNode).addClass('row_selected');
+                });
+                //////
+
+				$( "#dialog-form-license" ).dialog({
+					autoOpen: false,
+					height: 460,
+					width: 750,
+					modal: true,
+					buttons: {
+						<?php echo t('Update')?>: function() {
+							document.getElementById('licenseform').submit();
+						},
+						<?php echo t('Cancel')?>: function() {
+							$( this ).dialog( "close" );
+						}
+					}
+				});
+
+				$( "#licensepopupbutton" )
+					.button()
+					.click(function() {
+						$( "#dialog-form-license" ).dialog( "open" );
+				});
+
+				$( "#dialog-form-class" ).dialog({
+					autoOpen: false,
+					height: 460,
+					width: 750,
+					modal: true,
+					buttons: {
+						"<?php echo t('Update')?>": function() {
+							document.getElementById('classform').submit();
+						},
+						"<?php echo t('Cancel')?>": function() {
+							$( this ).dialog( "close" );
+						}
+					}
+				});
+
+				$( "#classpopupbutton" )
+					.button()
+					.click(function() {
+						$( "#dialog-form-class" ).dialog( "open" );
+				});
+
+				$( "#dialog-form-practicum" ).dialog({
+					autoOpen: false,
+					height: 460,
+					width: 750,
+					modal: true,
+					buttons: {
+						"<?php echo t('Update')?>": function() {
+							document.getElementById('practicumform').submit();
+						},
+						"<?php echo t('Cancel')?>": function() {
+							$( this ).dialog( "close" );
+						}
+					}
+				});
+
+				$( "#practicumpopupbutton" )
+					.button()
+					.click(function() {
+						$( "#dialog-form-practicum" ).dialog( "open" );
+				});
+
+                $('#prior_courses_to_add').data('new_courses', {});
+                $('#funding_to_add').data('new_funding', {});//TA:#388
+			});
+
+			//TA:#407.2
+			function downloadPriorCourse() {
+				var doc = new jsPDF();
+				doc.setFontSize(14);
+				doc.text(20, 20, 'Prior Education Report/Transcript');
+				doc.setFontSize(12);
+				doc.text(20, 30, 'Student Name: ' + $('#firstname').val() + " "  + $('#middlename').val() + " " + $('#lastname').val());
+				doc.text(20, 40, 'Last School Attended: ' + $('#lastinstatt').val() );
+				doc.text(20, 50, 'High School Completion Date: ' + $('#hscomldate').val() );
+				doc.text(20, 60, 'List of course names and grades:');
+				var elem = document.getElementById("prior_course_transcript");
+				var res = doc.autoTableHtmlToJson(elem);
+				doc.autoTable(res.columns, res.data,
+						{
+					startX: 20,
+				    startY: 80,
+				    tableWidth: 'auto',
+				    columnWidth: 'auto',
+				    styles: {
+				      overflow: 'linebreak',
+				      rowHeight: 12
+				    }
+				  });
+				doc.save('prior_education_report.pdf');
+			}
+
+			function savePriorCourse() {
+			    var $courseBox = $('#prior_course_id option:selected');
+			    var $gradeBox = $('#prior_course_grade');
+                var courseID = $courseBox.val();
+                var courseName = $courseBox.text();
+                var grade = $gradeBox.val();
+
+                if (courseID != '0' && grade.length > 0) {
+
+                    $('#prior_courses_to_add').data('new_courses')[courseID] = grade;
+                    var oTable = $('#prior_course_transcript').dataTable();
+                    oTable.fnAddData([courseName, grade]);
+
+                    $('#prior_course_id').val('0').change();
+                    $gradeBox.val('');
+                }
+            }
+
+            function processCoursesAndSubmit() {
+                var $newCoursesElement = $('#prior_courses_to_add');
+                var $deleteCoursesElement = $('#prior_courses_to_delete');
+                $newCoursesElement.val(JSON.stringify($newCoursesElement.data('new_courses')));
+                $deleteCoursesElement.val(JSON.stringify($deleteCoursesElement.data('assoc_ids')));
+                document.getElementById('peopleadd').submit();
+            }
+
+			/* Get the rows which are currently selected */
+			function fnGetSelected( oTableLocal ){
+				var aReturn = new Array();
+				var aTrs = oTableLocal.fnGetNodes();
+
+				for ( var i=0 ; i<aTrs.length ; i++ ){
+					if ( $(aTrs[i]).hasClass('row_selected') ){
+						aReturn.push( aTrs[i] );
+					}
+				}
+				return aReturn;
+			}
+
+			//TA:#388
+			function saveFunding() {
+				var $fundingYearBox = $('#funding_year option:selected');
+			    var $fundingBox = $('#funding_id option:selected');
+			    var $amountBox = $('#funding_amount');
+                var fundingID = $fundingBox.val();
+                var fundingYear = $fundingYearBox.text();
+                var fundingName = $fundingBox.text();
+                var amount = $amountBox.val();
+                if (fundingID != '0' && amount.length > 0) {
+                    if($('#funding_to_add').val() !=""){
+                    	$('#funding_to_add').val($('#funding_to_add').val() + "|");
+                    }
+                    //data: [fundingYear]=[fundingID]=[fundingName]=[amount]|[fundingYear]=[fundingID]=[fundingName]=[amount]....
+                    $('#funding_to_add').val($('#funding_to_add').val() + fundingYear + "=" + fundingID + "=" + fundingName + "=" + amount);
+                    var oTable = $('#funding').dataTable();
+                    oTable.fnAddData([fundingYear, fundingName, amount]);
+                    $('#funding_id').val('0').change();
+                    $('#funding_year').val('0').change();
+                    $amountBox.val('');
+                }
+            }
+
+			function checkcohort(){//TA:#217
+				if ($("#cohortid").val() == 0){
+					$("#studentid").attr('disabled','disabled');
+					$("#studentid").val('');
+					$("#studenttype").attr('disabled','disabled');
+					$("#studenttype").val(0);
+				} else {
+
+					// check if student was associated with selected cohort before
+					for(i=0;i<cohort_ids.length; i++){
+						if(cohort_ids[i] == $("#cohortid").val()){
+							alert("This student cannot be associated with selected cohort.");
+							$("#cohortid").val(cohort_ids[0]);
+							return;
+						}
+					}
+					
+					
+					$("#studentid").removeAttr('disabled');
+					$("#studenttype").removeAttr('disabled');
+					//TA:#217
+					$("#enrollmentdate").val('');
+					$("#enrollmentreason").val(0);
+					$("#separationdate").val('');
+					$("#separationreason").val(0);
+					$("#cadre").val(0);
+					$("#yearofstudy").val('');
+					
+				}
+			}
+
+			//TA:51 10/05/2015
+			function deleteConfirm(){
+				var res = confirm("Do you want to delete this student?");
+				if(res){
+					return true;
+				}
+				return false;
+			}
+		</script>
+	</head>
+	<body>
+
+<!--
+######################################
+#                                    #
+#  POPUP DIALOG FOR LICENSE DETAILS  #
+#                                    #
+######################################
+-->
+
+
+<div id="dialog-form-license" title="<?php echo t('Update exams')?>">
+	<form method="post" name="licenseform" id="licenseform">
+		<input type="hidden" name="licenseaction" id="licenseaction" value="license">
+		<input type="hidden" name="licenseid" id="licenseid" value="<?php echo $this->id; ?>">
+		<input type="hidden" name="cohortid" id="cohortid" value="<?php echo $this->cohortid ?>">
+		<input type="hidden" name="sid" value="<?php echo $this->escape($this->sid); ?>">
+		<table cellpadding="0" cellspacing="0" border="0" class="display tablegrid_show_all" id="" style="width:100%">
+			<thead>
+				<tr>
+					<th><?php echo t('License name'); ?></th>
+					<th><?php echo t('Date'); ?></th>
+					<th><?php echo t('Grade'); ?></th>
+					<!-- TA:#402.2 -->
+					<th><?php echo t('Grade Description'); ?></th>
+				</tr>
+			</thead>
+			<tbody>
+<?php
+	foreach ($this->currentlicenses as $classes){
+?>
+				<tr class="GradeA">
+					<td><?php echo $classes['licensename']; ?></td>
+					<td class="" style="width : 120px;"><?php echo date("m/d/Y", strtotime($classes['licensedate'])); ?></td>
+					<td class="" style="width : 120px;"><input type="text" name="license[<?php echo $classes['id'] ?>][grade]" id="license[<?php echo $classes['id'] ?>][grade]" value="<?php echo trim(strtolower($classes['grade'])) != "n/a" ? $classes['grade'] : ""; ?>" style="width : 100%;"></td>
+				<!-- TA:#402.3 -->
+					<td class="" style="width : 120px;">
+					<select name="license[<?php echo $classes['id'] ?>][grade_desciption]" id="license[<?php echo $classes['id'] ?>][grade_desciption]" style="width : 100%;">
+					<option value="">-- select --</option>
+					<?php foreach ($this->grade_desc as $lookup){
+					    if($lookup['grade_description_type'] === 'licensing'){
+					        $select = '';
+					        if($classes['grade_description']=== $lookup['grade_description_name']){
+					            $select = 'selected';
+					        }
+					       echo "<option value='" . $lookup['grade_description_name'] . "' " . $select . ">" . $lookup['grade_description_name'] . "</option>";
+					}}?>
+					</select></td>
+				</tr>
+<?php
+	}
+?>
+			</tbody>
+		</table>
+	</form>
+</div>
+
+<!--
+####################################
+#                                  #
+#  POPUP DIALOG FOR CLASS DETAILS  #
+#                                  #
+####################################
+-->
+
+
+<div id="dialog-form-class" title="<?php echo t('Update classes'); ?>">
+	<form method="post" name="classform" id="classform">
+		<input type="hidden" name="classaction" id="classaction" value="classaction">
+		<input type="hidden" name="classid" id="classid" value="<?php echo $this->id; ?>">
+		<input type="hidden" name="cohortid" id="cohortid" value="<?php echo $this->cohortid ?>">
+		<input type="hidden" name="sid" value="<?php echo $this->escape($this->sid); ?>">
+		<table cellpadding="0" cellspacing="0" border="0" class="display tablegrid_show_all" id="" style="width:100%">
+			<thead>
+				<tr>
+					<th><?php echo t('Class Name'); ?></th>
+					<!-- TA:#402 
+					<th><?php echo t('Instructor'); ?></th>
+					-->
+					<th><?php echo t('Start date'); ?></th>
+					<th><?php echo t('End date'); ?></th>
+					<?php if($this->setting['ps_display_ca_mark']) : ?>
+					<th><?php echo t($this->translation['ps ca mark']); ?></th>
+					<?php endif; ?>
+					<?php if($this->setting['ps_display_exam_mark']) : ?>
+					<th><?php echo t($this->translation['ps exam mark']); ?></th>
+					<?php endif; ?>
+					<th><?php echo t('Grade'); ?></th>
+					<!-- TA:#402 -->
+					<th><?php echo t('Grade Description'); ?></th>
+					<?php if($this->setting['ps_display_credits']) : ?>
+					<th><?php echo t($this->translation['ps credits']); ?></th>
+					<?php endif; ?>
+				</tr>
+			</thead>
+			<tbody>
+<?php
+//print_r($this->currentclasses);
+	foreach ($this->currentclasses as $classes){
+	   // print $classes['grade_description']. ",";
+?>
+				<tr class="GradeA">
+					<td><?php echo $classes['classname']; ?></td>
+					<!-- TA:#402 td class="" style="width : 200px;"><?php echo $classes['first_name'] . " " . $classes['last_name']; ?></td>-->
+					<td class="" style="width : 120px;"><?php echo date("m/d/Y", strtotime($classes['startdate'])); ?></td>
+					<td class="" style="width : 120px;"><?php echo date("m/d/Y", strtotime($classes['enddate'])); ?></td>
+					<?php if($this->setting['ps_display_ca_mark']) : ?>
+						<td class="" style="width : 120px;"><input type="text" name="camark[<?php echo $classes['id'] ?>]" id="camark[<?php echo $classes['id'] ?>]" value="<?php echo trim(strtolower($classes['camark'])) != "n/a" ? $classes['camark'] : ""; ?>" style="width : 100%;"></td>
+					<?php endif; ?>
+					<?php if($this->setting['ps_display_exam_mark']) : ?>
+						<td class="" style="width : 120px;"><input type="text" name="exammark[<?php echo $classes['id'] ?>]" id="exammark[<?php echo $classes['id'] ?>]" value="<?php echo trim(strtolower($classes['exammark'])) != "n/a" ? $classes['exammark'] : ""; ?>" style="width : 100%;"></td>
+					<?php endif; ?>
+					<td class="" style="width : 120px;"><input type="text" name="grade[<?php echo $classes['id'] ?>]" id="grade[<?php echo $classes['id'] ?>]" value="<?php echo trim(strtolower($classes['grade'])) != "n/a" ? $classes['grade'] : ""; ?>" style="width : 100%;"></td>
+					<!-- TA:#403 -->
+					<td class="" style="width : 120px;">
+					<select name="grade_description[<?php echo $classes['id'] ?>]" id="grade_description[<?php echo $classes['id'] ?>]" style="width : 100%;">
+					<option value="">-- select --</option>
+					<?php foreach ($this->grade_desc as $lookup){
+					    if($lookup['grade_description_type'] === 'class'){
+					        $select = '';
+					        if($classes['grade_description'] === $lookup['grade_description_name']){
+					            $select = 'selected';
+					        }
+					       echo "<option value='" . $lookup['grade_description_name'] . "' " . $select . ">" . $lookup['grade_description_name'] . "</option>";
+					}}?>
+					</select></td>
+					<?php if($this->setting['ps_display_credits']) : ?>
+						<td class="" style="width : 120px;"><input type="text" name="credits[<?php echo $classes['id'] ?>]" id="credits[<?php echo $classes['id'] ?>]" value="<?php echo trim(strtolower($classes['credits'])) != "n/a" ? $classes['credits'] : ""; ?>" style="width : 100%;"></td>
+					<?php endif; ?>				
+				</tr>
+<?php
+
+	}
+?>
+			</tbody>
+		</table>
+	</form>
+</div>
+
+<!--
+########################################
+#                                      #
+#  POPUP DIALOG FOR practicum DETAILS  #
+#                                      #
+########################################
+-->
+
+<div id="dialog-form-practicum" title="<?php echo t('Update clinical allocation')?>">
+	<form method="post" name="practicumform" id="practicumform">
+		<input type="hidden" name="practicumaction" id="practicumaction" value="practicumaction">
+		<input type="hidden" name="practicumid" id="practicumid" value="0">
+		<input type="hidden" name="cohortid" id="cohortid" value="<?php echo $this->cohortid ?>">
+		<input type="hidden" name="sid" value="<?php echo $this->escape($this->sid); ?>">
+		<table cellpadding="0" cellspacing="0" border="0" class="display tablegrid_show_all" id="" style="width:100%">
+			<thead>
+				<tr>
+					<th><?php echo t('Practicum name'); ?></th>
+					<th><?php echo t('Practicum date'); ?></th>
+					<th><?php echo t('Hours required'); ?></th>
+					<th><?php echo t('Hours completed'); ?></th>
+					<th><?php echo t('Grade'); ?></th>
+					<!-- TA:#402.2 -->
+					<th><?php echo t('Grade Description'); ?></th>
+				</tr>
+			</thead>
+			<tbody>
+<?php
+	foreach ($this->currentpracticum as $classes){
+?>
+				<tr class="GradeA">
+					<td><?php echo $classes['practicumname']; ?></td>
+					<td class="" style="width : 120px;"><?php echo date("m/d/Y", strtotime($classes['practicumdate'])); ?></td>
+					<td class="" style="width : 120px;"><?php echo $classes['hoursrequired']; ?></td>
+					<td class="" style="width : 150px;"><input type="text" name="practicum[<?php echo $classes['id'] ?>][completed]" id="practicum[<?php echo $classes['id'] ?>][completed]" value="<?php echo is_numeric($classes['hourscompleted']) ? $classes['hourscompleted'] : "0"; ?>" style="width : 100%;"></td>
+					<td class="" style="width : 120px;"><input type="text" name="practicum[<?php echo $classes['id'] ?>][grade]" id="practicum[<?php echo $classes['id'] ?>][grade]" value="<?php echo trim(strtolower($classes['grade'])) != "n/a" ? $classes['grade'] : ""; ?>" style="width : 100%;"></td>
+					<!-- TA:#402.3 -->
+					<td class="" style="width : 120px;">
+					<select name="practicum[<?php echo $classes['id'] ?>][grade_desciption]" id="grade_description[<?php echo $classes['id'] ?>]" style="width : 100%;">
+					<option value="">-- select --</option>
+					<?php foreach ($this->grade_desc as $lookup){
+					    if($lookup['grade_description_type'] === 'clinical'){
+					        $select = '';
+					        if($classes['grade_description']=== $lookup['grade_description_name']){
+					            $select = 'selected';
+					        }
+					       echo "<option value='" . $lookup['grade_description_name'] . "' " . $select . ">" . $lookup['grade_description_name'] . "</option>";
+					}}?>
+					</select></td>
+				</tr>
+<?php
+	}
+?>
+			</tbody>
+		</table>
+	</form>
+</div>
+
+
+
+		<div id="pageHolder">
+			<div id="header"><?php require_once('views/scripts/preheader.phtml');?></div>
+			<div id="content">
+				<?php require_once 'views/scripts/status.phtml'; ?>
+
+				<div id="subcontent">
+
+
+					<div id="contentheader">
+						<h2><?php echo t('Edit Student Record'); ?></h2><br><br>
+					</div>
+					<div class="clear pad20"></div>
+					<form  action="#" id="peopleadd" method="post">
+						<input type="hidden" name="id" value="<?php echo $this->escape($this->id); ?>">
+						<input type="hidden" name="sid" value="<?php echo $this->escape($this->sid); ?>">
+						
+						<!-- TA:6: added 8/8/2014 table for better allignment-->
+				<table style="width:100%">
+				<tr>
+				<td>
+				
+						<div class="mainformholder" style="height:100%;">
+							<label><?php echo t('Graduated'); ?>?</label>
+							<select name="graduated">
+								<option value="0"<?php echo ($this->escape($this->graduated) == 0 ? " selected" : "") ?>><?php echo t('No')?></option>
+								<option value="1"<?php echo ($this->escape($this->graduated) == 1 ? " selected" : "") ?>><?php echo t('Yes')?></option>
+							</select>
+
+							<label><?php echo t('Cohort') ?></label>
+							<input type="hidden" name="cohortid" value="<?php echo $this->cohortid; ?>" />
+							<!-- TA:#217 if separation date is not empty then allow assign student to the new cohort -->
+							<select name="cohortid" id="cohortid" onchange="checkcohort()" <?php if (!empty($this->cohortid) && ($this->separationdate == "" || $this->separationdate == "0000-00-00")) echo 'disabled' ?>>
+								<option value="0"><?php echo t('Select...'); ?></option>
+<?php
+	foreach ($this->getcohorts as $cohort){
+		if (trim($cohort['cohortname']) != ""){
+?>
+								<option value="<?php echo $cohort['id']; ?>"<?php echo ($this->escape($this->cohortid) == $cohort['id'] ? " selected" : "") ?>><?php echo $cohort['cohortname'] . (trim($cohort['cohortid']) != "" ? " [" . trim($cohort['cohortid']) . "]" : ""); ?></option>
+<?php
+		}
+	}
+?>
+							</select>
+							
+							
+
+							<div class="clear pad20"></div>
+							<p style=""><?php echo t('Personal Information'); ?></p><br>
+							
+							<div class="clear pad20"></div>
+							
+							<!-- TA:83 <label><?php //echo t('Student ID'); ?></label>
+							<input readonly type="text" name="studentid" id="studentid" value="<?php //echo $this->escape($this->id);?>">
+							-->
+
+		 					<label><?php echo t('Title'); ?></label>
+							<select name="title" >
+								<option value="0"><?php echo t('Select...'); ?></option>
+							<?php foreach ($this->gettitle as $fetchtitle){ ?>
+								<option value="<?php echo $fetchtitle['id']; ?>"<?php echo ($this->escape($this->selid) == $fetchtitle['id'] ? " selected" : "") ?>><?php echo $fetchtitle['title_phrase']; ?></option>
+							<?php } ?>
+							</select>
+
+							<label><?php echo t('First name'); ?></label>
+							<!-- TA:#407.2 -->
+							<input type="text" id="firstname" name="firstname" value="<?php echo $this->escape($this->firstname);?>">
+
+							<!-- TA:#407.2 -->
+							<label><?php echo t('Middle name'); ?></label>
+							 <input type="text" id="middlename" name="middlename" value="<?php echo $this->escape($this->middlename);?>">
+                            
+                            <!-- TA:#407.2 -->
+							<label><?php echo t('Last name'); ?></label>
+							<input type="text" id="lastname" name="lastname" value="<?php echo $this->escape($this->lastname);?>">
+
+							<label><?php echo t('Student ID'); ?></label>
+							<input type="text" name="nationalid" value="<?php echo $this->escape($this->nationalid);?>">
+							
+							<!-- TA:#400 -->
+							<label><?php echo t('Index Number'); ?></label>
+							<input type="text" name="index_number" value="<?php echo $this->escape($this->index_number);?>">
+
+							
+							<!-- TA: added 07/22/2014 START -->
+							<?php
+								if($this->escape($this->label_ps_nationality)){
+									echo "<label>" . t($this->escape($this->label_ps_nationality)) . "</label>";
+									echo "<select name='nationality'>";
+									echo "<option value='0'>" . t('Select...') . "</option>";
+									foreach ($this->lookupnationalities as $nationality){
+									echo "<option value='" . $nationality['id'] . "' " . ($nationality['id'] == $this->escape($this->nationalityid) ? ' selected' : '') . ">" . $nationality['nationality'] . "</option>";
+									}
+									echo "</select>";
+								}
+								?>
+							<!-- TA: added 07/22/2014 END -->
+
+							<label><?php echo t('Gender'); ?></label>
+							<select name="gender">
+								<option value="na"><?php echo t('Select...'); ?></option>
+								<option value="male"<?php echo ($this->escape($this->gender) == "male" ? " selected" : "");?>><?php echo t('Male'); ?></option>
+								<option value="female"<?php echo ($this->escape($this->gender) == "female" ? " selected" : "");?>><?php echo t('Female'); ?></option>
+							</select>
+
+							<label><?php echo t('Date of birth'); ?></label>
+							<!--  <input type="text" class="calendarbox" name="dob" id="dob" value="<?php //echo ($this->escape($this->dob) != "31-12-1969" ? $this->escape($this->dob) : "");?>">-->
+							<input type="text" class="calendarbox" name="dob" id="dob" value="<?php echo $this->dob;?>">
+
+							<label><?php echo t('Age'); ?></label>
+<?php
+	if ($this->escape($this->dob) != ""){
+		$birthDate = date("m/d/Y", strtotime($this->dob));
+		//explode the date to get month, day and year
+		$birthDate = explode("/", $birthDate);
+		//get age from date or birthdate
+		$age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y")-$birthDate[2])-1):(date("Y")-$birthDate[2]));
+	} else {
+		$age = "";
+	}
+?>
+							<input type="text" readonly value="<?php echo $age;?>"><br>
+							
+							<!-- TA: added 7/22/2014 START -->
+							<?php
+								if($this->escape($this->label_marital_status)){
+									echo "<label>" . t($this->escape($this->label_marital_status)) . "</label>";
+									echo "<select name='marital_status' id='marital_status'>";
+									echo "<option value='na'>" . t('Select...') . "</option>";
+									echo "<option value='single' " . ($this->escape($this->marital_status) == 'single' ? ' selected' : '') . ">" . t('Single') . "</option>";
+									echo "<option value='married' " . ($this->escape($this->marital_status) == 'married' ? ' selected' : '') . ">" . t('Married') . "</option>";
+									echo "<option value='divorced' " . ($this->escape($this->marital_status) == 'divorced' ? ' selected' : '') . ">" . t('Divorced') . "</option>";
+									echo "<option value='widowed' " . ($this->escape($this->marital_status) == 'widowed' ? ' selected' : '') . ">" . t('Widowed') . "</option>";
+									echo "</select>";
+								}
+								if($this->escape($this->label_spouse_name)){
+									echo "<label>" . $this->escape($this->label_spouse_name) . "</label>";
+									echo "<input type='text' name='spouse_name' id='spouse_name' value='" . $this->escape($this->spouse_name) . "';>";
+								}
+								
+	if($this->escape($this->label_ps_local_address)){
+		echo "<div class='pad20 clear'></div>";
+		echo "<p style='float:left;font-size:14px;'>" . t($this->escape($this->label_ps_local_address)) . "</p>";
+		echo "<div class='pad20 clear'></div><br>";
+		echo "<label id='province_id_lbl'>" . @$this->translation['Region A (Province)'] . "</label>";
+		renderFilter($this->locations, 1, 'local-geo1', $this->escape($this->localgeo1), 'local-geo2');
+		if ( $this->setting['display_region_b'] ) {
+							echo"<label id='district_id_lbl'>" . @$this->translation['Region B (Health District)'] . "</label>";
+							renderFilter($this->locations, 2, 'local-geo2', $this->escape($this->localgeo2), ($this->setting['display_region_c']?'local-geo3':false));
+		}
+		if ( $this->setting['display_region_c'] ) {
+							echo"<label id='region_c_id_lbl'> " . @$this->translation['Region C (Local Region)'] . "</label>";
+							renderFilter($this->locations, 3, 'local-geo3', $this->escape($this->localgeo3), false);
+		}
+							echo"<label>" . t('Address 1') . "</label>";
+							echo"<input type='text' name='localaddress1' value='" . $this->escape($this->address1) . "'>";
+							echo"<label>" . t('Address 2') . "</label>";
+							echo"<input type='text' name='localaddress2' value='" . $this->escape($this->address2) . "' >";
+							echo"<label>" . t('City') . "</label>";
+							echo"<input type='text' name='localcity' value='" . $this->escape($this->city) . "'>";
+							echo"<label>" . $this->translation['ps zip code'] . "</label>";
+							echo"<input type='text' name='localpostalcode' value='" . ($this->escape($this->zip) != '0' ? $this->escape($this->zip) : '') . "'> ";
+							echo"<label style='display:block; padding-right: 25px' >" . t('Residential Address') . "?</label>";							
+                            echo"<input type='checkbox' name='localisresidential' id='localisresidential' value='1' " . ( $this->escape($this->home_is_residential) == 1 ? 'CHECKED' :'') . ">";
+     }   // end if
+                            echo "<div class='pad20 clear'></div>";
+                            echo "<div class='pad20 clear'></div><br>";
+                            
+         if($this->escape($this->label_ps_permanent_address)){
+			echo "<p style='float:left;font-size:14px;'>" . t('Next of Kin') ."/" . t($this->escape($this->label_ps_permanent_address)) . "</p>";
+			echo "<div class='pad20 clear'></div><br>";
+			echo "<label id='province_id_lbl'>" . @$this->translation['Region A (Province)'] . "</label>";
+			renderFilter($this->locations, 1, 'permanent-geo1', $this->escape($this->permanentgeo1), 'permanent-geo2');
+			if ( $this->setting['display_region_b'] ) {
+				echo "<label id='district_id_lbl'>" . @$this->translation['Region B (Health District)'] . "</label>";
+				renderFilter($this->locations, 2, 'permanent-geo2', $this->escape($this->permanentgeo2), ($this->setting['display_region_c']?'permanent-geo3':false));
+			}
+			if ( $this->setting['display_region_c'] ) {
+				echo "<label id='region_c_id_lbl'>" . @$this->translation['Region C (Local Region)'] . "</label>";
+				renderFilter($this->locations, 3, 'permanent-geo3', $this->escape($this->permanentgeo3), false);
+			}
+			echo "<label>" . t('Address 1') . "</label>";
+			echo "<input type='text' name='permanent-address1' value='" . $this->escape($this->permanentaddress1) . "'>";
+			echo "<label>" . t('Address 2') . "</label>";
+			echo "<input type='text' name='permanent-address2' value='" . $this->escape($this->permanentaddress2) . "'>";
+			echo"<label>" . t('City') . "</label>";
+			echo"<input type='text' name='permanent-city' value='" . $this->escape($this->permanentcity) . "'>";
+			echo"<label>" . t($this->translation['ps zip code']) . "</label>";
+			echo"<input type='text' name='permanent-postalcode' value='" . $this->escape($this->permanentzip) . "'> ";				
+}
+                            ?>
+                            <!-- TA: added 7/22/2014 END -->
+                            
+                            <div class="pad20 clear"></div>
+							<div class="pad20 clear"></div>
+							
+							
+							
+
+							<div class="pad20 clear"></div>
+							<p style="float:left;font-size:14px;"><?php echo t('Other Contact Information'); ?></p>
+							<div class="pad20 clear"></div><br>
+
+							<label><?php echo t('Phone'); ?></label>
+							<input type="text" name="localphone" value="<?php echo $this->escape($this->phone);?>">
+
+							<label><?php echo t('Cellphone'); ?></label>
+							<input type="text" name="localcell" value="<?php echo $this->escape($this->cell);?>" >
+
+							<label><?php echo t('Cellphone'); ?> 2</label>
+							<input type="text" name="localcell2" value="<?php echo $this->escape($this->cell2);?>" >
+
+							<label><?php echo t('Email'); ?></label>
+							<input type="text" name="email" value="<?php echo $this->escape($this->email);?>">
+
+							<label><?php echo t('Email'); ?> 2</label>
+							<input type="text" name="email_secondary" value="<?php echo $this->escape($this->email2);?>">
+							
+							<!-- TA: add - START  -->
+							<label><?php echo t('Emergency Contact'); ?></label>
+							<input type="text" name="emergcontact" value="<?php echo $this->escape($this->emergcontact);?>">
+							<!-- TA: add - END  -->
+
+							<div class="pad20 clear"></div>
+							<p style="float:left;font-size:14px;"><?php echo t('Student Information'); ?></p>
+							<div class="pad20 clear"></div><br>
+
+							<!-- TA: added 07/22/2014 START -->
+							<?php
+								if($this->escape($this->label_ps_religious_denomin)){
+									echo "<label>" . t($this->escape($this->label_ps_religious_denomin)) . "</label>";
+									echo "<select name='studenttype' id='studenttype' class='comboeditable' " . (!$this->hascohort ? ' disabled' : '') .">";
+								echo "<option value='0'>" . t('Select...') . "</option>";
+								foreach ($this->lookupstudenttypes as $studenttype){
+								echo "<option value='" . $studenttype['id'] . "' " . ($this->studenttype == $studenttype['id'] ? ' selected' : '') . ">";
+								echo $studenttype['studenttype'] . "</option>";
+								}
+								echo "</select>";
+								}
+								?>
+							<!-- TA: added 07/22/2014 END -->
+
+							<label><?php echo t('Date of Enrollment'); ?></label>
+							<input type="text" name="enrollmentdate" id="enrollmentdate" readonly value="<?php echo $this->escape($this->enrollmentdate);?>"<?php echo !$this->hascohort ? " disabled" : "";?>>
+
+							<label><?php echo t('Reason for Enrollment'); ?></label>
+<!--							<input type="text" name="enrollmentreason" value="<?php echo $this->escape($this->enrollmentreason);?>"> -->
+							<select name="enrollmentreason" id="enrollmentreason" class="comboeditable"<?php echo !$this->hascohort ? " disabled" : "";?>>
+								<option value="0"><?php echo t('Select...'); ?></option>
+<?php
+	foreach ($this->joinreasons as $joinreason){
+?>
+								<option value="<?php echo $joinreason['id']; ?>"<?php echo $this->enrollmentreason == $joinreason['id'] ? " selected" : ""; ?>> <?php echo $joinreason['reason']; ?></option>
+<?php
+	}
+?>
+							</select>
+
+							<label><?php echo t('Date of Separation'); ?></label>
+							<input type="text" name="separationdate" id="separationdate" class="calendarbox" value="<?php echo $this->escape($this->separationdate);?>"<?php echo (($this->separationdate != "") && ($this->separationdate != "0000-00-00") ? " READONLY" : "");?><?php echo !$this->hascohort ? " disabled" : "";?>>
+							<label><?php echo t('Clear date'); ?></label>
+							<input type="button" value="<?php echo t('Remove separation date'); ?>" style="padding : 2px; position : relative; left : 24px; margin-bottom : 10px;" onclick="document.getElementById('separationdate').value = '';document.getElementById('separationreason').selectedIndex = 0;">
+
+							<label><?php echo t('Reason for Separation'); ?></label>
+							<select name="separationreason" id="separationreason" class="comboeditable"<?php echo !$this->hascohort ? " disabled" : "";?>>
+								<option value="0"><?php echo t('Select...'); ?></option>
+<?php
+	foreach ($this->dropreasons as $dropreason){
+?>
+								<option value="<?php echo $dropreason['id']; ?>"<?php echo $this->separationreason == $dropreason['id'] ? " selected" : ""; ?>> <?php echo $dropreason['reason']; ?></option>
+<?php
+	}
+?>
+							</select>
+
+							<label><?php echo t($this->translation['ps program enrolled in']) ?></label>
+							<select name="cadre" id="cadre" disabled>
+								<option value="0"><?php echo t('Select...'); ?></option>
+<?php
+	foreach ($this->getcadres as $cadre){
+		if (trim($cadre['cadrename']) != ""){
+?>
+								<option value="<?php echo $cohort['id']; ?>"<?php echo ($this->escape($this->cadre) == $cadre[id] ? " selected" : "") ?>><?php echo $cadre['cadrename']; ?></option>
+<?php
+		}
+	}
+?>
+							</select>
+
+							<label><?php echo t('Years of Study'); ?></label>
+							<input type="text" name="yearofstudy" id="yearofstudy" value="<?php echo $this->escape($this->yearofstudy);?>"<?php echo !$this->hascohort ? " disabled" : "";?> readonly>
+
+							<div class="pad20 clear"></div>
+							<p style="float:left;font-size:14px;"><?php echo t('Funding'); ?></p>
+							<div class="pad20 clear"></div>
+							
+							<!-- TA:#388 START -->
+							<input type="hidden" id="funding_to_add" name="funding_to_add">
+                            <input type="hidden" id="funding_to_delete" name="funding_to_delete">
+							 <br><table cellpadding="0" cellspacing="0" border="0" class="tablegrid_show_all"
+                                       id="funding" style="width: 100%;">
+                                    <thead>
+                                    <tr>
+                                        <th><?php echo t('Year of study'); ?></th>
+                                        <th width='70%'><?php echo t('Funder'); ?></th>
+                                        <th><?php echo t('Funding Amount'); ?></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    foreach ($this->studentfunding as $sf) {
+                                        ?>
+                                        <tr class="GradeA" style="cursor : pointer;" data-associd="<?php echo $sf['id'] ?>">
+                                            <td><?php echo $sf['fundingyear'] ?></td>
+                                            <td data-fundingid="<?php echo $sf['fundingsource'] ?>"><?php echo $sf['fundingname'] ?></td>
+                                            <td><?php echo $sf['fundingamount'] ?></td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    ?>
+                                    </tbody>
+                                </table>
+                                <?php 
+                                echo "<br>";
+                                echo $this->formLabel('funding_year', t('Year of study:'), array());
+                                $years = array('0'=>'--' . t("choose") . '--','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6');
+                                echo $this->formSelect('funding_year', '', array('class' => 'fieldInput'), $years);
+                                echo $this->formLabel('funding_id', t('Funder:'), array());
+                                echo $this->formSelect('funding_id', '', array('class' => 'fieldInput'), $this->lookupfunding);
+                                echo $this->formLabel('funding_amount', t('Funding Amount:'), array());
+                                echo $this->formText('funding_amount', '', array('class' => 'fieldInput'));
+                                echo $this->formLabel('save_funding', '', array());
+                                echo $this->formButton('save_funding', 'Add Funding', array('class' => 'tsbutton green large', 'style' => 'margin-bottom: 2em;',
+                                    'onclick' => 'saveFunding();'));
+                                ?>
+                              <!-- TA:#388 END -->  
+							
+							<div class="clear pad20"></div>
+							<div class="pad20 clear"></div>
+							
+							<!-- TA: added 7/25/2014-->
+							<p style="float:left;"><?php echo $this->translation['ps tutor'] . ' ' . t('Advisor'); ?></p> 
+							<div class="pad20 clear"></div>
+
+							<label><?php echo $this->translation['ps tutor'] . ' ' . t('Advisor'); ?></label>
+							<select id="tutoradvisor" name="tutoradvisor">
+								<option value="0"><?php echo t('Select...'); ?></option>
+<?php
+	foreach ($this->gettutors as $tutor){
+	    
+?>                              
+<!-- TA:#337  student.advisorid=tutor.id where student.advisorid = tutor.personid ..... replace personid to id_tutor-->
+								<option value="<?php echo $tutor['id_tutor']; ?>"<?php echo ($this->escape($this->advisor) == $tutor['id_tutor'] ? " selected" : "") ?>><?php echo $tutor['first_name'] . " " . $tutor['last_name']; ?></option>
+<?php
+	}
+?>
+							</select>
+							
+							<!-- TA: add 'Prior Education' section - START --> 
+							<?php
+							if($this->escape($this->label_hscomldate) || $this->escape($this->label_lastinstatt) || $this->escape($this->label_schoolstartdate) ||
+								$this->escape($this->label_equivalence) || $this->escape($this->label_lastunivatt) || $this->escape($this->label_personincharge)){
+								echo "<div class='clear pad20'></div>";
+								echo "<p style='float:left;'>" . t('Prior Education') . "</p>";
+								echo "<div class='pad20 clear'></div>";
+								if($this->escape($this->label_hscomldate)){
+									echo "<label>" . t($this->escape($this->label_hscomldate)) . "</label>";
+									echo "<input type='text' class='calendarbox' name='hscomldate' id='hscomldate' value='" . $this->escape($this->hscomldate) . "';>";
+								}
+								if($this->escape($this->label_lastinstatt)){
+									echo "<label>" . t($this->escape($this->label_lastinstatt)) . "</label>";
+									echo "<input type='text' name='lastinstatt' id='lastinstatt' value='" . $this->escape($this->lastinstatt) . "';>";
+								}
+								if($this->escape($this->label_schoolstartdate)){
+									echo "<label>" . t($this->escape($this->label_schoolstartdate)) . "</label>";
+									echo "<input type='text' class='calendarbox' name='schoolstartdate' id='schoolstartdate' value='" . $this->escape($this->schoolstartdate) . "';>";
+								}
+
+                            if ($this->setting['display_student_prior_transcript']) {
+
+                                ?>
+
+                                <p style="margin-bottom: 2em;">&nbsp;</p>
+                                <table cellpadding="0" cellspacing="0" border="0" class="tablegrid_show_all"
+                                       id="prior_course_transcript" style="width: 100%;">
+                                    <thead>
+                                    <tr>
+                                        <th><?php echo t('Course Name'); ?></th>
+                                        <th><?php echo t('Course Grade'); ?></th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    <?php
+                                    foreach ($this->prior_education as $course_info) {
+                                        ?>
+                                        <tr class="GradeA" style="cursor : pointer;" data-associd="<?php echo $course_info['id'] ?>">
+                                            <td><?php echo $course_info['course_name'] ?></td>
+                                            <td><?php echo $course_info['course_grade'] ?></td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    ?>
+                                    </tbody>
+                                </table>
+                                <input type="hidden" id="prior_courses_to_add" name="prior_courses_to_add">
+                                <input type="hidden" id="prior_courses_to_delete" name="prior_courses_to_delete">
+
+                                <?php
+                                echo "<br>";
+                                echo $this->formLabel('prior_course_id', t('Prior Education Course:'), array());
+                                echo $this->formSelect('prior_course_id', '', array('class' => 'fieldInput'), $this->prior_education_courses);
+                                echo $this->formLabel('prior_course_grade', t('Grade:'), array());
+                                echo $this->formText('prior_course_grade', '', array('class' => 'fieldInput'));
+                                echo $this->formLabel('save_prior_course', '', array());
+                                echo $this->formButton('save_prior_course', 'Record Grade', array('class' => 'tsbutton green large', 'style' => 'margin-bottom: 2em;',
+                                    'onclick' => 'savePriorCourse();'));
+                                //TA:#407.2
+                                echo " " . $this->formButton('download_prior_course', 'Download', array('class' => 'tsbutton green large', 'style' => 'margin-bottom: 2em;',
+                                    'onclick' => 'downloadPriorCourse();'));
+                            }
+                                if($this->escape($this->label_equivalence)){
+									echo "<label>" . t($this->escape($this->label_equivalence)) . "</label>";
+									$val = 0;
+									$checked = '';
+									if($this->escape($this->equivalence) == 1){
+										$val = 1;
+										$checked = 'CHECKED';
+									}
+									echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='checkbox' name='equivalence' id='equivalence' value='1' " .  $checked . ">";
+								}
+								if($this->escape($this->label_lastunivatt)){
+									echo "<label>" . t($this->escape($this->label_lastunivatt)) . "</label>";
+									echo "<input type='text' name='lastunivatt' id='lastunivatt' value='" . $this->escape($this->lastunivatt) . "';>";
+								}
+								if($this->escape($this->label_personincharge)){
+									echo "<label>" . t($this->escape($this->label_personincharge)) . "</label>";
+									echo "<input type='text' name='personincharge' id='personincharge' value='" . $this->escape($this->personincharge) . "';>";
+								}
+								}
+							?>   
+							
+							<!-- TA: add 'Prior Education' section - END -->
+							
+							<div class="clear pad20"></div>
+						 	<p style="float : left;"><?php echo t('Facility After Graduation'); ?></p>
+							<div class="clear pad20"></div>
+
+							  <label id="province_id_lbl"><?php echo (@$this->translation['Region A (Province)']); ?></label>
+<?php renderFilter($this->locations, 1, 'postgeo1', $this->postgeo1, 'postgeo2');?>
+<?php if ( $this->setting['display_region_b'] ) { ?>
+							<label id="district_id_lbl"><?php echo (@$this->translation['Region B (Health District)']); ?></label>
+<?php renderFilter($this->locations, 2, 'postgeo2', $this->postgeo2, ($this->setting['display_region_c']?'postgeo3':false));?>
+<?php } ?>
+<?php if ( $this->setting['display_region_c'] ) { ?>
+							<label id="region_c_id_lbl"><?php echo (@$this->translation['Region C (Local Region)']); ?></label>
+<?php renderFilter($this->locations, 3, 'postgeo3', $this->postgeo3, false);?>
+<?php } ?>
+
+							<label><?php echo t('Facility Name')?></label>
+			<select name="postfacilityname" id="postfacilityname" class="text ui-widget-content ui-corner-all" />
+				<option value="0"><?php echo t('Select'); ?></option>
+<?php
+	foreach ($this->facilities as $facility){
+?>
+					<option value="<?php echo $facility['id']; ?>"<?php echo $facility['id'] == $this->postfacilityname ? " selected" : ""; ?>><?php echo $facility['facility_name']; ?></option>
+<?php
+	}
+?>
+			</select>
+						
+							<div class="pad20 clear"></div>
+							<p style="float:left;font-size:14px;"><?php echo t('Comments'); ?></p>
+							<div class="pad20 clear"></div>
+
+							<div class="clear"></div>
+							<textarea name="comments" id="comments" style="float:right; height:80px; margin-right:12px;" class="mainformholdertextarea"><?php echo $this->escape($this->comments);?></textarea>
+							<div class="clear"></div>
+							<br>
+							
+							<!-- TA: added 7/22/2014 START -->
+							<?php
+								if($this->escape($this->label_custom_field1)){
+									echo "<label style='text-align : left;'>" . t($this->escape($this->label_custom_field1)) . "</label>";
+									echo "<input type='text' name='custom_field1' id='custom_field1' value='" . $this->escape($this->custom_field1) . "';>";
+								}
+								if($this->escape($this->label_custom_field2)){
+									echo "<label style='text-align : left;'>" . t($this->escape($this->label_custom_field2)) . "</label>";
+									echo "<input type='text' name='custom_field2' id='custom_field2' value='" . $this->escape($this->custom_field2) . "';>";
+								}
+								if($this->escape($this->label_custom_field3)){
+									echo "<label style='text-align : left;'>" . t($this->escape($this->label_custom_field3)) . "</label>";
+									echo "<input type='text' name='custom_field3' id='custom_field3' value='" . $this->escape($this->custom_field3) . "';>";
+								}
+								?>
+								<!-- TA: added 7/22/2014 END -->
+								
+						</div>
+						
+						<!-- TA:6: added 8/8/2014 START -->
+				</td>
+				<td style="width:20%" valign='top' align='left'>
+						<div class="historyDiv">
+						
+						<!-- TA:6: added 8/8/2014 START -->
+						<b><?php echo t("ID");?></b>&nbsp;<?php echo $this->escape($this->id);?><br>
+						<b><?php echo t("Date created");?></b>&nbsp;<?php echo str_replace(' ','&nbsp;',$this->escape($this->dateCreated));?><br>						
+						<b><?php echo t("Created by");?></b>&nbsp;<?php echo $this->creator; ?><br>
+						<b><?php echo t("Date updated");?></b>&nbsp;<?php echo str_replace(' ','&nbsp;',$this->escape($this->dateModified));?><br>
+						<b><?php echo t("Updated by");?></b>&nbsp;<?php echo $this->updater; ?><br>
+						<b><?php echo t("UUID");?></b>&nbsp;<?php echo $this->escape($this->uuid);?><br>
+						<hr>
+						<!-- TA:6: added 8/8/2014 END -->
+						
+						<!-- TA:#406 -->
+						<?php 
+						  $transcript = 'transcript';
+						  if(Settings::$COUNTRY_NAME === 'test' || Settings::$COUNTRY_BASE_URL === 'https://cham.trainingdata.org'){
+						      $transcript = 'transcript2';
+						  }
+						?>
+						<a href="<?php echo Settings::$COUNTRY_BASE_URL; ?>/studentedit/<?php echo $transcript;?>/id/<?php echo $this->escape($this->id); ?>" target="_blank" ><?php echo t('Student Transcript Report')?></a> <br/>
+                            
+                            <?php if ( $this->hasACL( 'acl_delete_ps_student' )){?> 
+							<a href="#" onclick="doDelete(); return false;"><?php t('Delete this Person');?></a>
+							<?php }?>
+							<script language="JavaScript">
+								function doDelete() {
+									if(confirm("<?php t('Are you sure you wish to delete this person?');?>")) {
+										window.location = '<?php echo $this->base_url;?>/person/delete/id/<?php echo $this->id;?>';
+										return false;
+										
+									}
+								}
+							</script>
+						</div>
+						</td>
+				</tr>
+				</table>
+						
+						<div></div>
+						<div class="pad20 clear"></div>
+						<div class="mainformholder" style="height : 100px; margin-top:30px;">
+							<div  style="float : right; margin-right:12px;" >
+							     <!-- TA:51  10/05/2015-->
+							    <input type="submit" name="persondelete" value="<?php echo t('Delete')?> &raquo;" class="tsbutton green large" onClick="return deleteConfirm();">
+								<input type="submit" id="personupdate" name="personupdate" value="<?php echo t('Update')?> &raquo;" class="tsbutton green large" onClick="processCoursesAndSubmit();">
+								<a href="../../../people/people"> <input type="button"  value="<?php echo t('Back')?>" class="tsbutton green large"></a>
+							</div>
+							<div class="clear pad20"></div>
+
+						</div>
+						<div class="clear"></div>
+					</form>
+
+
+					<div class="clear"></div>
+					<div style="width :100%;">
+						<p style="margin:15px 0 15px 0;font-weight:bold;"><?php echo t('Class History'); ?></p>
+						<table cellpadding="0" cellspacing="0" border="0" class="display tablegrid" id="" style="width:100%">
+							<thead>
+								<tr>
+									<th><?php echo t('Class Name'); ?></th>
+									<!-- TA:#402 <th><?php echo t('Topic'); ?></th>-->
+									<th><?php echo t('Start date'); ?></th>
+									<th><?php echo t('End date'); ?></th>
+									<!-- TA:#402 <th><?php echo t('Instructor'); ?></th>-->
+									<th><?php echo t('Course type'); ?></th>
+									<?php if($this->setting['ps_display_ca_mark']) : ?>
+										<th><?php echo t($this->translation['ps ca mark']); ?></th>
+ 									<?php endif; ?>
+ 									<?php if($this->setting['ps_display_exam_mark']) : ?>
+										<th><?php echo t($this->translation['ps exam mark']); ?></th>
+									<?php endif; ?>
+									<th><?php echo t('Grade'); ?></th>
+									<th><?php echo t('Grade Description'); ?></th><!-- TA:#402 -->
+									<?php if($this->setting['ps_display_credits']) : ?>
+									<th class=""><?php echo t($this->translation['ps credits']); ?></th>
+									<?php endif; ?>
+								</tr>
+							</thead>
+							<tbody>
+<?php
+	foreach ($this->currentclasses as $row){
+?>
+								<tr class="GradeA" style="">
+									<td class="" style="width : 250px;"><?php echo $row['classname']; ?></td>
+									<!-- TA:#402 <td class="" style=""><?php echo $row['coursetopic']; ?></td>-->
+									<td class="" style="width : 120px;"><?php echo date("m/d/Y", strtotime($row['startdate'])); ?></td>
+									<td class="" style="width : 120px;"><?php echo date("m/d/Y", strtotime($row['enddate'])); ?></td>
+									<!-- TA:#402<td class="" style="width : 120px;"><?php echo $row['first_name'] . " " . $row['last_name']; ?></td>-->
+									<td class="" style="width : 120px;"><?php echo $row['coursetype']; ?></td>
+									<?php if($this->setting['ps_display_ca_mark']) : ?>
+										<td class="" style="width : 120px;"><?php echo $row['camark']; ?></td>
+									<?php endif; ?>
+									
+									<?php if($this->setting['ps_display_exam_mark']) : ?>
+										<td class="" style="width : 120px;"><?php echo $row['exammark']; ?></td>
+									<?php endif; ?>
+									
+									<td class="" style="width : 120px;"><?php echo $row['grade']; ?></td>
+									
+									<td class="" style="width : 120px;"><?php echo $row['grade_description']; ?></td><!-- TA:#402 -->
+									
+									<?php if($this->setting['ps_display_credits']) : ?>
+										<td class="" style="width : 120px;"><?php echo $row['credits']; ?></td>
+									<?php endif; ?>
+								</tr>
+<?php
+	}
+?>
+							</tbody>
+						</table>
+						<div style="text-align : right;">
+							<br>
+							 <?php if ( $this->hasACL( 'acl_delete_ps_grades' )){?> 
+							<input type="submit" name="classpopupbutton" id="classpopupbutton" value="<?php echo t('Update classes') ?>" class="tsbutton green large">
+							<?php }?>
+						</div>
+					</div>
+					<div style="width :100%; ">
+						<p style="margin:15px 0 15px 0;font-weight:bold;"><?php echo  $this->translation['ps clinical allocation'] ?></p>
+						<table cellpadding="0" cellspacing="0" border="0" class="display tablegrid" id="" style="width:100%">
+							<thead>
+								<tr>
+									<th class=""><?php echo t('Practicum name'); ?></th>
+									<th class=""><?php echo t('Date'); ?></th>
+									<th class=""><?php echo t('Facility'); ?></th>
+									<th class=""><?php echo t('Advisor'); ?></th>
+									<th class=""><?php echo t('Hours required'); ?></th>
+									<th class=""><?php echo t('Hours completed'); ?></th>
+									<th class=""><?php echo t('Grade'); ?></th>
+									<!-- TA:#402.2 -->
+									<th class=""><?php echo t('Grade Description'); ?></th>
+								</tr>
+							</thead>
+							<tbody>
+<?php
+	foreach ($this->currentpracticum as $row){
+?>
+								<tr class="GradeA" style="">
+									<td class="" style=""><?php echo $row['practicumname']; ?></td>
+									<td class="" style="width : 120px;"><?php echo date("m/d/Y", strtotime($row['practicumdate'])); ?></td>
+									<td class="" style="width : 200px;"><?php echo $row['facility_name']; ?></td>
+									<td class="" style="width : 200px;"><?php echo $row['first_name'] . " " . $row['last_name']; ?></td>
+									<td class="" style="width : 120px;"><?php echo $row['hoursrequired']; ?></td>
+									<td class="" style="width : 150px;"><?php echo $row['hourscompleted']; ?></td>
+									<td class="" style="width : 120px;"><?php echo $row['grade']; ?></td>
+									<!-- TA:#402.2 -->
+									<td class="" style="width : 120px;"><?php echo $row['grade_description']; ?></td>
+								</tr>
+<?php
+	}
+?>
+							</tbody>
+						</table>
+						<div style="text-align : right;">
+							<br>
+							<!-- TA: added 7/25/2014 -->
+							<?php
+							echo "<input type='submit' name='practicumpopupbutton' id='practicumpopupbutton' value='" . t('Update') . ' ' . t($this->translation['ps clinical allocation']) . "' class='tsbutton green large'>";
+							?>
+							</div>
+					</div>
+					<div style="width :100%; ">
+						<p style="margin:15px 0 15px 0;font-weight:bold;"><?php echo t("Exams") . "(" . t($this->translation['ps license and registration']) . ")"; ?></p>
+						<table cellpadding="0" cellspacing="0" border="0" class="display tablegrid" id="" style="width:100%">
+							<thead>
+								<tr>
+									<th class=""><?php echo t('License name'); ?></th>
+									<th class=""><?php echo t('Date'); ?></th>
+									<th class=""><?php echo t('Grade'); ?></th>
+									<!-- TA:#402.2 -->
+									<th class=""><?php echo t('Grade Description'); ?></th>
+								</tr>
+							</thead>
+							<tbody>
+<?php
+	foreach ($this->currentlicenses as $row){
+?>
+								<tr class="GradeA" style="">
+									<td class="" style=""><?php echo $row['licensename']; ?></td>
+									<td class="" style="width : 120px;"><?php echo date("m/d/Y", strtotime($row['licensedate'])); ?></td>
+									<td class="" style="width : 120px;"><?php echo $row['grade']; ?></td>
+								<!-- TA:#402.2 -->
+								<td class="" style="width : 120px;"><?php echo $row['grade_description']; ?></td>
+								</tr>
+<?php
+	}
+?>
+
+							</tbody>
+						</table>
+						<br>					
+						<div style="text-align : right;">
+							
+							<input type="submit" name="licensepopupbutton" id="licensepopupbutton" value="<?php echo t('Update exams'); ?>" class="tsbutton green large">
+						</div>
+					</div>
+					<?php
+//TA:#247 Display student's cohort history
+require_once ('models/table/Helper.php');
+$helper = new Helper();
+echo "<script type='text/javascript'>cohort_ids.push(" . $this->cohortid . ");</script>";
+if(count($this->cohort_history) > 0){
+    echo "<div id='contentheader'><h2>Student cohort history</h2><br><br></div><div class='clear pad20'></div>";
+    for($i=0; $i<count($this->cohort_history); $i++){
+        echo "<script type='text/javascript'>cohort_ids.push(" . $this->cohort_history[$i]['id_cohort'] . ");</script>";
+        echo "Cohort: <b>" . $this->cohort_history[$i]['cohortname'] . 
+        "</b><br>" . t('Date of Enrollment') . ": " . $this->cohort_history[$i]['joindate'] . "<br>" . t('Date of Separation') . ": " . $this->cohort_history[$i]['dropdate'] . "<br>";
+        $classes = $helper->listcurrentclasses($this->cohort_history[$i]['id_cohort'], $this->sid);
+        ?>
+        
+        <div class="clear"></div>
+        <div style="width :100%;">
+        						<p style="margin:15px 0 15px 0;font-weight:bold;"><?php echo t('Class History'); ?></p>
+        						<table cellpadding="0" cellspacing="0" border="0" class="display tablegrid" id="" style="width:100%">
+        							<thead>
+        								<tr>
+        									<th><?php echo t('Class Name'); ?></th>
+        									<th><?php echo t('Topic'); ?></th>
+        									<th><?php echo t('Start date'); ?></th>
+        									<th><?php echo t('End date'); ?></th>
+        									<th><?php echo t('Instructor'); ?></th>
+        									<th><?php echo t('Course type'); ?></th>
+        									<?php if($this->setting['ps_display_ca_mark']) : ?>
+        										<th><?php echo t($this->translation['ps ca mark']); ?></th>
+         									<?php endif; ?>
+         									<?php if($this->setting['ps_display_exam_mark']) : ?>
+        										<th><?php echo t($this->translation['ps exam mark']); ?></th>
+        									<?php endif; ?>
+        									<th><?php echo t('Grade'); ?></th>
+        									<?php if($this->setting['ps_display_credits']) : ?>
+        									<th class=""><?php echo t($this->translation['ps credits']); ?></th>
+        									<?php endif; ?>
+        								</tr>
+        							</thead>
+        							<tbody>
+        <?php
+        	foreach ($classes as $row){
+        ?>
+        								<tr class="GradeA" style="">
+        									<td class="" style="width : 250px;"><?php echo $row['classname']; ?></td>
+        									<td class="" style=""><?php echo $row['coursetopic']; ?></td>
+        									<td class="" style="width : 120px;"><?php echo date("m/d/Y", strtotime($row['startdate'])); ?></td>
+        									<td class="" style="width : 120px;"><?php echo date("m/d/Y", strtotime($row['enddate'])); ?></td>
+        									<td class="" style="width : 120px;"><?php echo $row['first_name'] . " " . $row['last_name']; ?></td>
+        									<td class="" style="width : 120px;"><?php echo $row['coursetype']; ?></td>
+        									<?php if($this->setting['ps_display_ca_mark']) : ?>
+        										<td class="" style="width : 120px;"><?php echo $row['camark']; ?></td>
+        									<?php endif; ?>
+        									
+        									<?php if($this->setting['ps_display_exam_mark']) : ?>
+        										<td class="" style="width : 120px;"><?php echo $row['exammark']; ?></td>
+        									<?php endif; ?>
+        									
+        									<td class="" style="width : 120px;"><?php echo $row['grade']; ?></td>
+        									
+        									<?php if($this->setting['ps_display_credits']) : ?>
+        										<td class="" style="width : 120px;"><?php echo $row['credits']; ?></td>
+        									<?php endif; ?>
+        								</tr>
+        <?php
+        	}
+        ?>
+        							</tbody>
+        						</table>
+        						<div style="text-align : right;">
+        							<br>
+        							 <?php if ( $this->hasACL( 'acl_delete_ps_grades' )){?> 
+        							<input type="submit" name="classpopupbutton" id="classpopupbutton" value="<?php echo t('Update classes') ?>" class="tsbutton green large">
+        							<?php }?>
+        						</div>
+        					</div>
+         <?php
+         $practicum = $helper->ListCurrentPracticum($this->cohort_history[$i]['id_cohort'], $this->sid);
+         ?>
+         
+         	<div style="width :100%; ">
+						<p style="margin:15px 0 15px 0;font-weight:bold;"><?php echo  $this->translation['ps clinical allocation'] ?></p>
+						<table cellpadding="0" cellspacing="0" border="0" class="display tablegrid" id="" style="width:100%">
+							<thead>
+								<tr>
+									<th class=""><?php echo t('Practicum name'); ?></th>
+									<th class=""><?php echo t('Date'); ?></th>
+									<th class=""><?php echo t('Facility'); ?></th>
+									<th class=""><?php echo t('Advisor'); ?></th>
+									<th class=""><?php echo t('Hours required'); ?></th>
+									<th class=""><?php echo t('Hours completed'); ?></th>
+									<th class=""><?php echo t('Grade'); ?></th>
+								</tr>
+							</thead>
+							<tbody>
+<?php
+	foreach ($practicums as $row){
+?>
+								<tr class="GradeA" style="">
+									<td class="" style=""><?php echo $row['practicumname']; ?></td>
+									<td class="" style="width : 120px;"><?php echo date("m/d/Y", strtotime($row['practicumdate'])); ?></td>
+									<td class="" style="width : 200px;"><?php echo $row['facility_name']; ?></td>
+									<td class="" style="width : 200px;"><?php echo $row['first_name'] . " " . $row['last_name']; ?></td>
+									<td class="" style="width : 120px;"><?php echo $row['hoursrequired']; ?></td>
+									<td class="" style="width : 150px;"><?php echo $row['hourscompleted']; ?></td>
+									<td class="" style="width : 120px;"><?php echo $row['grade']; ?></td>
+								</tr>
+<?php
+	}
+?>
+							</tbody>
+						</table>
+					</div>
+         
+         <?php
+        $licenses = $helper->ListCurrentLicenses($this->cohort_history[$i]['id_cohort'], $this->sid);
+        ?>
+        <div style="width :100%; ">
+						<p style="margin:15px 0 15px 0;font-weight:bold;"><?php echo t("Exams") . "(" . t($this->translation['ps license and registration']) . ")"; ?></p>
+						<table cellpadding="0" cellspacing="0" border="0" class="display tablegrid" id="" style="width:100%">
+							<thead>
+								<tr>
+									<th class=""><?php echo t('License name'); ?></th>
+									<th class=""><?php echo t('Date'); ?></th>
+									<th class=""><?php echo t('Grade'); ?></th>
+								</tr>
+							</thead>
+							<tbody>
+<?php
+	foreach ($licenses as $row){
+?>
+								<tr class="GradeA" style="">
+									<td class="" style=""><?php echo $row['licensename']; ?></td>
+									<td class="" style="width : 120px;"><?php echo date("m/d/Y", strtotime($row['licensedate'])); ?></td>
+									<td class="" style="width : 120px;"><?php echo $row['grade']; ?></td>
+								</tr>
+<?php
+	}
+?>
+
+							</tbody>
+						</table>
+											
+					</div>
+        <?php
+    } 
+}
+?>
+					<div class="clear" style=""></div>
+				</div>
+				<div class="clear" style=""></div>
+			</div>
+			
+			<div class="clear" style="height : 100px;"></div>
+			<div class="clear" style=""></div>
+
+
+			<div id="footer"><?php require_once('views/scripts/footer.phtml');?></div>
+			</div>
+		</div>
+	</body>
+</html>
