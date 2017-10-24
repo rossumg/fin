@@ -4500,6 +4500,78 @@ echo $sql . "<br>";
 		}
 		$this->viewAssignEscaped ( 'projectCode', $gfaArray );
 		
+		//distinct AccountCode list
+		$gArray = OptionList::suggestionList ( 'load_all', 'AccountCode', false, 999, false, false, true );
+		$gfaArray = array ();
+		foreach ( $gArray as $key => $val ) {
+			//if ($val ['id'] != 0)
+			$gfaArray [] = $val;
+		}
+		$this->viewAssignEscaped ( 'accountCode', $gfaArray );
+		
+		//distinct PCAProjectCodeOrig list
+		$gArray = OptionList::suggestionList ( 'load_all', 'PCAProjectCodeOrig', false, 999, false, false, true );
+		$gfaArray = array ();
+		foreach ( $gArray as $key => $val ) {
+			//if ($val ['id'] != 0)
+			$gfaArray [] = $val;
+		}
+		$this->viewAssignEscaped ( 'pcaProjectCodeOrig', $gfaArray );
+		
+		//distinct PCAProjectCodePosting list
+		$gArray = OptionList::suggestionList ( 'load_all', 'PCAProjectCodePosting', false, 999, false, false, true );
+		$gfaArray = array ();
+		foreach ( $gArray as $key => $val ) {
+			//if ($val ['id'] != 0)
+			$gfaArray [] = $val;
+		}
+		$this->viewAssignEscaped ( 'pcaProjectCodePosting', $gfaArray );
+		
+		//distinct TranDate1 list
+		$gArray = OptionList::suggestionList ( 'load_all', 'TranDate1', false, 999, false, false, true );
+		$gfaArray = array ();
+		foreach ( $gArray as $key => $val ) {
+			//if ($val ['id'] != 0)
+			$gfaArray [] = $val;
+		}
+		$this->viewAssignEscaped ( 'tranDate1', $gfaArray );
+		
+		//distinct TranDescMod list
+		$gArray = OptionList::suggestionList ( 'load_all', 'TranDescMod', false, 999, false, false, true );
+		$gfaArray = array ();
+		foreach ( $gArray as $key => $val ) {
+			//if ($val ['id'] != 0)
+			$gfaArray [] = $val;
+		}
+		$this->viewAssignEscaped ( 'tranDescMod', $gfaArray );
+		
+		//distinct TranReference2 list
+		$gArray = OptionList::suggestionList ( 'load_all', 'TranReference2', false, 999, false, false, true );
+		$gfaArray = array ();
+		foreach ( $gArray as $key => $val ) {
+			//if ($val ['id'] != 0)
+			$gfaArray [] = $val;
+		}
+		$this->viewAssignEscaped ( 'tranReference2', $gfaArray );
+		
+		//distinct tranReference4 list
+		$gArray = OptionList::suggestionList ( 'load_all', 'TranReference4', false, 999, false, false, true );
+		$gfaArray = array ();
+		foreach ( $gArray as $key => $val ) {
+			//if ($val ['id'] != 0)
+			$gfaArray [] = $val;
+		}
+		$this->viewAssignEscaped ( 'tranReference4', $gfaArray );
+		
+		//distinct modified list
+		$gArray = OptionList::suggestionList ( 'load_all', 'Modified', false, 999, false, false, true );
+		$gfaArray = array ();
+		foreach ( $gArray as $key => $val ) {
+			//if ($val ['id'] != 0)
+			$gfaArray [] = $val;
+		}
+		$this->viewAssignEscaped ( 'modified', $gfaArray );
+		
 		
 		$this->activityDetailReport ();
 	}
@@ -4554,7 +4626,7 @@ echo $sql . "<br>";
 //BudgetName
 //AccountCode
 //PCAProjectCodeOrig
-//PCAProjectCodePosting
+//PCAProjectCodeOrig
 //Budget_Begin
 //Budget_End
 //TranDate1
@@ -4573,22 +4645,29 @@ echo $sql . "<br>";
         $criteria ['BudgetNbr'] = $this->getSanParam ( 'budgetNbrInput' );
         $criteria ['BudgetName'] = $this->getSanParam ( 'budgetNameInput' );
         $criteria ['ProjectCode'] = $this->getSanParam ( 'projectCodeInput' );
-        
+        $criteria ['TranAmount'] = $this->getSanParam ( 'tranAmountInput' );
+         $criteria ['AccountCode'] = $this->getSanParam ( 'accountCodeInput' );
+          $criteria ['PCAProjectCodeOrig'] = $this->getSanParam ( 'pcaProjectCodeOrigInput' );
+           $criteria ['PCAProjectCodePosting'] = $this->getSanParam ( 'pcaProjectCodePostingInput' );
+            $criteria ['TranDate1'] = $this->getSanParam ( 'tranDate1Input' );
+             $criteria ['TranDescMod'] = $this->getSanParam ( 'tranDescModInput' );
+              $criteria ['TranReference2'] = $this->getSanParam ( 'tranReference2Input' );
+               $criteria ['TranReference4'] = $this->getSanParam ( 'tranReference4Input' );
+                $criteria ['Modified'] = $this->getSanParam ( 'modifiedInput' );
         
         $criteria ['showGFA'] =       true;
         $criteria ['showBudgetNbr'] =       true;
         $criteria ['showBudgetName'] = ($this->getSanParam ( 'showBudgetName' ));
-        
-       
-	    file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'ReportsCont:4583 >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
-	    var_dump("showBudgetName=", $criteria['showBudgetName'], "END");
-	    $toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
-        
-        
-        
-        
         $criteria ['showProjectCode'] = ($this->getSanParam ( 'showProjectCode' ));
-        
+        $criteria ['showTranAmount'] = ($this->getSanParam ( 'showTranAmount' ));
+        $criteria ['showAccountCode'] = ($this->getSanParam ( 'showAccountCode' ));
+        $criteria ['showPCAProjectCodeOrig'] = ($this->getSanParam ( 'showPCAProjectCodeOrig' ));
+        $criteria ['showPCAProjectCodePosting'] = ($this->getSanParam ( 'showPCAProjectCodePosting' ));
+        $criteria ['showTranDate1'] = ($this->getSanParam ( 'showTranDate1' ));
+        $criteria ['showTranDescMod'] = ($this->getSanParam ( 'showTranDescMod' ));
+        $criteria ['showTranReference2'] = ($this->getSanParam ( 'showTranReference2' ));
+        $criteria ['showTranReference4'] = ($this->getSanParam ( 'showTranReference4' ));
+        $criteria ['showModified'] = ($this->getSanParam ( 'showModified' ));
         
 		$criteria ['Budget_Begin'] = $beginDate;
 	    $criteria ['Budget_End'] =   $endDate;
@@ -4601,6 +4680,15 @@ echo $sql . "<br>";
         		$criteria ['BudgetNbr'] = $this->getSanParam ( 'budgetNbrInput' );
         		$criteria ['BudgetName'] = $this->getSanParam ( 'budgetNameInput' );
         		$criteria ['ProjectCode'] = $this->getSanParam ( 'projectCodeInput' );
+        		$criteria ['TranAmount'] = $this->getSanParam ( 'tranAmountInput' );
+        		 $criteria ['AccountCode'] = $this->getSanParam ( 'accountCodeInput' );
+          $criteria ['PCAProjectCodeOrig'] = $this->getSanParam ( 'pcaProjectCodeOrigInput' );
+           $criteria ['PCAProjectCodePosting'] = $this->getSanParam ( 'pcaProjectCodePostingInput' );
+            $criteria ['TranDate1'] = $this->getSanParam ( 'tranDate1Input' );
+             $criteria ['TranDescMod'] = $this->getSanParam ( 'tranDescModInput' );
+              $criteria ['TranReference2'] = $this->getSanParam ( 'tranReference2Input' );
+               $criteria ['TranReference4'] = $this->getSanParam ( 'tranReference4Input' );
+                $criteria ['Modified'] = $this->getSanParam ( 'modifiedInput' );
         		
         	    $sql = 'SELECT '; //todo test
 
@@ -4610,7 +4698,7 @@ echo $sql . "<br>";
 				//$sql .= ' DISTINCT pt.id as "id", pt.facility_name, pt.training_start_date  ';
 			//}
            
-           		$sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Budget_End, la.BudgetName, la.ProjectCode ';
+$sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Budget_End, la.BudgetName, la.ProjectCode, la.TranAmount, la.AccountCode, la.PCAProjectCodeOrig, la.PCAProjectCodeOrig, la.Budget_Begin, la.Budget_End, la.TranDate1, la.TranDescMod, la.TranReference2, la.TranReference4, la.Modified ';
            		
            		$sql .= ' FROM load_all la';
 				
@@ -4620,12 +4708,26 @@ echo $sql . "<br>";
            		if($criteria['BudgetNbr']) $where []= ' trim(la.BudgetNbr) = \'' . $criteria ['BudgetNbr'] . '\'';
            		if($criteria['BudgetName']) $where []= ' trim(la.BudgetName) = \'' . $criteria ['BudgetName'] . '\'';
            		if($criteria['ProjectCode']) $where []= ' trim(la.ProjectCode) = \'' . $criteria ['ProjectCode'] . '\'';
+           		
+           		if($criteria['AccountCode']) $where []= ' trim(la.AccountCode) = \'' . $criteria ['AccountCode'] . '\'';
+           		if($criteria['PCAProjectCodeOrig']) $where []= ' trim(la.PCAProjectCodeOrig) = \'' . $criteria ['PCAProjectCodeOrig'] . '\'';
+           		if($criteria['PCAProjectCodePosting']) $where []= ' trim(la.PCAProjectCodePosting) = \'' . $criteria ['PCAProjectCodePosting'] . '\'';
+           		if($criteria['TranDate1']) $where []= ' trim(la.TranDate1) = \'' . $criteria ['TranDate1'] . '\'';
+           		if($criteria['TranDescMod']) $where []= ' trim(la.TranDescMod) = \'' . $criteria ['TranDescMod'] . '\'';
+           		if($criteria['TranReference2']) $where []= ' trim(la.TranReference2) = \'' . $criteria ['TranReference2'] . '\'';
+           		if($criteria['TranReference4']) $where []= ' trim(la.TranReference4) = \'' . $criteria ['TranReference4'] . '\'';
+           		if($criteria['Modified']) $where []= ' trim(la.Modified) = \'' . $criteria ['Modified'] . '\'';
+           		
            		$where []= ' la.Budget_Begin >= \'' . $criteria ['Budget_Begin'] . '\'';
            		$where []= ' la.Budget_End <= \'' . $criteria ['Budget_End'] . '\'';
            		
            		if ($where)
 					$sql .= ' WHERE ' . implode(' AND ', $where);
         		}   
+        		
+//        		file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'ReportsCont:4725 >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+//				var_dump("sql=", $sql, "END");
+//				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
         		
         		//$rowArray = $db->fetchAll ( $sql . ' ORDER BY facility_name ASC ' );
         		$rowArray = $db->fetchAll ( $sql  );

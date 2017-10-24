@@ -115,6 +115,142 @@ if ($this->mode == 'search' ) {
 	    </div></div>
 	</div>
 	
+		<div id="tranAmount">
+	    <div class="fieldLabel" id="tranAmountInput_lbl"><?php tp('TranAmount');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showTranAmount" checked /></div>
+
+	    </div>
+	</div>
+	
+		<div id="accountCode">
+	    <div class="fieldLabel" id="accountCodeInput_lbl"><?php tp('AccountCode');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showAccountCode" checked /></div>
+	    <div  class="leftBorder"><select id="accountCodeInput" name="accountCodeInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->accountCode as $vals ) {
+			echo '<option value="'.$vals['AccountCode'].'" '.($this->criteria['accountCodeInput'] == $vals['id']?'':'').'>'.$vals['AccountCode'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
+		<div id="pcaProjectCodeOrig">
+	    <div class="fieldLabel" id="pcaProjectCodeOrigInput_lbl"><?php tp('PCAProjectCodeOrig');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showPCAProjectCodeOrig" checked /></div>
+	    <div  class="leftBorder"><select id="pcaProjectCodeOrigInput" name="pcaProjectCodeOrigInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->pcaProjectCodeOrig as $vals ) {
+			echo '<option value="'.$vals['PCAProjectCodeOrig'].'" '.($this->criteria['pcaProjectCodeOrigInput'] == $vals['id']?'':'').'>'.$vals['PCAProjectCodeOrig'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
+		<div id="pcaProjectCodePosting">
+	    <div class="fieldLabel" id="pcaProjectCodePostingInput_lbl"><?php tp('PCAProjectCodePosting');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showPCAProjectCodePosting" checked /></div>
+	    <div  class="leftBorder"><select id="pcaProjectCodePostingInput" name="pcaProjectCodePostingInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->pcaProjectCodePosting as $vals ) {
+			echo '<option value="'.$vals['PCAProjectCodePosting'].'" '.($this->criteria['pcaProjectCodePostingInput'] == $vals['id']?'':'').'>'.$vals['PCAProjectCodePosting'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
+		<div id="tranDate1">
+	    <div class="fieldLabel" id="tranDate1Input_lbl"><?php tp('TranDate1');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showTranDate1" checked /></div>
+	    <div  class="leftBorder"><select id="tranDate1Input" name="tranDate1Input" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->tranDate1 as $vals ) {
+			echo '<option value="'.$vals['TranDate1'].'" '.($this->criteria['tranDate1Input'] == $vals['id']?'':'').'>'.$vals['TranDate1'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
+			<div id="tranDescMod">
+	    <div class="fieldLabel" id="tranDescModInput_lbl"><?php tp('TranDescMod');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showTranDescMod" checked /></div>
+	    <div  class="leftBorder"><select id="tranDescModInput" name="tranDescModInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->tranDescMod as $vals ) {
+			echo '<option value="'.$vals['TranDescMod'].'" '.($this->criteria['tranDescModInput'] == $vals['id']?'':'').'>'.$vals['TranDescMod'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
+		<div id="tranReference2">
+	    <div class="fieldLabel" id="tranReference2Input_lbl"><?php tp('TranReference2');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showTranReference2" checked /></div>
+	    <div  class="leftBorder"><select id="tranReference2Input" name="tranReference2Input" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->tranReference2 as $vals ) {
+			echo '<option value="'.$vals['TranReference2'].'" '.($this->criteria['tranReference2Input'] == $vals['id']?'':'').'>'.$vals['TranReference2'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
+			<div id="tranReference4">
+	    <div class="fieldLabel" id="tranReference4Input_lbl"><?php tp('TranReference4');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showTranReference4" checked /></div>
+	    <div  class="leftBorder"><select id="tranReference4Input" name="tranReference4Input" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->tranReference4 as $vals ) {
+			echo '<option value="'.$vals['TranReference4'].'" '.($this->criteria['tranReference4Input'] == $vals['id']?'':'').'>'.$vals['TranReference4'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
+			<div id="modified">
+	    <div class="fieldLabel" id="modifiedInput_lbl"><?php tp('Modified');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showModified" checked /></div>
+	    <div  class="leftBorder"><select id="modifiedInput" name="modifiedInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->modified as $vals ) {
+			echo '<option value="'.$vals['Modified'].'" '.($this->criteria['modifiedInput'] == $vals['id']?'':'').'>'.$vals['Modified'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
 
 	
 	
@@ -170,10 +306,9 @@ if ($this->mode == 'search' ) {
    
 <?php if ( $this->criteria['go'] ) { ?>
 <div class="hrGrey"></div>
-<!-- TA:80 print only trainings part -->
-    <div class="fieldIndentNoMargin"><?php echo t('Expenses');?> <span class="total"><?php echo $this->count;?> <?php if ( $this->mode == 'count' ) echo t('Records'); else echo '';?></span><?php echo $this->printAndExport("trainings");?></div>
+    <div class="fieldIndentNoMargin"><?php echo t('Expenses');?> <span class="total"><?php echo $this->count;?> <?php if ( $this->mode == 'count' ) echo t('Records'); else echo '';?></span><?php echo $this->printAndExport("expenses");?></div>
 <?php } ?>
-    <div id="trainings" class="itechTable"></div>
+    <div id="expenses" class="itechTable"></div>
     <script type="text/javascript">
     	        var formatViewUrl = function(elCell, oRecord, oColumn, sData) {
 	            elCell.innerHTML = "<a href='<?php echo $this->base_url;?>/training/view/id/" + oRecord.getData("id") + oRecord.getData("GFA") + oRecord.getData("BudgetNbr") +"'>" + sData + "</a>";
@@ -199,6 +334,26 @@ foreach($this->results as $row) {
 			echo ',"'.$row['BudgetName'].'"';
 		if ( $this->criteria['showProjectCode'] )
 			echo ',"'.$row['ProjectCode'].'"';
+		if ( $this->criteria['showTranAmount'] )
+			echo ',"'.$row['TranAmount'].'"';
+		if ( $this->criteria['showAccountCode'] )
+			echo ',"'.$row['AccountCode'].'"';
+		if ( $this->criteria['showPCAProjectCodeOrig'] )
+			echo ',"'.$row['PCAProjectCodeOrig'].'"';
+		if ( $this->criteria['showPCAProjectCodePosting'] )
+			echo ',"'.$row['PCAProjectCodePosting'].'"';
+		if ( $this->criteria['showTranDate1'] )
+			echo ',"'.$row['TranDate1'].'"';
+		if ( $this->criteria['showTranDescMod'] )
+			echo ',"'.$row['TranDescMod'].'"';
+		if ( $this->criteria['showTranReference2'] )
+			echo ',"'.$row['TranReference2'].'"';
+		if ( $this->criteria['showTranReference4'] )
+			echo ',"'.$row['TranReference4'].'"';
+		if ( $this->criteria['showModified'] )
+			echo ',"'.$row['Modified'].'"';
+			
+			
 		if ( 1 )
 			echo ',"'.$row['Budget_Begin'].'"';
 		if ( 1 )
@@ -215,10 +370,7 @@ var expenseColumnDefs = [
 {key:"cnt", label: "Count", sortable:true, resizeable:true}
 <?php } else { ?>
 {key:"id", label: "<?php tp('ID')?>", sortable:true, resizeable:true, formatter: formatViewUrl},
-<!-- {key:"GFA", label: "<?php tp('GFA');?>", sortable:true, resizeable:true} -->
-<!-- key:"BudgetNbr", label: "<?php tp('BudgetNbr');?>", sortable:true, resizeable:true} -->
 <?php } ?>
-
 
 <?php if ( $this->criteria['showGFA'] ) { ?>
    {key:"GFA", label: "<?php tp('GFA');?>", sortable:true, resizeable:true}
@@ -232,6 +384,34 @@ var expenseColumnDefs = [
  <?php if ( $this->criteria['showProjectCode'] ) { ?>
    ,{key:"ProjectCode", label: "<?php tp('ProjectCode');?>", sortable:true, resizeable:true}
  <?php }  ?>
+ <?php if ( $this->criteria['showTranAmount'] ) { ?>
+   ,{key:"TranAmount", label: "<?php tp('TranAmount');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( $this->criteria['showAccountCode'] ) { ?>
+   ,{key:"AccountCode", label: "<?php tp('AccountCode');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( $this->criteria['showPCAProjectCodeOrig'] ) { ?>
+   ,{key:"PCAProjectCodeOrig", label: "<?php tp('PCAProjectCodeOrig');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( $this->criteria['showPCAProjectCodePosting'] ) { ?>
+   ,{key:"PCAProjectCodePosting", label: "<?php tp('PCAProjectCodePosting');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( $this->criteria['showTranDate1'] ) { ?>
+   ,{key:"TranDate1", label: "<?php tp('TranDate1');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( $this->criteria['showTranDescMod'] ) { ?>
+   ,{key:"TranDescMod", label: "<?php tp('TranDescMod');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( $this->criteria['showTranReference2'] ) { ?>
+   ,{key:"TranReference2", label: "<?php tp('TranReference2');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( $this->criteria['showTranReference4'] ) { ?>
+   ,{key:"TranReference4", label: "<?php tp('TranReference4');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( $this->criteria['showModified'] ) { ?>
+   ,{key:"Modified", label: "<?php tp('Modified');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ 
  <?php if ( 1 ) { ?>
    ,{key:"Budget_Begin", label: "<?php tp('Budget_Begin');?>", sortable:true, resizeable:true}
  <?php }  ?>
@@ -241,7 +421,7 @@ var expenseColumnDefs = [
 
 ];
 
-	makeDataTable("trainings", null, expenseData, expenseColumnDefs);
+	makeDataTable("expenses", null, expenseData, expenseColumnDefs);
 </script>
 <?php if ($cnt < count($this->results)) { ?>
 <div  class="fieldIndentNoMargin">[<?php tp('Limited to 100 rows');?>]  <a href="<?php echo str_replace('limit=1','limit=0',$_SERVER['REQUEST_URI']);?>"><?php tp('Full Results');?></a></div>

@@ -37,7 +37,7 @@ class OptionList extends ITechTable
 	/**
 	 * $cols can be a single string or an array of strings where the first array item is the column to match on
 	 */
-	public static function suggestionList($table, $cols, $match = false, $limit = 100, $removeUnknown = true, $where = false, $distinct = false) {
+	public static function suggestionList($table, $cols, $match = false, $limit = 200, $removeUnknown = true, $where = false, $distinct = false) {
     	$topicTable = new OptionList(array('name' => $table));
     	
     	if ( is_string($cols) )
@@ -84,7 +84,7 @@ class OptionList extends ITechTable
     	return $rowArray;
 	}
 	
-	public static function suggestionListHierarchical($table, $col, $match = false, $limit = 100, $cols_extra = array()) {
+	public static function suggestionListHierarchical($table, $col, $match = false, $limit = 200, $cols_extra = array()) {
  		$db = Zend_Db_Table_Abstract::getDefaultAdapter();
         
         $cols1 = $cols2 = '';
@@ -124,7 +124,7 @@ class OptionList extends ITechTable
 	/**
 	 * Returns distinct values instead of id/value 
 	 */
-	public static function suggestionListValues($table, $cols, $match = false, $limit = 100, $removeUnknown = true, $where = false) {
+	public static function suggestionListValues($table, $cols, $match = false, $limit = 200, $removeUnknown = true, $where = false) {
     	$topicTable = new OptionList(array('name' => $table));
     	if ( is_string($cols) )
     		$cols = array($cols);

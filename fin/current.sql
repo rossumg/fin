@@ -12,6 +12,8 @@ from load_all la
 where trim(la.GFA) = 'Amy'
 ;
 
+select distinct(BudgetName) from load_all;
+
 SELECT  *
 -- DISTINCT la.id as "id", la.GFA, la.BudgetNbr   
 FROM load_all la 
