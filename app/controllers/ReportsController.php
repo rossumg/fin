@@ -54,7 +54,7 @@ class ReportsController extends ReportFilterHelpers {
 
 
 	public function indexAction() {
-
+		$this->_redirect ( 'reports/activity-detail' );
 	}
 
 	public function preDispatch() {
@@ -71,6 +71,7 @@ class ReportsController extends ReportFilterHelpers {
 		return $rtn;
 	}
 
+	public function otherAction() { 	}
 	public function dataAction() { 	}
 
 	/**
@@ -4474,7 +4475,7 @@ echo $sql . "<br>";
 		
 		//distinct BudgetNbr list
 		//$gArray = OptionList::suggestionList ( 'GFA_List', 'BudgetNbr', false, 999, false, false, true );
-		$gArray = OptionList::suggestionList ( 'load_all', 'BudgetNbr', false, 999, false, false, true );
+		$gArray = OptionList::suggestionList ( 'activitydetail', 'BudgetNbr', false, 999, false, false, true );
 		$gfaArray = array ();
 		foreach ( $gArray as $key => $val ) {
 			//if ($val ['id'] != 0)
@@ -4483,7 +4484,7 @@ echo $sql . "<br>";
 		$this->viewAssignEscaped ( 'budgetNbr', $gfaArray );
 		
 		//distinct BudgetName list
-		$gArray = OptionList::suggestionList ( 'load_all', 'BudgetName', false, 999, false, false, true );
+		$gArray = OptionList::suggestionList ( 'activitydetail', 'BudgetName', false, 999, false, false, true );
 		$gfaArray = array ();
 		foreach ( $gArray as $key => $val ) {
 			//if ($val ['id'] != 0)
@@ -4492,7 +4493,7 @@ echo $sql . "<br>";
 		$this->viewAssignEscaped ( 'budgetName', $gfaArray );
 		
 		//distinct ProjectCode list
-		$gArray = OptionList::suggestionList ( 'load_all', 'ProjectCode', false, 999, false, false, true );
+		$gArray = OptionList::suggestionList ( 'activitydetail', 'ProjectCode', false, 999, false, false, true );
 		$gfaArray = array ();
 		foreach ( $gArray as $key => $val ) {
 			//if ($val ['id'] != 0)
@@ -4501,7 +4502,7 @@ echo $sql . "<br>";
 		$this->viewAssignEscaped ( 'projectCode', $gfaArray );
 		
 		//distinct AccountCode list
-		$gArray = OptionList::suggestionList ( 'load_all', 'AccountCode', false, 999, false, false, true );
+		$gArray = OptionList::suggestionList ( 'activitydetail', 'AccountCode', false, 999, false, false, true );
 		$gfaArray = array ();
 		foreach ( $gArray as $key => $val ) {
 			//if ($val ['id'] != 0)
@@ -4510,7 +4511,7 @@ echo $sql . "<br>";
 		$this->viewAssignEscaped ( 'accountCode', $gfaArray );
 		
 		//distinct PCAProjectCodeOrig list
-		$gArray = OptionList::suggestionList ( 'load_all', 'PCAProjectCodeOrig', false, 999, false, false, true );
+		$gArray = OptionList::suggestionList ( 'activitydetail', 'PCAProjectCodeOrig', false, 999, false, false, true );
 		$gfaArray = array ();
 		foreach ( $gArray as $key => $val ) {
 			//if ($val ['id'] != 0)
@@ -4519,7 +4520,7 @@ echo $sql . "<br>";
 		$this->viewAssignEscaped ( 'pcaProjectCodeOrig', $gfaArray );
 		
 		//distinct PCAProjectCodePosting list
-		$gArray = OptionList::suggestionList ( 'load_all', 'PCAProjectCodePosting', false, 999, false, false, true );
+		$gArray = OptionList::suggestionList ( 'activitydetail', 'PCAProjectCodePosting', false, 999, false, false, true );
 		$gfaArray = array ();
 		foreach ( $gArray as $key => $val ) {
 			//if ($val ['id'] != 0)
@@ -4528,7 +4529,7 @@ echo $sql . "<br>";
 		$this->viewAssignEscaped ( 'pcaProjectCodePosting', $gfaArray );
 		
 		//distinct TranDate1 list
-		$gArray = OptionList::suggestionList ( 'load_all', 'TranDate1', false, 999, false, false, true );
+		$gArray = OptionList::suggestionList ( 'activitydetail', 'TranDate1', false, 999, false, false, true );
 		$gfaArray = array ();
 		foreach ( $gArray as $key => $val ) {
 			//if ($val ['id'] != 0)
@@ -4537,7 +4538,7 @@ echo $sql . "<br>";
 		$this->viewAssignEscaped ( 'tranDate1', $gfaArray );
 		
 		//distinct TranDescMod list
-		$gArray = OptionList::suggestionList ( 'load_all', 'TranDescMod', false, 999, false, false, true );
+		$gArray = OptionList::suggestionList ( 'activitydetail', 'TranDescMod', false, 999, false, false, true );
 		$gfaArray = array ();
 		foreach ( $gArray as $key => $val ) {
 			//if ($val ['id'] != 0)
@@ -4546,7 +4547,7 @@ echo $sql . "<br>";
 		$this->viewAssignEscaped ( 'tranDescMod', $gfaArray );
 		
 		//distinct TranReference2 list
-		$gArray = OptionList::suggestionList ( 'load_all', 'TranReference2', false, 999, false, false, true );
+		$gArray = OptionList::suggestionList ( 'activitydetail', 'TranReference2', false, 999, false, false, true );
 		$gfaArray = array ();
 		foreach ( $gArray as $key => $val ) {
 			//if ($val ['id'] != 0)
@@ -4555,7 +4556,7 @@ echo $sql . "<br>";
 		$this->viewAssignEscaped ( 'tranReference2', $gfaArray );
 		
 		//distinct tranReference4 list
-		$gArray = OptionList::suggestionList ( 'load_all', 'TranReference4', false, 999, false, false, true );
+		$gArray = OptionList::suggestionList ( 'activitydetail', 'TranReference4', false, 999, false, false, true );
 		$gfaArray = array ();
 		foreach ( $gArray as $key => $val ) {
 			//if ($val ['id'] != 0)
@@ -4564,7 +4565,7 @@ echo $sql . "<br>";
 		$this->viewAssignEscaped ( 'tranReference4', $gfaArray );
 		
 		//distinct modified list
-		$gArray = OptionList::suggestionList ( 'load_all', 'Modified', false, 999, false, false, true );
+		$gArray = OptionList::suggestionList ( 'activitydetail', 'Modified', false, 999, false, false, true );
 		$gfaArray = array ();
 		foreach ( $gArray as $key => $val ) {
 			//if ($val ['id'] != 0)
@@ -4582,7 +4583,7 @@ echo $sql . "<br>";
 
 		//find the first date in the database
 		$db = Zend_Db_Table_Abstract::getDefaultAdapter ();
-		$sql = "SELECT MIN(Budget_Begin) as \"start\" FROM load_all ";
+		$sql = "SELECT MIN(Budget_Begin) as \"start\" FROM activitydetail ";
 		$rowArray = $db->fetchAll ( $sql );
 		$start_default = $rowArray [0] ['start'];
 		$parts = explode('-', $start_default );
@@ -4590,7 +4591,7 @@ echo $sql . "<br>";
 		$criteria ['start-month'] = $parts [1];
 		$criteria ['start-day'] = $parts [2];
 		
-		$sql = "SELECT MAX(Budget_End) as \"end\" FROM load_all ";
+		$sql = "SELECT MAX(Budget_End) as \"end\" FROM activitydetail ";
 		$rowArray = $db->fetchAll ( $sql );
 		$end_default = $rowArray [0] ['end'];
 		$parts = explode('-', $end_default );
@@ -4698,9 +4699,9 @@ echo $sql . "<br>";
 				//$sql .= ' DISTINCT pt.id as "id", pt.facility_name, pt.training_start_date  ';
 			//}
            
-$sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Budget_End, la.BudgetName, la.ProjectCode, la.TranAmount, la.AccountCode, la.PCAProjectCodeOrig, la.PCAProjectCodeOrig, la.Budget_Begin, la.Budget_End, la.TranDate1, la.TranDescMod, la.TranReference2, la.TranReference4, la.Modified ';
+$sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Budget_End, la.BudgetName, la.ProjectCode, la.TranAmount, la.AccountCode, la.PCAProjectCodeOrig, la.PCAProjectCodePosting, la.Budget_Begin, la.Budget_End, la.TranDate1, la.TranDescMod, la.TranReference2, la.TranReference4, la.Modified ';
            		
-           		$sql .= ' FROM load_all la';
+           		$sql .= ' FROM activitydetail la';
 				
            		$where = array();
            		

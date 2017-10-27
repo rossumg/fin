@@ -41,6 +41,68 @@ class AdminController extends UserController
 	/************************************************************************************
 	 * Country
 	 */
+	 
+	 public function tablesGfalistAction(){
+		
+		        file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'AdminCont:47 >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+//				var_dump("sql=", $sql, "END");
+				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+        	
+		$helper = new Helper();
+
+		if ($this->getRequest()->isPost()) {
+			$params = $this->getAllParams();
+
+	        file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'AdminCont:56 >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+				var_dump("params=", $params, "END");
+				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+    
+
+			$map = array(
+				'_id' => 'id',
+				'_BudgetNbr' => 'BudgetNbr',
+				'_GFA' => 'GFA',
+			);
+
+			$data = array();
+			foreach ($params as $k => $v) {
+				if (array_key_exists($k, $map)) {
+					$data[$map[$k]] = $v;
+				}
+			}
+
+			switch($params['_action']) {
+				case "addnew": {
+                    $helper->addGFA($data);
+                    break;
+                }
+				case "update": {
+                    $helper->updateGFA($data);
+                    break;
+                }
+                case "delete": {
+                    $helper->deleteGFA($data);
+                }
+			}
+			$this->_redirect ( 'admin/tables-gfalist' );
+		}
+		
+		
+
+		$db = $this->dbfunc();
+		
+        $select = $db->select()
+            ->from('GFA_List', array())
+            ->order('GFA')
+            ->columns(array('GFA_List.id', 'BudgetNbr', 'GFA'
+            ));
+
+        $list = $this->dbfunc()->fetchAll($select);
+        
+		$this->view->assign("lookup", $list);
+		$this->view->assign("header",t("GFA"));
+		
+	}
 
 	public function indexAction()
 	{

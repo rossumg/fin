@@ -1,6 +1,28 @@
-select distinct(Budget_Begin) from load_all order by Budget_Begin;
-select distinct(Budget_End) from load_all;
-select distinct(ProjectCode) from load_all;
+select * from GFA_List;
+
+select * from activitydetail   where id in (272,277,289);
+select * from activitydetail where id in (2,3,4,5,6);
+
+select * from activitydetail   where GFA = 'Maymouna gnr';
+update activitydetail set GFA = 'Maymouna' where id = 68;
+commit;
+
+select distinct(projectCode) from activitydetail  ;
+select distinct(accountCode) from activitydetail  ;
+select distinct(pcaprojectcodeorig) from activitydetail;
+select distinct(pcaprojectcodeposting) from activitydetail;
+select distinct(trandate1) from activitydetail;
+select distinct(trandescmod) from activitydetail;
+select distinct(tranreference2) from activitydetail;
+select distinct(tranreference4) from activitydetail;
+select distinct(modified) from activitydetail;
+
+update load_all set trandescmod = left(trandescmod, 6);
+delete from load_all where id > 2000;
+
+select distinct(Budget_Begin) from activitydetail order by Budget_Begin;
+select distinct(Budget_End) from activitydetail;
+select distinct(ProjectCode) from activitydetail;
 
 select CAST('2017-11-21' as date);
 
@@ -12,7 +34,7 @@ from load_all la
 where trim(la.GFA) = 'Amy'
 ;
 
-select distinct(BudgetName) from load_all;
+select distinct(BudgetName) from activitydetail;
 
 SELECT  *
 -- DISTINCT la.id as "id", la.GFA, la.BudgetNbr   
@@ -24,26 +46,26 @@ and la.Budget_Begin >= cast('2017-07-01' as date)
 and la.Budget_End  <= cast('2018-09-01' as date)        
 ;
 
-select distinct(Budget_Begin) from load_all;
-select distinct(Budget_End) from load_all;
-select distinct(BudgetNbr) from load_all;
+select distinct(Budget_Begin) from activitydetail;
+select distinct(Budget_End) from activitydetail;
+select distinct(BudgetNbr) from activitydetail;
 SELECT DISTINCT `GFA_List`.`BudgetNbr` FROM `GFA_List` ORDER BY `BudgetNbr` ASC;
 
-select * from load_all;
+select * from activitydetail;
 
-update load_all set Budget_Begin = 
+update activitydetail set Budget_Begin = 
 cast(
 concat(trim(split_str(Budget_Begin, '/', 3)),'-',
 concat(trim(split_str(Budget_Begin, '/', 1))),'-',
 trim(split_str(Budget_Begin, '/', 2))) as date);
 
-update load_all set Budget_End = 
+update activitydetail set Budget_End = 
 cast(
 concat(trim(split_str(Budget_End, '/', 3)),'-',
 concat(trim(split_str(Budget_End, '/', 1))),'-',
 trim(split_str(Budget_End, '/', 2))) as date);
 
-update load_all set TranDate1 = 
+update activitydetail set TranDate1 = 
 cast(
 concat(trim(split_str(TranDate1, '/', 3)),'-',
 concat(trim(split_str(TranDate1, '/', 1))),'-',
@@ -55,10 +77,10 @@ cast(
 concat(trim(split_str(Budget_Begin, '/', 3)),'-',
 concat(trim(split_str(Budget_Begin, '/', 1))),'-',
 trim(split_str(Budget_Begin, '/', 2))) as date))
-from load_all;
+from activitydetail;
 
-select min(Budget_Begin), max(Budget_Begin) from load_all;
-select min(Budget_End), max(Budget_End) from load_all;
+select min(Budget_Begin), max(Budget_Begin) from activitydetail;
+select min(Budget_End), max(Budget_End) from activitydetail;
 
 CREATE FUNCTION split_str(
 x VARCHAR(255),

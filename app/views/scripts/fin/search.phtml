@@ -1,53 +1,434 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <title><?php echo $this->translation['Application Name'];?> | <?php tp('User List');?></title>
+  <title><?php echo $this->translation['Application Name'];?> | <?php tp('Activity Detail');?> <?php echo ($this->mode != 'search'? t('Reports'):t('Search') );  ?></title>
 <?php
+
 require_once('views/helpers/ScriptContainer.php');
 print ScriptContainer::$instance->renderCSSHead();
 print ScriptContainer::$instance->renderJSHead();
+
+$checkLabel = t('show');
+if ( $this->mode == 'count' )
+	$checkLabel = t('group');
+$checkVisible = '';
+if ($this->mode == 'search' ) {
+	$checkVisible = ' style="display:none;" ';
+}
 ?>
+
+<script  type="text/javascript">
+	function gotoPage(objId) {
+		var reportSelector = YAHOO.util.Dom.get(objId);
+		if ( reportSelector[reportSelector.selectedIndex].value ) {
+			window.location = '<?php echo $this->base_url;?>' + reportSelector[reportSelector.selectedIndex].value + '?<?php echo $_SERVER['QUERY_STRING'];?>';
+		}
+	}
+</script>
+
 </head>
-<body  class="yui-skin-sam">
+<body class="yui-skin-sam" >
 <div id="pageHolder">
+
   <div id="header"><?php require_once('views/scripts/header.phtml');?></div>
   <div id="content">
-	<h1><?php tp('Browse Users');?></h1>
 
-	<div id="userList" ></div>
+    <h1><?php tp('Activity Detail ' . ($this->mode != 'search'? 'Reports':'Search' ) )?></h1>
+ <?php if ($this->mode != 'search' ) { ?>
+    	<div class="fieldLabel"><?php tp('Select activity detail report');?></div>
+    	<select id="activity_detail" name="activity_detail" onchange="gotoPage('activity_detail');">
+    		<option value="">--<?php tp('choose');?>--</option>
+    		<option value="/reports/activity-detail-by-project-code" <?php if ($this->mode == 'id') echo 'selected="selected"';?>><?php echo t('Activity Detail by Project Code');?></option>
+    		<option value="/reports/activity-detail-by-gfa" <?php if ($this->mode == 'count') echo 'selected="selected"';?>><?php echo t('Activity Detail by GFA');?></option>
+   	</select>
+   <?php } ?>
+   <br clear="all" />
+	   <form action="" method="get">
+   <fieldset <?php if( $this->mode != 'count') echo 'id="criteria"'; ?> ><legend><?php tp('Select Criteria');?></legend>
+  <div id="dividers">
+    <div class="fieldLabel " ></div>
+    <div class="fieldInput criteria-header"><div  class="criteria-label" ><?php echo $checkLabel;?></div><div  class="criteria-label" style="padding-left: 20px;"><?php tp('filter');?></div></div>
 
-<script type="text/javascript">
-    var formatEditUrl = function(elCell, oRecord, oColumn, sData) {
-        elCell.innerHTML = "<a href='<?php echo $this->base_url;?>/user/edit/id/" + oRecord.getData("id") + "'>" + sData + "</a>";
-    };
 
-    var formatStatus = function(elCell, oRecord, oColumn, sData) {
-    	if ( oRecord.getData("is_blocked") == '1' ) {
-            elCell.innerHTML = '<?php tp('blocked');?>';
-      } else {
-            elCell.innerHTML = '<?php tp('active');?>';
-      }  	
-    };
+<div id="gfaAutoComplete">
+	    <div class="fieldLabel" id="gfaInput_lbl"><?php tp('GFA');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox"  disabled="disabled" name="showGFA" checked /></div>
+	    <div  class="leftBorder"><select id="gfaInput" name="gfaInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->gfa as $vals ) {
+			echo '<option value="'.$vals['GFA'].'" '.($this->criteria['gfaInput'] == $vals['id']?'':'').'>'.$vals['GFA'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
+	<div id="budgetNbrAutoComplete">
+	    <div class="fieldLabel" id="budgetNbrInput_lbl"><?php tp('Budget Number');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox"  disabled="disabled" name="showBudgetNbr" checked /></div>
+	    <div  class="leftBorder"><select id="budgetNbrInput" name="budgetNbrInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->budgetNbr as $vals ) {
+			echo '<option value="'.$vals['BudgetNbr'].'" '.($this->criteria['budgetNbrInput'] == $vals['id']?'':'').'>'.$vals['BudgetNbr'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	 </div>
 
-var userColumnDefs = [
-    {key:"id", label: "<?php tp('ID');?>", sortable:false, resizeable:true,
-	                formatter: formatEditUrl},
-    {key:"first_name", label: "<?php tp('First Name');?>", sortable:true, resizeable:true},
-    {key:"last_name", label: "<?php tp('Last Name');?>", sortable:true, resizeable:true},
-    {key:"email", label: "<?php tp('Email');?>", sortable:true, resizeable:true},
-    {key:"username", label: "<?php tp('Username');?>", sortable:true, resizeable:true},
-    {key:"is_blocked", label: "<?php tp('Status');?>", sortable:true, resizeable:true,
-        formatter: formatStatus}
+	<div id="budgetName">
+	    <div class="fieldLabel" id="budgetNameInput_lbl"><?php tp('Budget Name');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showBudgetName" checked /></div>
+	    <div  class="leftBorder"><select id="budgetNameInput" name="budgetNameInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->budgetName as $vals ) {
+			echo '<option value="'.$vals['BudgetName'].'" '.($this->criteria['budgetNameInput'] == $vals['id']?'':'').'>'.$vals['BudgetName'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	 </div>
+
+
+	<div id="projectCode">
+	    <div class="fieldLabel" id="projectCodeInput_lbl"><?php tp('Project Code');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showProjectCode" checked /></div>
+	    <div  class="leftBorder"><select id="projectCodeInput" name="projectCodeInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->projectCode as $vals ) {
+			echo '<option value="'.$vals['ProjectCode'].'" '.($this->criteria['projectCodeInput'] == $vals['id']?'':'').'>'.$vals['ProjectCode'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
+		<div id="tranAmount">
+	    <div class="fieldLabel" id="tranAmountInput_lbl"><?php tp('TranAmount');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showTranAmount" checked /></div>
+
+	    </div>
+	</div>
+	
+		<div id="accountCode">
+	    <div class="fieldLabel" id="accountCodeInput_lbl"><?php tp('AccountCode');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showAccountCode" checked /></div>
+	    <div  class="leftBorder"><select id="accountCodeInput" name="accountCodeInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->accountCode as $vals ) {
+			echo '<option value="'.$vals['AccountCode'].'" '.($this->criteria['accountCodeInput'] == $vals['id']?'':'').'>'.$vals['AccountCode'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
+		<div id="pcaProjectCodeOrig">
+	    <div class="fieldLabel" id="pcaProjectCodeOrigInput_lbl"><?php tp('PCAProjectCodeOrig');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showPCAProjectCodeOrig" checked /></div>
+	    <div  class="leftBorder"><select id="pcaProjectCodeOrigInput" name="pcaProjectCodeOrigInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->pcaProjectCodeOrig as $vals ) {
+			echo '<option value="'.$vals['PCAProjectCodeOrig'].'" '.($this->criteria['pcaProjectCodeOrigInput'] == $vals['id']?'':'').'>'.$vals['PCAProjectCodeOrig'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
+		<div id="pcaProjectCodePosting">
+	    <div class="fieldLabel" id="pcaProjectCodePostingInput_lbl"><?php tp('PCAProjectCodePosting');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showPCAProjectCodePosting" checked /></div>
+	    <div  class="leftBorder"><select id="pcaProjectCodePostingInput" name="pcaProjectCodePostingInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->pcaProjectCodePosting as $vals ) {
+			echo '<option value="'.$vals['PCAProjectCodePosting'].'" '.($this->criteria['pcaProjectCodePostingInput'] == $vals['id']?'':'').'>'.$vals['PCAProjectCodePosting'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
+		<div id="tranDate1">
+	    <div class="fieldLabel" id="tranDate1Input_lbl"><?php tp('TranDate1');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showTranDate1" checked /></div>
+	    <div  class="leftBorder"><select id="tranDate1Input" name="tranDate1Input" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->tranDate1 as $vals ) {
+			echo '<option value="'.$vals['TranDate1'].'" '.($this->criteria['tranDate1Input'] == $vals['id']?'':'').'>'.$vals['TranDate1'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
+			<div id="tranDescMod">
+	    <div class="fieldLabel" id="tranDescModInput_lbl"><?php tp('TranDescMod');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showTranDescMod" checked /></div>
+	    <div  class="leftBorder"><select id="tranDescModInput" name="tranDescModInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->tranDescMod as $vals ) {
+			echo '<option value="'.$vals['TranDescMod'].'" '.($this->criteria['tranDescModInput'] == $vals['id']?'':'').'>'.$vals['TranDescMod'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
+		<div id="tranReference2">
+	    <div class="fieldLabel" id="tranReference2Input_lbl"><?php tp('TranReference2');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showTranReference2" checked /></div>
+	    <div  class="leftBorder"><select id="tranReference2Input" name="tranReference2Input" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->tranReference2 as $vals ) {
+			echo '<option value="'.$vals['TranReference2'].'" '.($this->criteria['tranReference2Input'] == $vals['id']?'':'').'>'.$vals['TranReference2'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
+			<div id="tranReference4">
+	    <div class="fieldLabel" id="tranReference4Input_lbl"><?php tp('TranReference4');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showTranReference4" checked /></div>
+	    <div  class="leftBorder"><select id="tranReference4Input" name="tranReference4Input" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->tranReference4 as $vals ) {
+			echo '<option value="'.$vals['TranReference4'].'" '.($this->criteria['tranReference4Input'] == $vals['id']?'':'').'>'.$vals['TranReference4'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
+			<div id="modified">
+	    <div class="fieldLabel" id="modifiedInput_lbl"><?php tp('Modified');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showModified" checked /></div>
+	    <div  class="leftBorder"><select id="modifiedInput" name="modifiedInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->modified as $vals ) {
+			echo '<option value="'.$vals['Modified'].'" '.($this->criteria['modifiedInput'] == $vals['id']?'':'').'>'.$vals['Modified'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
+
+	
+	
+	
+</div>
+	<div class="clear"></div><br/><br/>
+	
+<div class="fieldLabel"><?php tp('Start date');?></div>
+<div class="fieldInput" id="startdate">
+    <?php tp("Day");?> <input id="start-day" class="dayfield" type="text" name="start-day" maxlength="2" value="<?php echo $this->criteria['start-day']; ?>"  >
+    / <?php tp("Month");?> <input id="start-month" class="monthfield" type="text" name="start-month" maxlength="2" value="<?php echo $this->criteria['start-month']; ?>"  >
+    / <?php tp("Year");?> <input id="start-year" class="yearfield" type="text" name="start-year" maxlength="4" value="<?php echo $this->criteria['start-year'];  ?>" >
+		            <script  type="text/javascript">
+		    YAHOO.util.Event.onDOMReady(function () {
+		    	//makeCalendar("startdate","start-day", "start-month", "start-year");
+		    	<?php //TA:#350
+                        $locale = ITechTranslate::getLocale();
+                        if ( $locale !== null && $locale == 'uk_UK.UTF-8'){ ?>
+                             makeCalendarUkraine("startdate", "start-day", "start-month", "start-year", null, "calendarpicker", "buttoncalendar1");
+                        <?php }else{?>
+                             makeCalendarDefault("startdate", "start-day", "start-month", "start-year", null, "calendarpicker", "buttoncalendar1");
+                        <?php }?>
+		    });
+		</script>
+	</div>
+<div class="fieldLabel" style="padding-top:1em;"><?php tp('End date');?></div>
+<div class="fieldInput" id="enddate" style="margin-top:1em;">
+    <?php tp("Day");?> <input id="end-day" class="dayfield" type="text" name="end-day" maxlength="2" value="<?php echo $this->criteria['end-day']; ?>"  >
+    / <?php tp("Month");?> <input id="end-month" class="monthfield" type="text" name="end-month" maxlength="2" value="<?php echo $this->criteria['end-month']; ?>"  >
+    / <?php tp("Year");?> <input id="end-year" class="yearfield" type="text" name="end-year" maxlength="4" value="<?php echo $this->criteria['end-year'];  ?>" >
+		            <script  type="text/javascript">
+		    YAHOO.util.Event.onDOMReady(function () {
+		    	//makeAdditionalCalendar("enddate","end-day", "end-month", "end-year");
+		    	<?php //TA:#350
+                        $locale = ITechTranslate::getLocale();
+                        if ( $locale !== null && $locale == 'uk_UK.UTF-8'){ ?>
+                            makeCalendarUkraine("enddate", "end-day", "end-month", "end-year", null, "calendarpicker2","buttoncalendar2");
+                        <?php }else{?>
+                            makeCalendarDefault("enddate", "end-day", "end-month", "end-year", null, "calendarpicker2","buttoncalendar2");
+                        <?php }?>
+		    });
+		</script>
+	</div>
+
+
+	<div class="clear"></div>
+	<input type="hidden" name="limit" id="limit" value="1" />
+   	<input type="submit" class="submitNoArrow" name="go" value="<?php tp('Preview');?>" />
+   </fieldset>
+   </form>
+   
+   
+   
+<?php if ( $this->criteria['go'] ) { ?>
+<div class="hrGrey"></div>
+    <div class="fieldIndentNoMargin"><?php echo t('Expenses');?> <span class="total"><?php echo $this->count;?> <?php if ( $this->mode == 'count' ) echo t('Records'); else echo '';?></span><?php echo $this->printAndExport("expenses");?></div>
+<?php } ?>
+    <div id="expenses" class="itechTable"></div>
+    <script type="text/javascript">
+    	        var formatViewUrl = function(elCell, oRecord, oColumn, sData) {
+	            elCell.innerHTML = "<a href='<?php echo $this->base_url;?>/fin/edit/id/" + oRecord.getData("id") +"'>" + sData + "</a>";
+	        };
+
+	        var expenseData = [
+<?php $isFirstRow = true;
+$cnt = 0;
+foreach($this->results as $row) {
+	if ( (!$_REQUEST['limit'])  or ($cnt < 100) ) {
+		if (!$isFirstRow )
+			echo ',';
+		$isFirstRow = false;
+		echo '['. $row['id'];
+		if ( isset($row['id']) )
+			//echo ',"'.$row['training_start_date'].'"';
+		
+		if ( $this->criteria['showGFA'] )
+			echo ',"'.$row['GFA'].'"';
+		if ( $this->criteria['showBudgetNbr'] )
+			echo ',"'.$row['BudgetNbr'].'"';
+		if ( $this->criteria['showBudgetName'] )
+			echo ',"'.$row['BudgetName'].'"';
+		if ( $this->criteria['showProjectCode'] )
+			echo ',"'.$row['ProjectCode'].'"';
+		if ( $this->criteria['showTranAmount'] )
+			echo ',"'.$row['TranAmount'].'"';
+		if ( $this->criteria['showAccountCode'] )
+			echo ',"'.$row['AccountCode'].'"';
+		if ( $this->criteria['showPCAProjectCodeOrig'] )
+			echo ',"'.$row['PCAProjectCodeOrig'].'"';
+		if ( $this->criteria['showPCAProjectCodePosting'] )
+			echo ',"'.$row['PCAProjectCodePosting'].'"';
+		if ( $this->criteria['showTranDate1'] )
+			echo ',"'.$row['TranDate1'].'"';
+		if ( $this->criteria['showTranDescMod'] )
+			echo ',"'.$row['TranDescMod'].'"';
+		if ( $this->criteria['showTranReference2'] )
+			echo ',"'.$row['TranReference2'].'"';
+		if ( $this->criteria['showTranReference4'] )
+			echo ',"'.$row['TranReference4'].'"';
+		if ( $this->criteria['showModified'] )
+			echo ',"'.$row['Modified'].'"';
+			
+			
+		if ( 1 )
+			echo ',"'.$row['Budget_Begin'].'"';
+		if ( 1 )
+			echo ',"'.$row['Budget_End'].'"';
+	
+		echo "]";
+		$cnt++;
+}}
+
+   ?>];
+
+var expenseColumnDefs = [
+<?php if (isset($this->results[0]['cnt'])) { ?>
+{key:"cnt", label: "Count", sortable:true, resizeable:true}
+<?php } else { ?>
+{key:"id", label: "<?php tp('ID')?>", sortable:true, resizeable:true, formatter: formatViewUrl},
+<?php } ?>
+
+<?php if ( $this->criteria['showGFA'] ) { ?>
+   {key:"GFA", label: "<?php tp('GFA');?>", sortable:true, resizeable:true}
+ <?php } ?>
+<?php if ( $this->criteria['showBudgetNbr'] ) { ?>
+   ,{key:"BudgetNbr", label: "<?php tp('BudgetNbr');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( $this->criteria['showBudgetName'] ) { ?>
+   ,{key:"BudgetName", label: "<?php tp('BudgetName');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( $this->criteria['showProjectCode'] ) { ?>
+   ,{key:"ProjectCode", label: "<?php tp('ProjectCode');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( $this->criteria['showTranAmount'] ) { ?>
+   ,{key:"TranAmount", label: "<?php tp('TranAmount');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( $this->criteria['showAccountCode'] ) { ?>
+   ,{key:"AccountCode", label: "<?php tp('AccountCode');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( $this->criteria['showPCAProjectCodeOrig'] ) { ?>
+   ,{key:"PCAProjectCodeOrig", label: "<?php tp('PCAProjectCodeOrig');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( $this->criteria['showPCAProjectCodePosting'] ) { ?>
+   ,{key:"PCAProjectCodePosting", label: "<?php tp('PCAProjectCodePosting');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( $this->criteria['showTranDate1'] ) { ?>
+   ,{key:"TranDate1", label: "<?php tp('TranDate1');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( $this->criteria['showTranDescMod'] ) { ?>
+   ,{key:"TranDescMod", label: "<?php tp('TranDescMod');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( $this->criteria['showTranReference2'] ) { ?>
+   ,{key:"TranReference2", label: "<?php tp('TranReference2');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( $this->criteria['showTranReference4'] ) { ?>
+   ,{key:"TranReference4", label: "<?php tp('TranReference4');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( $this->criteria['showModified'] ) { ?>
+   ,{key:"Modified", label: "<?php tp('Modified');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ 
+ <?php if ( 1 ) { ?>
+   ,{key:"Budget_Begin", label: "<?php tp('Budget_Begin');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( 1 ) { ?>
+   ,{key:"Budget_End", label: "<?php tp('Budget_End');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+
 ];
 
-	var action = '<?php echo $this->base_url;?>/user/list/outputType/json';
-	makeJSONDataTable("userList", null, action, userColumnDefs);
+	makeDataTable("expenses", null, expenseData, expenseColumnDefs);
 </script>
-	    <div class="clear"></div>
+<?php if ($cnt < count($this->results)) { ?>
+<div  class="fieldIndentNoMargin">[<?php tp('Limited to 100 rows');?>]  <a href="<?php echo str_replace('limit=1','limit=0',$_SERVER['REQUEST_URI']);?>"><?php tp('Full Results');?></a></div>
+<?php } ?>
+  </div>
+   <div id="footer"><?php require_once('views/scripts/footer.phtml');?></div>
 
-
- </div>
-<div id="footer"><?php require_once('views/scripts/footer.phtml');?></div>
 </div>
 
 </body>

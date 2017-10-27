@@ -311,7 +311,7 @@ if ($this->mode == 'search' ) {
     <div id="expenses" class="itechTable"></div>
     <script type="text/javascript">
     	        var formatViewUrl = function(elCell, oRecord, oColumn, sData) {
-	            elCell.innerHTML = "<a href='<?php echo $this->base_url;?>/training/view/id/" + oRecord.getData("id") + oRecord.getData("GFA") + oRecord.getData("BudgetNbr") +"'>" + sData + "</a>";
+	            elCell.innerHTML = "<a href='<?php echo $this->base_url;?>/fin/edit/id/" + oRecord.getData("id") +"'>" + sData + "</a>";
 	        };
 
 	        var expenseData = [

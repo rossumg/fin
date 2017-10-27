@@ -22,7 +22,7 @@ if ( $this->isLoggedIn() ) {
 		if ( $this->hasACL('add_edit_fin')  ){
 			$navMain['fin'] = array(
 			'index' => t('Fins'),
-	    'edit'  => t('View/Edit Fin'),
+	    'search'  => t('View/Edit Fin'),
 	    'add' => t('Add New Fin')
 			);
 		} else {
@@ -98,13 +98,20 @@ if ( $this->isLoggedIn() ) {
 			}
 			*/
 
-			$navMain['reports']['activity-detail']            = t('Activity Detail Reports');
-			$navMain['reports']['training-by-facility-count']           = t('Facility Reports');
+//			$navMain['reports']['activity-detail']            = t('Activity Detail Reports');
+//			$navMain['reports']['training-by-facility-count']           = t('Facility Reports');
 			
 			
 			//TA:#253
 // 			$navMain['reports']['participants-by-category/cat/pepfar'] = t('Participant Reports');
-			$navMain['reports']['maintenance'] = t('Maintenance Reports');
+//			$navMain['reports']['maintenance'] = t('Maintenance Reports');
+			
+			
+			$navMain['reports'] = array(
+			'index' => t('Reports'),
+	    	'activity-detail'  => t('Activity Detail Reports'),
+	    	'other' => t('Other Reports')
+			);
 			
 			/*
 			if ($this->setting['display_budget_code']) {
@@ -178,21 +185,22 @@ if ( $this->isLoggedIn() ) {
     $navMain['reports']['partners'] = t('Partners');
   }
 */
+
 	$navMain['user'] = array(
 	'index' => t('My Account'),
 	);
 
 	if ( $this->hasACL('edit_country_options')) {
-		$navMain['user']['../admin/country-settings'] = t('Country Setup');
-		$navMain['user']['../admin/training-settings'] = t('Training Settings');
-		$navMain['user']['../admin/people-settings'] = t('People Settings');
-		$navMain['user']['../admin/facilities-settings'] = t('Facility Settings');
+		$navMain['user']['../admin/country-settings'] = t('Setup');
+//		$navMain['user']['../admin/training-settings'] = t('Training Settings');
+//		$navMain['user']['../admin/people-settings'] = t('People Settings');
+//		$navMain['user']['../admin/facilities-settings'] = t('Facility Settings');
 	}
-	if ( isset($this->setting['display_training_partner']) && $this->setting['display_training_partner'] == 1 ) {
-		if ( $this->hasACL('edit_country_options') ) {
-      $navMain['user']['../training-partner/search']  = no_soft_space_str( t('Training Partners') );
-		}
-	}
+//	if ( isset($this->setting['display_training_partner']) && $this->setting['display_training_partner'] == 1 ) {
+//		if ( $this->hasACL('edit_country_options') ) {
+//      $navMain['user']['../training-partner/search']  = no_soft_space_str( t('Training Partners') );
+//		}
+//	}
   if ( isset($this->setting['module_employee_enabled']) && $this->setting['module_employee_enabled'] == 1 ) {
     if ( $this->hasACL('edit_country_options') ) {
       $navMain['user']['../admin/employee-settings']  = no_soft_space_str( t('Employees Settings') );

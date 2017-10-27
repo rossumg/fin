@@ -1375,6 +1375,39 @@ class Helper extends ITechTable
 	#   UPDATE FUNCTIONS   #
 	#                      #
 	########################
+	
+	public function addGFA($params){
+		$linktable = "GFA_List";
+		$BudgetNbrCol = "BudgetNbr";
+		$GFACol= "GFA";
+		$id = $_POST["_id"];
+		$BudgetNbrVal = $_POST['_BudgetNbr'];
+		$GFAVal = $_POST['_GFA'];
+
+		$select = $this->dbfunc()->select()
+			->from($linktable)
+			->where($BudgetNbrCol . ' = ' . $BudgetNbrCol . ' and '. $GFACol . " = '" . $GFAVal . "'" );
+		$result = $this->dbfunc()->fetchAll($select);
+		if (count ($result) == 0){
+			# LINK NOT FOUND - ADDING
+			$i_arr = array(
+				$BudgetNbrCol	=> $BudgetNbrVal,
+				$GFACol	=> $GFAVal
+			);
+			$instypeinsert = $this->dbfunc()->insert($linktable,$i_arr);
+		}
+	}
+	
+	public function updateGFA($params){
+		$linktable = "GFA_List";
+        $this->dbfunc()->update($linktable, $params, 'id = ' . $params['id']);
+	}
+	
+	public function deleteGFA($params){
+		$db = $this->dbfunc();
+		$query = "DELETE FROM GFA_List WHERE id = " . $_POST["_id"];
+		$db->query($query);
+	}
 
     /**
      * update a course's info to the database
