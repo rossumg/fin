@@ -41,10 +41,78 @@ class AdminController extends UserController
 	/************************************************************************************
 	 * Country
 	 */
+ public function tablesProjectcodesAction(){
+		
+		        file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'AdminCont:tablesProjectcodesAction >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+//				var_dump("sql=", $sql, "END");
+				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+        	
+		$helper = new Helper();
+
+		if ($this->getRequest()->isPost()) {
+			$params = $this->getAllParams();
+
+	        file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'AdminCont:tablesProjectcodesAction >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+				var_dump("params=", $params, "END");
+				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+    
+
+			$map = array(
+				  '_id' => 'id',
+				  '_timestamp' => 'timestamp',
+  				  '_Project_Code' => 'Project_Code',
+  				  '_Project_Status' => 'Project_Status',
+  				  '_BudgetNbr' => 'BudgetNbr',
+  				  '_Location' => 'Location' ,
+  				  '_Country' => 'Country' ,
+  				  '_Management' => 'Management' ,
+  				  '_Project_Training' => 'Project_Training',
+			);
+
+			$data = array();
+			foreach ($params as $k => $v) {
+				if (array_key_exists($k, $map)) {
+					$data[$map[$k]] = $v;
+				}
+			}
+
+			switch($params['_action']) {
+				case "addnew": {
+                    $helper->addProjectCode($data);
+                    break;
+                }
+				case "update": {
+                    $helper->updateProjectCode($data);
+                    break;
+                }
+                case "delete": {
+                    $helper->deleteProjectCode($data);
+                }
+			}
+			$this->_redirect ( 'admin/tables-projectcodes' );
+		}
+		
+		
+
+		$db = $this->dbfunc();
+		
+        $select = $db->select()
+            ->from('Project_Codes', array())
+            ->order('Project_Code')
+            ->columns(array('Project_Codes.id', 'timestamp', 'Project_Code', 'Project_Status', 'BudgetNbr', 'Location', 'Country', 'Management', 'Project_Training' 
+            ));
+
+        $list = $this->dbfunc()->fetchAll($select);
+        
+		$this->view->assign("lookup", $list);
+		$this->view->assign("header",t("Project Codes"));
+		
+	}
 	 
 	 public function tablesGfalistAction(){
+
 		
-		        file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'AdminCont:47 >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+		        file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'AdminCont:tablesGfalistAction >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
 //				var_dump("sql=", $sql, "END");
 				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
         	

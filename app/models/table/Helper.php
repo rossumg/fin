@@ -1375,18 +1375,80 @@ class Helper extends ITechTable
 	#   UPDATE FUNCTIONS   #
 	#                      #
 	########################
+	public function addProjectCode($params){
+		$linktable = "Project_Codes";
+		
+		$timestampCol = "timestamp";
+		$Project_CodeCol = "Project_Code";
+		$Project_StatusCol = "Project_Status";
+		$BudgetNbrCol = "BudgetNbr";
+		$LocationCol = "Location";
+		$CountryCol = "Country";
+		$ManagementCol = "Management";
+		$Project_TrainingCol = "Project_Training";		
+		
+		$id = $_POST["_id"];
+		$timestampVal = $_POST['_timestamp'];
+		$Project_CodeVal = $_POST['_Project_Code'];
+		$Project_StatusVal = $_POST['_Project_Status'];
+		$BudgetNbrVal = $_POST['_BudgetNbr'];
+		$LocationVal = $_POST['_Location'];
+		$CountryVal = $_POST['_Country'];
+		$ManagementVal = $_POST['_Management'];
+		$Project_TrainingVal = $_POST['_Project_Training'];
+
+		$select = $this->dbfunc()->select()
+			->from($linktable)
+			->where($timestampCol . " = '" . $timestampVal . "' and "  .  $Project_CodeCol . " = '" . $Project_CodeVal . "' and " .  $Project_StatusCol . " = '" . $Project_StatusVal . "' and " .  $BudgetNbrCol . " = '" . $BudgetNbrVal . "' and " .  $LocationCol . " = '" . $LocationVal . "' and " .  $CountryCol . " = '" . $CountryVal . "' and " .  $ManagementCol . " = '" . $ManagementVal . "' and " .  $Project_TrainingCol . " = '" . $Project_TrainingVal . "'" );
+			
+	//		    file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'Helper:addProjectCode >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+		//		var_dump("select=", $select, "END");
+			//	$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+        	
+			
+			
+		$result = $this->dbfunc()->fetchAll($select);
+		if (count ($result) == 0){
+			# LINK NOT FOUND - ADDING
+			$i_arr = array(
+				$timestampCol  => $timestampVal,
+				$Project_CodeCol  => $Project_CodeVal,
+				$Project_StatusCol  => $Project_StatusVal,
+				$BudgetNbrCol  => $BudgetNbrVal,
+				$LocationCol  => $LocationVal,
+				$CountryCol  => $CountryVal,
+				$ManagementCol  => $ManagementVal,
+				$Project_TrainingCol  => $Project_TrainingVal
+			);
+			$instypeinsert = $this->dbfunc()->insert($linktable,$i_arr);
+		}
+	}
+	
+	public function updateProjectCode($params){
+		$linktable = "Project_Codes";
+        $this->dbfunc()->update($linktable, $params, 'id = ' . $params['id']);
+	}
+	
+	public function deleteProjectCode($params){
+		$db = $this->dbfunc();
+		$query = "DELETE FROM Project_Codes WHERE id = " . $_POST["_id"];
+		$db->query($query);
+	}
+	
+	
 	
 	public function addGFA($params){
 		$linktable = "GFA_List";
 		$BudgetNbrCol = "BudgetNbr";
 		$GFACol= "GFA";
+		
 		$id = $_POST["_id"];
 		$BudgetNbrVal = $_POST['_BudgetNbr'];
 		$GFAVal = $_POST['_GFA'];
 
 		$select = $this->dbfunc()->select()
 			->from($linktable)
-			->where($BudgetNbrCol . ' = ' . $BudgetNbrCol . ' and '. $GFACol . " = '" . $GFAVal . "'" );
+			->where($BudgetNbrCol . ' = ' . $BudgetNbrVal . ' and '. $GFACol . " = '" . $GFAVal . "'" );
 		$result = $this->dbfunc()->fetchAll($select);
 		if (count ($result) == 0){
 			# LINK NOT FOUND - ADDING

@@ -203,6 +203,22 @@ if ($this->mode == 'search' ) {
 	    </div></div>
 	</div>
 	
+		<div id="tranReference1">
+	    <div class="fieldLabel" id="tranReference1Input_lbl"><?php tp('TranReference1');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showTranReference1" checked /></div>
+	    <div  class="leftBorder"><select id="tranReference1Input" name="tranReference1Input" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->tranReference1 as $vals ) {
+			echo '<option value="'.$vals['TranReference1'].'" '.($this->criteria['tranReference1Input'] == $vals['id']?'':'').'>'.$vals['TranReference1'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
 		<div id="tranReference2">
 	    <div class="fieldLabel" id="tranReference2Input_lbl"><?php tp('TranReference2');?></div>
 	    <div class="fieldInput">
@@ -213,6 +229,22 @@ if ($this->mode == 'search' ) {
 	    
 		foreach ( $this->tranReference2 as $vals ) {
 			echo '<option value="'.$vals['TranReference2'].'" '.($this->criteria['tranReference2Input'] == $vals['id']?'':'').'>'.$vals['TranReference2'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
+		<div id="tranReference3">
+	    <div class="fieldLabel" id="tranReference3Input_lbl"><?php tp('TranReference3');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showTranReference3" checked /></div>
+	    <div  class="leftBorder"><select id="tranReference3Input" name="tranReference3Input" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->tranReference3 as $vals ) {
+			echo '<option value="'.$vals['TranReference3'].'" '.($this->criteria['tranReference3Input'] == $vals['id']?'':'').'>'.$vals['TranReference3'].'</option>';
 	}
 	?>
 </select>
@@ -251,10 +283,45 @@ if ($this->mode == 'search' ) {
 	    </div></div>
 	</div>
 	
+		<div id="tdprimarykey">
+	    	<div class="fieldLabel" id="tdprimarykeyInput_lbl"><?php tp('TDPrimaryKey');?></div>
+	    	<div class="fieldInput">
+	    	<div  class="leftBorderPad"><input type="checkbox" name="showTDPrimaryKey" checked /></div>
+		</div>
+	</div>
+	
+			<div id="fiscalmonth">
+	    <div class="fieldLabel" id="modifiedInput_lbl"><?php tp('FiscalMonth');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showFiscalMonth" checked /></div>
+	    <div  class="leftBorder"><select id="fiscalmonthInput" name="fiscalmonthInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->fiscalmonth as $vals ) {
+			echo '<option value="'.$vals['FiscalMonth'].'" '.($this->criteria['fiscalmonthInput'] == $vals['id']?'':'').'>'.$vals['FiscalMonth'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
+			<div id="fiscalyear">
+	    <div class="fieldLabel" id="fiscalyearInput_lbl"><?php tp('FiscalYear');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showFiscalYear" checked /></div>
+	    <div  class="leftBorder"><select id="fiscalyearInput" name="fiscalyearInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->fiscalyear as $vals ) {
+			echo '<option value="'.$vals['FiscalYear'].'" '.($this->criteria['fiscalyearInput'] == $vals['id']?'':'').'>'.$vals['FiscalYear'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
 
-	
-	
-	
 </div>
 	<div class="clear"></div><br/><br/>
 	
@@ -346,13 +413,23 @@ foreach($this->results as $row) {
 			echo ',"'.$row['TranDate1'].'"';
 		if ( $this->criteria['showTranDescMod'] )
 			echo ',"'.$row['TranDescMod'].'"';
+		if ( $this->criteria['showTranReference1'] )
+			echo ',"'.$row['TranReference1'].'"';
 		if ( $this->criteria['showTranReference2'] )
 			echo ',"'.$row['TranReference2'].'"';
+		if ( $this->criteria['showTranReference3'] )
+			echo ',"'.$row['TranReference3'].'"';
 		if ( $this->criteria['showTranReference4'] )
 			echo ',"'.$row['TranReference4'].'"';
 		if ( $this->criteria['showModified'] )
 			echo ',"'.$row['Modified'].'"';
-			
+		
+		if ( $this->criteria['showTDPrimaryKey'] )
+			echo ',"'.$row['TDPrimaryKey'].'"';
+		if ( $this->criteria['showFiscalMonth'] )
+			echo ',"'.$row['FiscalMonth'].'"';
+		if ( $this->criteria['showFiscalYear'] )
+			echo ',"'.$row['FiscalYear'].'"';
 			
 		if ( 1 )
 			echo ',"'.$row['Budget_Begin'].'"';
@@ -402,14 +479,30 @@ var expenseColumnDefs = [
  <?php if ( $this->criteria['showTranDescMod'] ) { ?>
    ,{key:"TranDescMod", label: "<?php tp('TranDescMod');?>", sortable:true, resizeable:true}
  <?php }  ?>
- <?php if ( $this->criteria['showTranReference2'] ) { ?>
+ <?php if ( $this->criteria['showTranReference1'] ) { ?>
+   ,{key:"TranReference1", label: "<?php tp('TranReference1');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+  <?php if ( $this->criteria['showTranReference2'] ) { ?>
    ,{key:"TranReference2", label: "<?php tp('TranReference2');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+  <?php if ( $this->criteria['showTranReference3'] ) { ?>
+   ,{key:"TranReference3", label: "<?php tp('TranReference3');?>", sortable:true, resizeable:true}
  <?php }  ?>
  <?php if ( $this->criteria['showTranReference4'] ) { ?>
    ,{key:"TranReference4", label: "<?php tp('TranReference4');?>", sortable:true, resizeable:true}
  <?php }  ?>
  <?php if ( $this->criteria['showModified'] ) { ?>
    ,{key:"Modified", label: "<?php tp('Modified');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ 
+ <?php if ( $this->criteria['showTDPrimaryKey'] ) { ?>
+   ,{key:"TDPrimaryKey", label: "<?php tp('TDPrimaryKey');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( $this->criteria['showFiscalMonth'] ) { ?>
+   ,{key:"FiscalMonth", label: "<?php tp('FiscalMonth');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( $this->criteria['showFiscalYear'] ) { ?>
+   ,{key:"FiscalYear", label: "<?php tp('FiscalYear');?>", sortable:true, resizeable:true}
  <?php }  ?>
  
  <?php if ( 1 ) { ?>

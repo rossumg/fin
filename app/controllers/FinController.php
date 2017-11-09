@@ -481,7 +481,7 @@ $activitydetailArray["Modified"] = trim( $activitydetailArray["Modified"] );
 		$this->viewAssignEscaped ( 'tranDate1', $gfaArray );
 		
 		//distinct TranDescMod list
-		$gArray = OptionList::suggestionList ( 'activitydetail', 'TranDescMod', false, 999, false, false, true );
+		$gArray = OptionList::suggestionList ( 'activitydetail', 'TranDescMod', false, 9999, false, false, true );
 		$gfaArray = array ();
 		foreach ( $gArray as $key => $val ) {
 			//if ($val ['id'] != 0)
@@ -489,7 +489,16 @@ $activitydetailArray["Modified"] = trim( $activitydetailArray["Modified"] );
 		}
 		$this->viewAssignEscaped ( 'tranDescMod', $gfaArray );
 		
-		//distinct TranReference2 list
+	//distinct TranReference1 list
+		$gArray = OptionList::suggestionList ( 'activitydetail', 'TranReference1', false, 999, false, false, true );
+		$gfaArray = array ();
+		foreach ( $gArray as $key => $val ) {
+			//if ($val ['id'] != 0)
+			$gfaArray [] = $val;
+		}
+		$this->viewAssignEscaped ( 'tranReference1', $gfaArray );
+		
+		//distinct tranReference2 list
 		$gArray = OptionList::suggestionList ( 'activitydetail', 'TranReference2', false, 999, false, false, true );
 		$gfaArray = array ();
 		foreach ( $gArray as $key => $val ) {
@@ -497,6 +506,15 @@ $activitydetailArray["Modified"] = trim( $activitydetailArray["Modified"] );
 			$gfaArray [] = $val;
 		}
 		$this->viewAssignEscaped ( 'tranReference2', $gfaArray );
+		
+		//distinct TranReference3 list
+		$gArray = OptionList::suggestionList ( 'activitydetail', 'TranReference3', false, 999, false, false, true );
+		$gfaArray = array ();
+		foreach ( $gArray as $key => $val ) {
+			//if ($val ['id'] != 0)
+			$gfaArray [] = $val;
+		}
+		$this->viewAssignEscaped ( 'tranReference3', $gfaArray );
 		
 		//distinct tranReference4 list
 		$gArray = OptionList::suggestionList ( 'activitydetail', 'TranReference4', false, 999, false, false, true );
@@ -516,6 +534,25 @@ $activitydetailArray["Modified"] = trim( $activitydetailArray["Modified"] );
 		}
 		$this->viewAssignEscaped ( 'modified', $gfaArray );
 		
+		//distinct FiscalMonth list
+		$gArray = OptionList::suggestionList ( 'activitydetail', 'FiscalMonth', false, 999, false, false, true );
+		$gfaArray = array ();
+		foreach ( $gArray as $key => $val ) {
+			//if ($val ['id'] != 0)
+			$gfaArray [] = $val;
+		}
+		$this->viewAssignEscaped ( 'fiscalmonth', $gfaArray );
+		
+		//distinct FiscalYear list
+		$gArray = OptionList::suggestionList ( 'activitydetail', 'FiscalYear', false, 999, false, false, true );
+		$gfaArray = array ();
+		foreach ( $gArray as $key => $val ) {
+			//if ($val ['id'] != 0)
+			$gfaArray [] = $val;
+		}
+		$this->viewAssignEscaped ( 'fiscalyear', $gfaArray );
+		
+		// TDPrimary key
 		
 		$this->activityDetailReport ();
 	}
@@ -526,7 +563,7 @@ $activitydetailArray["Modified"] = trim( $activitydetailArray["Modified"] );
 
 		//find the first date in the database
 		$db = Zend_Db_Table_Abstract::getDefaultAdapter ();
-		$sql = "SELECT MIN(Budget_Begin) as \"start\" FROM activitydetail ";
+		$sql = "SELECT MIN(TranDate1) as \"start\" FROM activitydetail ";
 		$rowArray = $db->fetchAll ( $sql );
 		$start_default = $rowArray [0] ['start'];
 		$parts = explode('-', $start_default );
@@ -534,7 +571,7 @@ $activitydetailArray["Modified"] = trim( $activitydetailArray["Modified"] );
 		$criteria ['start-month'] = $parts [1];
 		$criteria ['start-day'] = $parts [2];
 		
-		$sql = "SELECT MAX(Budget_End) as \"end\" FROM activitydetail ";
+		$sql = "SELECT MAX(TranDate1) as \"end\" FROM activitydetail ";
 		$rowArray = $db->fetchAll ( $sql );
 		$end_default = $rowArray [0] ['end'];
 		$parts = explode('-', $end_default );
@@ -595,9 +632,15 @@ $activitydetailArray["Modified"] = trim( $activitydetailArray["Modified"] );
            $criteria ['PCAProjectCodePosting'] = $this->getSanParam ( 'pcaProjectCodePostingInput' );
             $criteria ['TranDate1'] = $this->getSanParam ( 'tranDate1Input' );
              $criteria ['TranDescMod'] = $this->getSanParam ( 'tranDescModInput' );
+             $criteria ['TranReference1'] = $this->getSanParam ( 'tranReference1Input' );
               $criteria ['TranReference2'] = $this->getSanParam ( 'tranReference2Input' );
+              $criteria ['TranReference3'] = $this->getSanParam ( 'tranReference3Input' );
                $criteria ['TranReference4'] = $this->getSanParam ( 'tranReference4Input' );
                 $criteria ['Modified'] = $this->getSanParam ( 'modifiedInput' );
+                
+                $criteria ['TDPrimaryKey'] = $this->getSanParam ( 'tdprimarykeyInput' );
+                $criteria ['FiscalMonth'] = $this->getSanParam ( 'fiscalmonthInput' );
+                $criteria ['FiscalYear'] = $this->getSanParam ( 'fiscalyearInput' );
         
         $criteria ['showGFA'] =       true;
         $criteria ['showBudgetNbr'] =       true;
@@ -609,12 +652,18 @@ $activitydetailArray["Modified"] = trim( $activitydetailArray["Modified"] );
         $criteria ['showPCAProjectCodePosting'] = ($this->getSanParam ( 'showPCAProjectCodePosting' ));
         $criteria ['showTranDate1'] = ($this->getSanParam ( 'showTranDate1' ));
         $criteria ['showTranDescMod'] = ($this->getSanParam ( 'showTranDescMod' ));
+        $criteria ['showTranReference1'] = ($this->getSanParam ( 'showTranReference1' ));
         $criteria ['showTranReference2'] = ($this->getSanParam ( 'showTranReference2' ));
+        $criteria ['showTranReference3'] = ($this->getSanParam ( 'showTranReference3' ));
         $criteria ['showTranReference4'] = ($this->getSanParam ( 'showTranReference4' ));
         $criteria ['showModified'] = ($this->getSanParam ( 'showModified' ));
         
-		$criteria ['Budget_Begin'] = $beginDate;
-	    $criteria ['Budget_End'] =   $endDate;
+         $criteria ['showTDPrimaryKey'] = ($this->getSanParam ( 'showTDPrimaryKey' ));
+          $criteria ['showFiscalMonth'] = ($this->getSanParam ( 'showFiscalMonth' ));
+           $criteria ['showFiscalYear'] = ($this->getSanParam ( 'showFiscalYear' ));
+        
+		$criteria ['TranDate1_Begin'] = $beginDate;
+	    $criteria ['TranDate1_End'] =   $endDate;
 				
 		$this->viewAssignEscaped ( 'criteria', $criteria );
         
@@ -633,6 +682,10 @@ $activitydetailArray["Modified"] = trim( $activitydetailArray["Modified"] );
               $criteria ['TranReference2'] = $this->getSanParam ( 'tranReference2Input' );
                $criteria ['TranReference4'] = $this->getSanParam ( 'tranReference4Input' );
                 $criteria ['Modified'] = $this->getSanParam ( 'modifiedInput' );
+                
+                $criteria ['TDPrimaryKey'] = $this->getSanParam ( 'tdprimarykeyInput' );
+                $criteria ['FiscalMonth'] = $this->getSanParam ( 'fiscalmonthInput' );
+                $criteria ['FiscalYear'] = $this->getSanParam ( 'fiscalyearInput' );
         		
         	    $sql = 'SELECT '; //todo test
 
@@ -642,7 +695,7 @@ $activitydetailArray["Modified"] = trim( $activitydetailArray["Modified"] );
 				//$sql .= ' DISTINCT pt.id as "id", pt.facility_name, pt.training_start_date  ';
 			//}
            
-$sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Budget_End, la.BudgetName, la.ProjectCode, la.TranAmount, la.AccountCode, la.PCAProjectCodeOrig, la.PCAProjectCodePosting, la.Budget_Begin, la.Budget_End, la.TranDate1, la.TranDescMod, la.TranReference2, la.TranReference4, la.Modified ';
+$sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Budget_End, la.BudgetName, la.ProjectCode, la.TranAmount, la.AccountCode, la.PCAProjectCodeOrig, la.PCAProjectCodePosting, la.Budget_Begin, la.Budget_End, la.TranDate1, la.TranDescMod, la.TranReference1, la.TranReference2, la.TranReference3, la.TranReference4, la.Modified, la.TDPrimaryKey, la.FiscalMonth, la.FiscalYear ';
            		
            		$sql .= ' FROM activitydetail la';
 				
@@ -658,12 +711,18 @@ $sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Bud
            		if($criteria['PCAProjectCodePosting']) $where []= ' trim(la.PCAProjectCodePosting) = \'' . $criteria ['PCAProjectCodePosting'] . '\'';
            		if($criteria['TranDate1']) $where []= ' trim(la.TranDate1) = \'' . $criteria ['TranDate1'] . '\'';
            		if($criteria['TranDescMod']) $where []= ' trim(la.TranDescMod) = \'' . $criteria ['TranDescMod'] . '\'';
+           		if($criteria['TranReference1']) $where []= ' trim(la.TranReference1) = \'' . $criteria ['TranReference1'] . '\'';
            		if($criteria['TranReference2']) $where []= ' trim(la.TranReference2) = \'' . $criteria ['TranReference2'] . '\'';
+           		if($criteria['TranReference3']) $where []= ' trim(la.TranReference3) = \'' . $criteria ['TranReference3'] . '\'';
            		if($criteria['TranReference4']) $where []= ' trim(la.TranReference4) = \'' . $criteria ['TranReference4'] . '\'';
            		if($criteria['Modified']) $where []= ' trim(la.Modified) = \'' . $criteria ['Modified'] . '\'';
            		
-           		$where []= ' la.Budget_Begin >= \'' . $criteria ['Budget_Begin'] . '\'';
-           		$where []= ' la.Budget_End <= \'' . $criteria ['Budget_End'] . '\'';
+           		if($criteria['TDPrimaryKey']) $where []= ' trim(la.TDPrimaryKey) = \'' . $criteria ['TDPrimaryKey'] . '\'';
+           		if($criteria['FiscalMonth']) $where []= ' trim(la.FiscalMonth) = \'' . $criteria ['FiscalMonth'] . '\'';
+           		if($criteria['FiscalYear']) $where []= ' trim(la.FiscalYear) = \'' . $criteria ['FiscalYear'] . '\'';
+           		
+           		$where []= ' la.TranDate1 >= \'' . $criteria ['TranDate1_Begin'] . '\'';
+           		$where []= ' la.TranDate1 <= \'' . $criteria ['TranDate1_End'] . '\'';
            		
            		if ($where)
 					$sql .= ' WHERE ' . implode(' AND ', $where);
