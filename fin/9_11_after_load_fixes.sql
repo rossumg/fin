@@ -73,3 +73,55 @@ case
 		 else ''
        -- end
 end;
+
+-- fix 6
+update activitydetail ad set
+ProjectCode = trim( ProjectCode),
+GFA = trim( GFA),
+AdjustmentLoadedDate = trim( AdjustmentLoadedDate),
+TranAmount = trim( TranAmount),
+BudgetNbr = trim( BudgetNbr),
+BudgetName = trim( BudgetName),
+AccountCode = trim( AccountCode), 
+TranDescMod = trim( TranDescMod),
+TranReference1 = trim( TranReference1),
+TranReference2 = trim( TranReference2),
+TranReference3 = trim( TranReference3),
+TranReference4 = trim( TranReference4),
+Budget_Begin = trim( Budget_Begin),
+Budget_End = trim( Budget_End),
+TranDate1 = trim( TranDate1),
+Modified = trim( Modified),
+PCAProjectCodeOrig = trim( PCAProjectCodeOrig),
+PCAProjectCodePosting = trim( PCAProjectCodePosting),
+TDPrimaryKey = trim( TDPrimaryKey),
+FiscalMonth = trim( FiscalMonth),
+FiscalYear = trim(FiscalYear);
+
+-- fix 7
+update activitydetail ad set ProjectCode = 
+case 
+  when PCAProjectCodePosting='99999Z'
+  or PCAProjectCodePosting='CODEME'
+  or PCAProjectCodePosting='99999Y' then 
+	( select distinct Project_Code from Project_Codes pc  
+      where 1=1
+      and pc.Project_Code = ad.PCAProjectCodeOrig
+	  and pc.BudgetNbr = ad.BudgetNbr
+	  and pc.Project_Status = 'Active')
+  else PCAProjectCodePosting
+end 
+-- where trim(TDPrimaryKey) in ('170322039580', '170325035040')
+; 
+
+-- fix 8
+update activitydetail set Modified = 
+case 
+  when PCAProjectCodePosting='99999Z' 
+  or PCAProjectCodePosting='CODEME' 
+  or PCAProjectCodePosting='99999Y' then 'Modified'
+  -- else case
+         -- when TranDate1 > @PayDate1 then 'Modified' -- temp out
+		 else ''
+       -- end
+end;

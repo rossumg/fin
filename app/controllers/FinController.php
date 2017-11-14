@@ -154,6 +154,9 @@ class FinController extends ReportFilterHelpers {
 				// map db field names to FORM field names
 
 $activitydetailRow->ProjectCode = $this->getSanParam ( 'ProjectCode' );
+date_default_timezone_set('America/Los_Angeles');
+$now = new DateTime();
+$activitydetailRow->timestamp = date('Y-m-d h:i:s', $now->getTimestamp());
 $activitydetailRow->TranAmount = $this->getSanParam ( 'TranAmount' );
 $activitydetailRow->GFA = $this->getSanParam ( 'GFA' );
 //$activitydetailRow->AdjustmentLoadedDate = $this->getSanParam ( 'AdjustmentLoadedDate' );
@@ -267,23 +270,21 @@ $activitydetailRow->Modified = $this->getSanParam ( 'Modified' );
 //				$activitydetailArray [] = $val;
 //		}
 
-$activitydetailArray["GFA"] = trim($activitydetailArray["GFA"]);
-$activitydetailArray["ProjectCode"] = trim( $activitydetailArray["ProjectCode"] );
-$activitydetailArray["TranAmount"] = trim( $activitydetailArray["TranAmount"] );
-$activitydetailArray["GFA"] = trim( $activitydetailArray["GFA"] );
-$activitydetailArray["BudgetNbr"] = trim( $activitydetailArray["BudgetNbr"] );
-$activitydetailArray["BudgetName"] = trim( $activitydetailArray["BudgetName"] );
-$activitydetailArray["AccountCode"] = trim( $activitydetailArray["AccountCode"] );
-$activitydetailArray["PCAProjectCodeOrig"] = trim( $activitydetailArray["PCAProjectCodeOrig"] );
-$activitydetailArray["PCAProjectCodePosting"] = trim( $activitydetailArray["PCAProjectCodePosting"] );
-$activitydetailArray["Budget_Begin"] = trim( $activitydetailArray["Budget_Begin"] );
-$activitydetailArray["Budget_End"] = trim( $activitydetailArray["Budget_End"] );
-$activitydetailArray["TranDate1"] = trim( $activitydetailArray["TranDate1"] );
-$activitydetailArray["TranDescMod"] = trim( $activitydetailArray["TranDescMod"] );
-$activitydetailArray["TranReference2"] = trim( $activitydetailArray["TranReference2"] );
-$activitydetailArray["TranReference4"] = trim( $activitydetailArray["TranReference4"] );
-$activitydetailArray["Modified"] = trim( $activitydetailArray["Modified"] );
-		
+		//valid ProjectCode		
+		$sql = "select distinct Project_Code from Project_Codes " .
+		       "where 1=1 " .
+		       " and BudgetNbr = '" . $activitydetailArray["BudgetNbr"] .
+		       " ' and Project_Status = 'Active'";
+		       
+//           		file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinCont:editAction >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+//				var_dump("sql=", $sql, "END");
+//				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+				
+		$db = Zend_Db_Table_Abstract::getDefaultAdapter ();
+		$gArray = $db->fetchAll ( $sql );
+
+		$activitydetailArray["ProjectCode"] = $gArray[0]['Project_Code'];
+
 		$this->viewAssignEscaped ( 'activitydetail', $activitydetailArray );
 		
 //	file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinCont:edit:330 >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
@@ -444,6 +445,10 @@ $activitydetailArray["Modified"] = trim( $activitydetailArray["Modified"] );
 		}
 		$this->viewAssignEscaped ( 'projectCode', $gfaArray );
 		
+//        		file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinCont:searchAction >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+//				var_dump("gfaArray=", $gfaArray, "END");
+//				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+		
 		//distinct AccountCode list
 		$gArray = OptionList::suggestionList ( 'activitydetail', 'AccountCode', false, 999, false, false, true );
 		$gfaArray = array ();
@@ -489,7 +494,7 @@ $activitydetailArray["Modified"] = trim( $activitydetailArray["Modified"] );
 		}
 		$this->viewAssignEscaped ( 'tranDescMod', $gfaArray );
 		
-	//distinct TranReference1 list
+		//distinct TranReference1 list
 		$gArray = OptionList::suggestionList ( 'activitydetail', 'TranReference1', false, 999, false, false, true );
 		$gfaArray = array ();
 		foreach ( $gArray as $key => $val ) {
