@@ -21,14 +21,14 @@ if ( $this->isLoggedIn() ) {
 		
 		if ( $this->hasACL('add_edit_fin')  ){
 			$navMain['fin'] = array(
-			'index' => t('Fins'),
-	    'search'  => t('View/Edit Fin'),
-	    'add' => t('Add New Fin')
+			'index' => t('Expenses'),
+	    'search'  => t('View/Edit Expense'),
+	    'add' => t('Add New Expense')
 			);
 		} else {
 			$navMain['fin'] = array(
-			'index' => t('Fins'),
-	    'view'  => t('View Fin')
+			'index' => t('Expenses'),
+	    'view'  => t('View Expenses')
 			);
 		}
 			/*	
@@ -109,8 +109,8 @@ if ( $this->isLoggedIn() ) {
 			
 			$navMain['reports'] = array(
 			'index' => t('Reports'),
-	    	'activity-detail'  => t('Activity Detail Reports'),
-	    	'other' => t('Other Reports')
+	    	'activity-detail'  => t('Activity Detail Reports')
+//	    	'other' => t('Other Reports')
 			);
 			
 			/*
@@ -123,7 +123,7 @@ if ( $this->isLoggedIn() ) {
 			$navMain['reports']['roster']                            = t('Roster Reports');
 			$navMain['reports']['evaluations']                       = t('Evaluations Reports');
 			*/
-			$navMain['reports']['data']                              = t('Data Downloads');
+//			$navMain['reports']['data']                              = t('Data Downloads');
 			//  '' =>
 /*
 			if ( !$this->setting['display_training_recommend'] ) {
