@@ -171,6 +171,88 @@ if ($this->mode == 'search' ) {
 	    </div></div>
 	</div>
 	
+		<div id="pcaOptionCodeOrig">
+	    <div class="fieldLabel" id="pcaOptionCodeOrigInput_lbl"><?php tp('PCAOptionCodeOrig');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showPCAOptionCodeOrig" checked /></div>
+	    <div  class="leftBorder"><select id="pcaOptionCodeOrigInput" name="pcaOptionCodeOrigInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->pcaOptionCodeOrig as $vals ) {
+			echo '<option value="'.$vals['PCAOptionCodeOrig'].'" '.($this->criteria['pcaOptionCodeOrigInput'] == $vals['id']?'':'').'>'.$vals['PCAOptionCodeOrig'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
+		<div id="pcaOptionCodePosting">
+	    <div class="fieldLabel" id="pcaOptionCodePostingInput_lbl"><?php tp('PCAOptionCodePosting');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showPCAOptionCodePosting" checked /></div>
+	    <div  class="leftBorder"><select id="pcaOptionCodePostingInput" name="pcaOptionCodePostingInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->pcaOptionCodePosting as $vals ) {
+			echo '<option value="'.$vals['PCAOptionCodePosting'].'" '.($this->criteria['pcaOptionCodePostingInput'] == $vals['id']?'':'').'>'.$vals['PCAOptionCodePosting'].'</option>';
+	}
+	?>
+</select>
+
+	    </div></div>
+	</div>
+	
+		<div id="pcaTaskCodeOrig">
+	    <div class="fieldLabel" id="pcaTaskCodeOrigInput_lbl"><?php tp('PCATaskCodeOrig');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showPCATaskCodeOrig" checked /></div>
+	    <div  class="leftBorder"><select id="pcaTaskCodeOrigInput" name="pcaTaskCodeOrigInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->pcaTaskCodeOrig as $vals ) {
+			echo '<option value="'.$vals['PCATaskCodeOrig'].'" '.($this->criteria['pcaTaskCodeOrigInput'] == $vals['id']?'':'').'>'.$vals['PCATaskCodeOrig'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
+		<div id="pcaTaskCodePosting">
+	    <div class="fieldLabel" id="pcaTaskCodePostingInput_lbl"><?php tp('PCATaskCodePosting');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showPCATaskCodePosting" checked /></div>
+	    <div  class="leftBorder"><select id="pcaTaskCodePostingInput" name="pcaTaskCodePostingInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->pcaTaskCodePosting as $vals ) {
+			echo '<option value="'.$vals['PCATaskCodePosting'].'" '.($this->criteria['pcaTaskCodePostingInput'] == $vals['id']?'':'').'>'.$vals['PCATaskCodePosting'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div
+	>
+	
+		<div id="tranFTE">
+	    <div class="fieldLabel" id="tranFTEInput_lbl"><?php tp('TranFTE');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showTranFTE" checked /></div>
+	    <div  class="leftBorder"><select id="tranFTEInput" name="tranFTEInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->tranFTE as $vals ) {
+			echo '<option value="'.$vals['TranFTE'].'" '.($this->criteria['tranFTEInput'] == $vals['id']?'':'').'>'.$vals['TranFTE'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
 		<div id="tranDate1">
 	    <div class="fieldLabel" id="tranDate1Input_lbl"><?php tp('TranDate1');?></div>
 	    <div class="fieldInput">
@@ -291,7 +373,7 @@ if ($this->mode == 'search' ) {
 	</div>
 	
 			<div id="fiscalmonth">
-	    <div class="fieldLabel" id="modifiedInput_lbl"><?php tp('FiscalMonth');?></div>
+	    <div class="fieldLabel" id="modifiedInput_lbl"><?php tp('Month');?></div>
 	    <div class="fieldInput">
 	    <div  class="leftBorderPad"><input type="checkbox" name="showFiscalMonth" checked /></div>
 	    <div  class="leftBorder"><select id="fiscalmonthInput" name="fiscalmonthInput" >
@@ -307,7 +389,7 @@ if ($this->mode == 'search' ) {
 	</div>
 	
 			<div id="fiscalyear">
-	    <div class="fieldLabel" id="fiscalyearInput_lbl"><?php tp('FiscalYear');?></div>
+	    <div class="fieldLabel" id="fiscalyearInput_lbl"><?php tp('Year');?></div>
 	    <div class="fieldInput">
 	    <div  class="leftBorderPad"><input type="checkbox" name="showFiscalYear" checked /></div>
 	    <div  class="leftBorder"><select id="fiscalyearInput" name="fiscalyearInput" >
@@ -409,6 +491,16 @@ foreach($this->results as $row) {
 			echo ',"'.$row['PCAProjectCodeOrig'].'"';
 		if ( $this->criteria['showPCAProjectCodePosting'] )
 			echo ',"'.$row['PCAProjectCodePosting'].'"';
+		if ( $this->criteria['showPCAOptionCodeOrig'] )
+			echo ',"'.$row['PCAOptionCodeOrig'].'"';
+		if ( $this->criteria['showPCAOptionCodePosting'] )
+			echo ',"'.$row['PCAOptionCodePosting'].'"';
+		if ( $this->criteria['showPCATaskCodeOrig'] )
+			echo ',"'.$row['PCATaskCodeOrig'].'"';
+		if ( $this->criteria['showPCATaskCodePosting'] )
+			echo ',"'.$row['PCATaskCodePosting'].'"';
+		if ( $this->criteria['showTranFTE'] )
+			echo ',"'.$row['TranFTE'].'"';
 		if ( $this->criteria['showTranDate1'] )
 			echo ',"'.$row['TranDate1'].'"';
 		if ( $this->criteria['showTranDescMod'] )
@@ -423,7 +515,6 @@ foreach($this->results as $row) {
 			echo ',"'.$row['TranReference4'].'"';
 		if ( $this->criteria['showModified'] )
 			echo ',"'.$row['Modified'].'"';
-		
 		if ( $this->criteria['showTDPrimaryKey'] )
 			echo ',"'.$row['TDPrimaryKey'].'"';
 		if ( $this->criteria['showFiscalMonth'] )
@@ -472,6 +563,21 @@ var expenseColumnDefs = [
  <?php }  ?>
  <?php if ( $this->criteria['showPCAProjectCodePosting'] ) { ?>
    ,{key:"PCAProjectCodePosting", label: "<?php tp('PCAProjectCodePosting');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( $this->criteria['showPCAOptionCodeOrig'] ) { ?>
+   ,{key:"PCAOptionCodeOrig", label: "<?php tp('PCAOptionCodeOrig');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( $this->criteria['showPCAOptionCodePosting'] ) { ?>
+   ,{key:"PCAOptionCodePosting", label: "<?php tp('PCAOptionCodePosting');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+  <?php if ( $this->criteria['showPCATaskCodeOrig'] ) { ?>
+   ,{key:"PCATaskCodeOrig", label: "<?php tp('PCATaskCodeOrig');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( $this->criteria['showPCATaskCodePosting'] ) { ?>
+   ,{key:"PCATaskCodePosting", label: "<?php tp('PCATaskCodePosting');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( $this->criteria['showTranFTE'] ) { ?>
+   ,{key:"TranFTE", label: "<?php tp('TranFTE');?>", sortable:true, resizeable:true}
  <?php }  ?>
  <?php if ( $this->criteria['showTranDate1'] ) { ?>
    ,{key:"TranDate1", label: "<?php tp('TranDate1');?>", sortable:true, resizeable:true}
