@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title><?php echo $this->translation['Application Name'];?> | <?php tp('Edit Record');?></title>
+<title><?php echo $this->translation['Application Name'];?> | <?php tp('Edit Expense');?></title>
 		<?php
 			require_once('views/helpers/ScriptContainer.php');
 			print ScriptContainer::$instance->renderCSSHead();
@@ -14,9 +14,11 @@
 
 		<div id="header"><?php require_once('views/scripts/header.phtml');?></div>
 		<div id="content">
-			<h1><?php tp('Edit Record');?></h1>
+			<h1><?php tp('Edit Expense');?></h1>
 			<div class="clear"></div>
 			<form action="" id="activitydetailForm" method="post">
+			
+				<?php if ( true ) { require_once('history.phtml'); }  ?>
 				
 				<div class="fieldLabel" id="GFA_lbl"> <?php tp('GFA');?></div>
 				<div class="fieldInput">

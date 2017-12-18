@@ -1,0 +1,398 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title><?php echo $this->translation['Application Name'];?> | <?php tp('Add Expense');?></title>
+		<?php
+			require_once('views/helpers/ScriptContainer.php');
+			print ScriptContainer::$instance->renderCSSHead();
+			print ScriptContainer::$instance->renderJSHead();
+		?>
+	</head>
+<body class="yui-skin-sam">
+
+	<div id="pageHolder">
+
+		<div id="header"><?php require_once('views/scripts/header.phtml');?></div>
+		<div id="content">
+			<h1><?php tp('Add Expense');?></h1>
+			<div class="clear"></div>
+			<form action="" id="activitydetailForm" method="post">
+				
+				<div class="fieldLabel" id="GFA_lbl"> <?php tp('GFA');?></div>
+				<div class="fieldInput">
+					<input type="text" name="GFA" size="32" maxlength="255" 
+						value="<?php echo $this->activitydetail['GFA'];?>"  />
+				</div>
+				
+				<div class="fieldLabel" id="BudgetNbr_lbl"> <?php tp('BudgetNbr');?></div>
+				<div class="fieldInput">
+					<input type="text" name="BudgetNbr" size="32" maxlength="255"
+						value="<?php echo $this->activitydetail['BudgetNbr'];?>"  />
+				</div>
+				
+				<div class="fieldLabel" id="BudgetName_lbl"> <?php tp('BudgetName');?></div>
+				<div class="fieldInput">
+					<input type="text" name="BudgetName" size="32" maxlength="255"
+						value="<?php echo $this->activitydetail['BudgetName'];?>"  />
+				</div>
+				
+				<div class="fieldLabel" id="ProjectCode_lbl"> <?php tp('ProjectCode');?></div>
+				<div class="fieldInput">
+					<input type="text" name="ProjectCode" size="32" maxlength="255"
+						value="<?php echo $this->activitydetail['ProjectCode'];?>" />
+				</div>
+
+				<div class="fieldLabel" id="TranAmount_lbl"> <?php tp('TranAmount');?></div>
+				<div class="fieldInput">
+					<input type="text" name="TranAmount" size="32" maxlength="255"
+						value="<?php echo $this->activitydetail['TranAmount'];?>" />
+				</div>
+				
+				<div class="fieldLabel" id="AccountCode_lbl"> <?php tp('AccountCode');?></div>
+				<div class="fieldInput">
+					<input type="text" name="AccountCode" size="32" maxlength="255"
+						value="<?php echo $this->activitydetail['AccountCode'];?>"  />
+				</div>
+				
+				<div class="fieldLabel" id="PCAProjectCodeOrig_lbl"> <?php tp('PCAProjectCodeOrig');?></div>
+				<div class="fieldInput">
+					<input type="text" name="PCAProjectCodeOrig" size="32" maxlength="255"
+						value="<?php echo $this->activitydetail['PCAProjectCodeOrig'];?>"  />
+				</div>
+				
+				<div class="fieldLabel" id="PCAProjectCodePosting_lbl"> <?php tp('PCAProjectCodePosting');?></div>
+				<div class="fieldInput">
+					<input type="text" name="PCAProjectCodePosting" size="32" maxlength="255"
+						value="<?php echo $this->activitydetail['PCAProjectCodePosting'];?>"  />
+				</div>
+				
+				<div class="fieldLabel" id="PCAOptionCodeOrig_lbl"> <?php tp('PCAOptionCodeOrig');?></div>
+				<div class="fieldInput">
+					<input type="text" name="PCAOptionCodeOrig" size="32" maxlength="255"
+						value="<?php echo $this->activitydetail['PCAOptionCodeOrig'];?>"  />
+				</div>
+				
+				<div class="fieldLabel" id="PCAOptionCodePosting_lbl"> <?php tp('PCAOptionCodePosting');?></div>
+				<div class="fieldInput">
+					<input type="text" name="PCAOptionCodePosting" size="32" maxlength="255"
+						value="<?php echo $this->activitydetail['PCAOptionCodePosting'];?>"  />
+				</div>
+				
+				<div class="fieldLabel" id="PCATaskCodeOrig_lbl"> <?php tp('PCATaskCodeOrig');?></div>
+				<div class="fieldInput">
+					<input type="text" name="PCATaskCodeOrig" size="32" maxlength="255"
+						value="<?php echo $this->activitydetail['PCATaskCodeOrig'];?>"  />
+				</div>
+				
+				<div class="fieldLabel" id="PCATaskCodePosting_lbl"> <?php tp('PCATaskCodePosting');?></div>
+				<div class="fieldInput">
+					<input type="text" name="PCATaskCodePosting" size="32" maxlength="255"
+						value="<?php echo $this->activitydetail['PCATaskCodePosting'];?>"  />
+				</div>
+				
+				<div class="fieldLabel" id="TranDate1_lbl"> <?php tp('TranDate1');?></div>
+				<div class="fieldInput">
+					<input type="text" name="TranDate1" size="32" maxlength="255"
+						value="<?php echo $this->activitydetail['TranDate1'];?>"  />
+				</div>
+				
+				<div class="fieldLabel" id="TranFTE_lbl"> <?php tp('TranFTE');?></div>
+				<div class="fieldInput">
+					<input type="text" name="TranFTE" size="32" maxlength="255"
+						value="<?php echo $this->activitydetail['TranFTE'];?>"  />
+				</div>
+				
+				<div class="fieldLabel" id="TranDescMod_lbl"> <?php tp('TranDescMod');?></div>
+				<div class="fieldInput">
+					<input type="text" name="TranDescMod" size="32" maxlength="255"
+						value="<?php echo $this->activitydetail['TranDescMod'];?>"  />
+				</div>
+				
+				<div class="fieldLabel" id="TranReference1_lbl"> <?php tp('TranReference1');?></div>
+				<div class="fieldInput">
+					<input type="text" name="TranReference1" size="32" maxlength="255"
+						value="<?php echo $this->activitydetail['TranReference1'];?>"  />
+				</div>
+				
+				<div class="fieldLabel" id="TranReference2_lbl"> <?php tp('TranReference2');?></div>
+				<div class="fieldInput">
+					<input type="text" name="TranReference2" size="32" maxlength="255"
+						value="<?php echo $this->activitydetail['TranReference2'];?>"  />
+				</div>
+				
+				<div class="fieldLabel" id="TranReference3_lbl"> <?php tp('TranReference3');?></div>
+				<div class="fieldInput">
+					<input type="text" name="TranReference3" size="32" maxlength="255"
+						value="<?php echo $this->activitydetail['TranReference3'];?>"  />
+				</div>
+				
+				<div class="fieldLabel" id="TranReference4_lbl"> <?php tp('TranReference4');?></div>
+				<div class="fieldInput">
+					<input type="text" name="TranReference4" size="32" maxlength="255"
+						value="<?php echo $this->activitydetail['TranReference4'];?>"  />
+				</div>
+				
+				<div class="fieldLabel" id="Modified_lbl"> <?php tp('Modified');?></div>
+				<div class="fieldInput">
+					<input type="text" name="Modified" size="32" maxlength="255"
+						value="<?php echo $this->activitydetail['Modified'];?>"  />
+				</div>
+				
+				<div class="fieldLabel" id="TDPrimaryKey_lbl"> <?php tp('TDPrimaryKey');?></div>
+				<div class="fieldInput">
+					<input type="text" name="TDPrimaryKey" size="32" maxlength="255"
+						value="<?php echo $this->activitydetail['TDPrimaryKey'];?>"  />
+				</div>
+				
+				<div class="fieldLabel" id="FiscalMonth_lbl"> <?php tp('Month');?></div>
+				<div class="fieldInput">
+					<input type="text" name="FiscalMonth" size="32" maxlength="255"
+						value="<?php echo $this->activitydetail['FiscalMonth'];?>"  />
+				</div>
+				
+				<div class="fieldLabel" id="FiscalYear_lbl"> <?php tp('Year');?></div>
+				<div class="fieldInput">
+					<input type="text" name="FiscalYear" size="32" maxlength="255"
+						value="<?php echo $this->activitydetail['FiscalYear'];?>"  />
+				</div>
+				
+				<div class="clear"></div>
+
+					<button type="button" id="Finished" title="add this record"
+					class="submitNoArrow" /><?php tp('Save record');?></button>
+				<div class="clear"></div>
+
+
+			</form>
+			<div class="clear"></div>
+			<script type="text/javascript">
+					addAjaxSubmit('Finished','activitydetailForm','<?php echo $this->base_url;?>/fin/add/id/<?php echo $this->activitydetail['id'];?>/outputType/json');
+				</script>
+
+		</div>
+		<div id="footer"> <?php require_once('views/scripts/footer.phtml');?></div>
+
+
+	</div>
+
+	<script language="javascript">
+
+
+	$(document).ready(function () {
+		$('#orgcheckall').click(function (e) {   /* check all btn  */
+			e.preventDefault();
+			$('#orgs input[name="training_organizer_option_id[]"]').attr('checked', 'checked');
+			//TA:#415
+			var mech_fields = YAHOO.util.Dom.get("mechanisms_box").getElementsByTagName('input');
+			for(var i = 0; i < mech_fields.length; i++) {
+				$(mech_fields[i]).parent().parent().parent().show();
+			}			
+		});
+		$('#orguncheckall').click(function (e) { /* check none btn */
+			e.preventDefault();
+			$('#training_organizer_option_all,#orgs input[name="training_organizer_option_id[]"]').removeAttr('checked').removeAttr('readonly').removeAttr('disabled');
+			//TA:#415
+			var mech_fields = YAHOO.util.Dom.get("mechanisms_box").getElementsByTagName('input');
+			for(var i = 0; i < mech_fields.length; i++) {
+ 				$(mech_fields[i]).parent().parent().parent().hide();
+ 				$(mech_fields[i]).attr('checked', false);
+			}
+		});
+
+		//TA:#415
+		$('#mechanismcheckall').click(function (e) {   /* check all btn  */
+			e.preventDefault();
+			var mech_fields = YAHOO.util.Dom.get("mechanisms_box").getElementsByTagName('input');
+			for(var i = 0; i < mech_fields.length; i++) {
+				if($(mech_fields[i]).is(':hidden')){
+					mech_fields[i].checked = false;
+				}else{
+					mech_fields[i].checked = true;
+				}
+			}
+		});
+		$('#mechanismuncheckall').click(function (e) { /* check none btn */
+			e.preventDefault();
+			$('#mechanism_option_all,#mechanisms input[name="mechanism_option_id[]"]').removeAttr('checked').removeAttr('readonly').removeAttr('disabled');
+		});
+		///
+
+		$('#edit_country_options').click(function (e) { /* edit country options checkbox (this is master admin) */
+			$('#admin_box input[type="checkbox"]').attr('checked', $(this).is(':checked'));
+		});
+
+		$('#admin_select_all').click(function (e) {
+			e.preventDefault();
+			adminChecks(1);
+		});
+		$('#admin_select_none').click(function (e) {
+			e.preventDefault();
+			adminChecks(0);
+		})
+
+		//TA:#421
+		if($('#employees_module').attr('checked')){
+			$("#position_access").prop('disabled',false);
+		}else{
+			 $("#position_access").prop('disabled',true);
+		}
+		$('#employees_module').click(function (e) {
+			if($('#employees_module').attr('checked')){
+				$("#position_access").prop('disabled',false);
+			}else{
+				 $("#position_access").prop('disabled',true);
+				 $("#position_access").prop('checked',false);
+			}
+		})	
+		///
+		
+	});
+
+	function adminChecks(val) { /* check all admin options btn */
+		chked = null;
+		if( val==1 )
+			chked = 'checked';
+		$('#admin_box input[type="checkbox"]').attr('checked', chked);
+		return false;
+	}
+
+	function showAdminLevels() { /* show hide #admin_box btn */
+		$('#admin_box').toggle();
+		if(!$('#toggle').is(':checked')){
+			$('#admin_box input').removeAttr('checked');
+		}
+	}
+
+	//TA:#415
+	function setOrgAccessStatus() { /* organizer logic (restrict access), show hide, uncheck and check */
+		if ($('#acl_org_restrict').attr('checked') == 'checked') {
+			$('#orgs').slideDown();	
+			if ($('#acl_mechanism_restrict').attr('checked') == 'checked') {
+				 var mechFields = YAHOO.util.Dom.get("mechanisms").getElementsByTagName('input');
+				 for(var i = 0; i < mechFields.length; i++) {
+					 $(mechFields[i]).parent().parent().parent().hide();
+					 orginizer_selected(mechFields[i]);
+				 }
+			}
+		}else {
+			$('#orgs').slideUp();
+			if ($('#acl_mechanism_restrict').attr('checked') == 'checked') {
+			 var mechFields = YAHOO.util.Dom.get("mechanisms").getElementsByTagName('input');
+			 for(var i = 0; i < mechFields.length; i++) {
+				    $(mechFields[i]).parent().parent().parent().show();
+			 }
+			 var orgFields = YAHOO.util.Dom.get("orgs").getElementsByTagName('input');
+				for(var i = 0; i < orgFields.length; i++) {
+					$(orgFields[i]).attr('checked', false);
+				}
+			}
+		}
+
+		var edCourseRB = YAHOO.util.Dom.get("edit_course");
+		var orgFields = YAHOO.util.Dom.get("orgs").getElementsByTagName('input');
+		for(var i = 0; i < orgFields.length; i++) {
+			var isDisabled = false;
+			if (edCourseRB.checked == false) isDisabled = true;
+			orgFields[i].disabled = isDisabled;
+			orginizer_selected(orgFields[i]);//TA:#415.2
+		}
+		
+	}
+
+	//TA:#415
+	function setMechanismAccessStatus(){
+		if ($('#acl_mechanism_restrict').attr('checked') == 'checked') {
+			$('#mechanisms').slideDown();
+		}else {
+			$('#mechanisms').slideUp();
+		}
+
+		var edCourseRB = YAHOO.util.Dom.get("edit_course");
+		var orgFields = YAHOO.util.Dom.get("mechanisms").getElementsByTagName('input');
+		for(var i = 0; i < orgFields.length; i++) {
+			var isDisabled = false;
+			if (edCourseRB.checked == false) isDisabled = true;
+			orgFields[i].disabled = isDisabled;
+		}
+	}
+
+	//TA:#415.2
+	var orginizer_selected = function (elem) {
+		var org_id = $(elem).attr('id').replace("training_organizer_option_", "");    
+		var mech_fields = YAHOO.util.Dom.get("mechanisms_box").getElementsByTagName('input');
+		for(var i = 0; i < mech_fields.length; i++) {
+			if($(mech_fields[i]).parent().parent().parent().attr('id') == org_id){
+				if($(elem).attr('checked')){
+				  $(mech_fields[i]).parent().parent().parent().show();
+				}else{
+					$(mech_fields[i]).parent().parent().parent().hide();
+					$(mech_fields[i]).attr('checked', false);
+				}
+			}
+		}				
+	}
+
+	$(document).ready(setOrgAccessStatus);
+	$(document).ready(setMechanismAccessStatus);//TA:#415
+
+
+	<?php
+		$showAdmin = false; // docready - show #admin_box if user has admin acls
+		foreach ($this->user['acls'] as $key => $value) {
+			if(strpos($value, 'acl_editor_') !== false){
+				$showAdmin = true;
+				break;
+			}
+		}
+
+		if( in_array('edit_country_options',$this->user['acls'])  ) $showAdmin = true;
+		if( in_array('add_edit_users',      $this->user['acls'])  ) $showAdmin = true;
+		if( in_array('acl_admin_training',  $this->user['acls'])  ) $showAdmin = true;
+		if( in_array('acl_admin_people',    $this->user['acls'])  ) $showAdmin = true;
+		if( in_array('acl_admin_facilities',$this->user['acls'])  ) $showAdmin = true;
+
+		if ($showAdmin) { // add docready javascript
+			echo '$(document).ready(function () {
+				$("#toggle").attr("checked", "checked");
+				$("#admin_box").show();
+			});';
+		}
+
+	?>
+
+
+	function toggleinstitution(sender){
+		if (sender.checked){
+			$(".institutioncheck").prop('checked',true);
+			$(".institutioncheck").prop('disabled',true);
+		} else {
+			$(".institutioncheck").prop('disabled',false);
+		}
+	}
+
+    function toggleprogram(sender){
+        if (sender.checked){
+            $(".programcheck").prop('checked',true);
+            $(".programcheck").prop('disabled',true);
+        } else {
+            $(".programcheck").prop('disabled',false);
+        }
+	}
+
+
+	//TA:10 added 8/11/2014
+	function preserviceACL(){
+	if ($('#pre_service').attr('checked') == 'checked')
+		$('#ps_acl').slideDown();
+	else
+		$('#ps_acl').slideUp();
+	
+}
+
+</script>
+
+	<div class="clear"></div>
+
+</body>
+</html>
+

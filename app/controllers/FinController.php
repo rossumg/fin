@@ -54,8 +54,48 @@ class FinController extends ReportFilterHelpers {
 		$status->setStatusMessage ( t ( 'That facility has been approved.' ) );
 		$this->_redirect ( 'admin/facilities-new-facilities' );
 	}
+	
 	public function addAction() {
-
+		
+		if ($id = $this->getSanParam ( 'id' )) {
+			$activitydetail = new ActivityDetail ();
+			$activitydetailRow = $activitydetail->fetchRow ( 'id = ' . $id );
+			if ($activitydetailRow) {
+				$activitydetailArray = $activitydetailRow->toArray ();
+			} else {
+				$activitydetailArray = array ();
+				$activitydetailArray ['id'] = null;
+			}
+		} else {
+			$activitydetailArray = array ();
+			$activitydetailArray ['id'] = null;
+		}
+		
+		$request = $this->getRequest ();
+		$validateOnly = $request->isXmlHttpRequest ();
+		
+		if ($validateOnly)
+			$this->setNoRenderer ();
+			
+		if ($request->isPost ()) {
+			
+			$adObj = new ActivityDetail ();
+			$obj_id = $this->validateAndSave ( $adObj->createRow (), false );
+			
+			// validate
+			$status = ValidationContainer::instance ();
+			if ($obj_id) {
+				$status->setObjectId ( $obj_id );
+			}
+			
+			if ($validateOnly) {
+				$this->sendData ( $status );
+			} else {
+				$this->view->assign ( 'status', $status );
+			}
+		}
+		
+		$this->viewAssignEscaped ( 'activitydetail', $activitydetailArray );
 	}
 	
 	protected function validateAndSave($activitydetailRow, $checkName = true) {
@@ -176,6 +216,11 @@ $activitydetailRow->TranDate1 = $this->getSanParam ( 'TranDate1' );
 $activitydetailRow->TranDescMod = $this->getSanParam ( 'TranDescMod' );
 $activitydetailRow->TranReference2 = $this->getSanParam ( 'TranReference2' );
 $activitydetailRow->TranReference4 = $this->getSanParam ( 'TranReference4' );
+
+$activitydetailRow->TDPrimaryKey = $this->getSanParam ( 'TDPrimaryKey' );
+$activitydetailRow->FiscalMonth = $this->getSanParam ( 'FiscalMonth' );
+$activitydetailRow->FiscalYear = $this->getSanParam ( 'FiscalYear' );
+
 $activitydetailRow->Modified = $this->getSanParam ( 'Modified' );
 
 				
@@ -193,7 +238,6 @@ $activitydetailRow->Modified = $this->getSanParam ( 'Modified' );
 //var_dump("activitydetailRow=", $activitydetailRow, "END");
 //$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
 
-				
 				$obj_id = $activitydetailRow->save ();
 				
 				//$_SESSION ['status'] = t ( 'The record was saved.' );
@@ -222,11 +266,6 @@ $activitydetailRow->Modified = $this->getSanParam ( 'Modified' );
 	
 	public function editAction() {
 	
-//		if (! $this->hasACL ( 'edit_people' )) {
-//			$this->doNoAccessError ();
-//		}
-
-		
 		if ($id = $this->getSanParam ( 'id' )) {
 			$activitydetail = new ActivityDetail ();
 			$activitydetailRow = $activitydetail->fetchRow ( 'id = ' . $id );
@@ -649,27 +688,6 @@ $activitydetailRow->Modified = $this->getSanParam ( 'Modified' );
 
 		$beginDate = $criteria ['start-year'] . '-' . $criteria ['start-month'] . '-' . $criteria ['start-day'];
 		$endDate = $criteria ['end-year'] . '-' . $criteria ['end-month'] . '-' . $criteria ['end-day'];
-		
-		
-//id
-//timestamp
-//TDPrimaryKey
-//ProjectCode
-//TranAmount
-//GFA
-//AdjustmentLoadedDate
-//BudgetNbr
-//BudgetName
-//AccountCode
-//PCAProjectCodeOrig
-//PCAProjectCodeOrig
-//Budget_Begin
-//Budget_End
-//TranDate1
-//TranDescMod
-//TranReference2
-//TranReference4
-//Modified
 
 		$criteria ['go'] = $this->getSanParam ( 'go' );
         $criteria ['doCount'] = ($this->view->mode == 'count');
