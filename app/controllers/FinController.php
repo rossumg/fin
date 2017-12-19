@@ -222,7 +222,8 @@ $activitydetailRow->FiscalMonth = $this->getSanParam ( 'FiscalMonth' );
 $activitydetailRow->FiscalYear = $this->getSanParam ( 'FiscalYear' );
 
 $activitydetailRow->Modified = $this->getSanParam ( 'Modified' );
-
+$user = Zend_Auth::getInstance()->getIdentity();
+$activitydetailRow->ModifiedBy = $user->first_name . " " . $user->last_name;
 				
 //				// dupecheck
 //				$dupe = new Facility ();
@@ -234,8 +235,10 @@ $activitydetailRow->Modified = $this->getSanParam ( 'Modified' );
 //				}
 
 
-//file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:215 >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+//file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:237 >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
 //var_dump("activitydetailRow=", $activitydetailRow, "END");
+//var_dump("identity=", $identity, "END");
+//var_dump("user=", $user, "END");
 //$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
 
 				$obj_id = $activitydetailRow->save ();

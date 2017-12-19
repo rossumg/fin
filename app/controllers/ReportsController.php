@@ -4458,6 +4458,10 @@ echo $sql . "<br>";
 		$this->facilityReport ();
 	}
 	
+	public function barsAction() {
+		$this->activityDetailAction();
+	}
+	
 	public function activityDetailAction() {
 		$this->view->assign ( 'mode', 'count' );
 		
@@ -4785,6 +4789,7 @@ echo $sql . "<br>";
 				
 		$this->viewAssignEscaped ( 'criteria', $criteria );
         
+        
         	if ($criteria ['go']) {
         		
         		$criteria ['GFA'] = $this->getSanParam ( 'gfaInput' );
@@ -4873,6 +4878,9 @@ $sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Bud
         		$this->viewAssignEscaped ( 'results', $rowArray ); 
         		$this->viewAssignEscaped ( 'count',  sizeOf($rowArray));
         		$this->viewAssignEscaped ( 'criteria', $criteria );
+        		
+        		if ($this->getParam ( 'outputType' ))
+				$this->sendData ( $this->reportHeaders ( false, $rowArray ) );
 	}
 
 	public function facilityReport() {

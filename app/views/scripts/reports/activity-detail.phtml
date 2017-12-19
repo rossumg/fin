@@ -38,8 +38,8 @@ if ($this->mode == 'search' ) {
     	<div class="fieldLabel"><?php tp('Select activity detail report');?></div>
     	<select id="activity_detail" name="activity_detail" onchange="gotoPage('activity_detail');">
     		<option value="">--<?php tp('choose');?>--</option>
-    		<option value="/reports/activity-detail-by-project-code" <?php if ($this->mode == 'id') echo 'selected="selected"';?>><?php echo t('Activity Detail by Project Code');?></option>
-    		<option value="/reports/activity-detail-by-gfa" <?php if ($this->mode == 'count') echo 'selected="selected"';?>><?php echo t('Activity Detail by GFA');?></option>
+    		<option value="/reports/bars" <?php if ($this->mode == 'id') echo 'selected="selected"';?>><?php echo t('BARS');?></option>
+    		<option value="/reports/activity-detail" <?php if ($this->mode == 'count') echo 'selected="selected"';?>><?php echo t('Activity Detail');?></option>
    	</select>
    <?php } ?>
    <br clear="all" />
