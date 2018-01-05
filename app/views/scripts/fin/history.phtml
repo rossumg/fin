@@ -1,0 +1,23 @@
+ <div class="historyDiv">
+  <b><?php tp('ID');?> </b><?php echo $this->activitydetail['id'];?><br/>
+      <b><?php tp('Date created');?> </b><?php echo str_replace(' ','&nbsp;',$this->activitydetail['timestamp']);?><br/>
+       <b><?php tp('Date modified');?> </b><?php echo str_replace(' ','&nbsp;',$this->activitydetail['ModifiedDate']);?><br/>
+       <b><?php tp('Modified by');?> </b><?php echo str_replace(' ','&nbsp;',$this->activitydetail['ModifiedBy']);?><br/>
+      <?php if (@$this->okToDelete) { ?>
+       <hr size="1">
+      <a href="" onclick="doDelete(); return false;"><?php tp('Delete this Person');?></a>
+<script language="JavaScript">
+function doDelete() {
+  if(confirm("<?php tp('Are you sure you wish to delete this person?');?>")) {
+    window.location = '<?php echo $this->base_url;?>/person/delete/id/<?php echo $this->person['id'];?>';
+    return false;
+  }
+}
+</script>
+    <?php } ?>
+    <?php if ( true ) { ?>
+       <hr size="1" />
+	   <a href="<?php echo $this->base_url;?>/fin/add/id/<?php echo $this->activitydetail['id'];?>"> <?php tp('Add New Expense');?></a><br/><br/>      
+    <?php } ?>
+
+          </div>
