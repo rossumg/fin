@@ -4857,8 +4857,14 @@ $sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Bud
         		$try_sql = 'select left(AccountCode,2) as object_code,
 right(AccountCode,5) as account_code,
 concat(BudgetNbr, "-", BudgetName) as budget_name,
-sum(TranAmount) as "TranAmount"
-
+sum(TranAmount) as "TranAmount",
+TranDate1 as "Date",
+TranDescMod as "Description",
+TranFTE as "FTE",
+TranReference2 as "JV",
+TDPrimaryKey as "TDPrimaryKey",
+concat(BudgetNbr, "-", BudgetName) as "BudgetNbr",
+ProjectCode as "ProjectCode"
 from activitydetail la';
 
 if ($where) $try_sql .= ' WHERE ' . implode(' AND ', $where);
@@ -4870,9 +4876,9 @@ $try_sql .=
 	
 with rollup;'; 
         		
-        		file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'ReportsCont:barsReport >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
-				var_dump("try_sql=", $try_sql, "END");
-				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+//        		file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'ReportsCont:barsReport >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+//				var_dump("try_sql=", $try_sql, "END");
+//				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
         		
         		//$rowArray = $db->fetchAll ( $sql . ' ORDER BY facility_name ASC ' );
         		$rowArray = $db->fetchAll ( $try_sql  );
