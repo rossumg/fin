@@ -4857,7 +4857,7 @@ $sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Bud
         		$try_sql = 'select left(AccountCode,2) as object_code,
 right(AccountCode,5) as account_code,
 concat(BudgetNbr, "-", BudgetName) as budget_name,
-sum(TranAmount) as "TranAmount",
+TranAmount as "TranAmount",
 TranDate1 as "Date",
 TranDescMod as "Description",
 TranFTE as "FTE",
@@ -4883,9 +4883,9 @@ with rollup;';
         		//$rowArray = $db->fetchAll ( $sql . ' ORDER BY facility_name ASC ' );
         		$rowArray = $db->fetchAll ( $try_sql  );
         		
-//    	   		file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'ReportsCont:barsReport >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
-//				var_dump("rowArray=", $rowArray, "END");
-//				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+    	   		file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'ReportsCont:barsReport >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+				var_dump("rowArray=", $rowArray, "END");
+				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
     
         		
         		$this->viewAssignEscaped ( 'results', $rowArray ); 
