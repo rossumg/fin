@@ -4855,7 +4855,8 @@ $sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Bud
 //with rollup
         		
         		$try_sql = 'select left(AccountCode,2) as object_code,
-right(AccountCode,5) as account_code,
+right(AccountCode,6) as account_code,
+BudgetNbr as BudgetNbr,
 concat(BudgetNbr, "-", BudgetName) as budget_name,
 TranAmount as "TranAmount",
 TranDate1 as "Date",
@@ -4863,18 +4864,33 @@ TranDescMod as "Description",
 TranFTE as "FTE",
 TranReference2 as "JV",
 TDPrimaryKey as "TDPrimaryKey",
-concat(BudgetNbr, "-", BudgetName) as "BudgetNbr",
+
 ProjectCode as "ProjectCode"
 from activitydetail la';
 
 if ($where) $try_sql .= ' WHERE ' . implode(' AND ', $where);
+
 $try_sql .=
 ' group by 
 	object_code,
 	account_code,
 	budget_name
+	'; 
+
+        		$test_sql = 'select object_code,
+account_code,
+budgetnbr,
+TranAmount as "TranAmount"
+from t ';
+
+if ($where) $test_sql .= ' WHERE ' . implode(' AND ', $where);
+$test_sql .=
+' group by 
+	object_code,
+	account_code,
+	budgetnbr
 	
-with rollup;'; 
+'; 
         		
 //        		file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'ReportsCont:barsReport >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
 //				var_dump("try_sql=", $try_sql, "END");
@@ -4883,9 +4899,9 @@ with rollup;';
         		//$rowArray = $db->fetchAll ( $sql . ' ORDER BY facility_name ASC ' );
         		$rowArray = $db->fetchAll ( $try_sql  );
         		
-    	   		file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'ReportsCont:barsReport >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
-				var_dump("rowArray=", $rowArray, "END");
-				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+//    	   		file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'ReportsCont:barsReport >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+//				var_dump("rowArray=", $rowArray, "END");
+//				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
     
         		
         		$this->viewAssignEscaped ( 'results', $rowArray ); 

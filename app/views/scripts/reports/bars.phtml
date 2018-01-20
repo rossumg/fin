@@ -50,8 +50,38 @@ if ($this->mode == 'search' ) {
     <div class="fieldInput criteria-header"><div  class="criteria-label" ><?php echo $checkLabel;?></div><div  class="criteria-label" style="padding-left: 20px;"><?php tp('filter');?></div></div>
 
 
-
 	
+	<div id="budgetNbrAutoComplete">
+	    <div class="fieldLabel" id="budgetNbrInput_lbl"><?php tp('Budget Number');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox"  disabled="disabled" name="showBudgetNbr" checked /></div>
+	    <div  class="leftBorder"><select id="budgetNbrInput" name="budgetNbrInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->budgetNbr as $vals ) {
+			echo '<option value="'.$vals['BudgetNbr'].'" '.($this->criteria['budgetNbrInput'] == $vals['id']?'':'').'>'.$vals['BudgetNbr'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	 </div>
+
+	<div id="budgetName">
+	    <div class="fieldLabel" id="budgetNameInput_lbl"><?php tp('Budget Name');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showBudgetName" checked /></div>
+	    <div  class="leftBorder"><select id="budgetNameInput" name="budgetNameInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->budgetName as $vals ) {
+			echo '<option value="'.$vals['BudgetName'].'" '.($this->criteria['budgetNameInput'] == $vals['id']?'':'').'>'.$vals['BudgetName'].'</option>';
+	}
+	?>
+</select>
+	  	</div></div>
+	 </div>
 			<div id="fiscalmonth">
 	    <div class="fieldLabel" id="modifiedInput_lbl"><?php tp('Month');?></div>
 	    <div class="fieldInput">
@@ -146,44 +176,150 @@ if ($this->mode == 'search' ) {
 	        var expenseData = [
 <?php $isFirstRow = true;
 $cnt = 0;
+$so=0.00; $sa=0.00; $sb=0.00; $total=0.00;
+$po=''; $pa=''; $pb = '';
 foreach($this->results as $row) {
 	if ( (!$_REQUEST['limit'])  or ($cnt < 100) ) {
-		if (!$isFirstRow )
-			echo ',';
+	
+		if (!$isFirstRow ) echo ',';
 		$isFirstRow = false;
+		
+		if(($row['budgetnbr'] !== $pb) && $pb !== '' ){
+		  
+		  	//sub
+			echo '["'.'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.'>>> SUB '.$pb.'"';
+			echo ',"'.$sb.'"';
+			echo "]";
+			echo ',';
+			
+			$sb=0;
+		}
+		
+		$sb=$sb+$row['TranAmount']; 
+		
+		if(($row['account_code'] !== $pa) && $pa !== '' ){
+		  
+		  	//sub
+			echo '["'.'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.'>>> SUB '.$pa.'"';
+			echo ',"'.$sa.'"';
+			echo "]";
+			echo ',';
+			
+			$sa=0;
+		}
+		
+		$sa=$sa+$row['TranAmount']; 
+		
+		if(($row['object_code'] !== $po) && $po !== '' ){
+		  
+		  	//sub
+			echo '["'.'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.'>>> SUB '.$po.'"';
+			echo ',"'.$so.'"';
+			echo "]";
+			echo ',';
+			
+			$so=0;
+		}
+		
+		$so=$so+$row['TranAmount']; 
+		
+		// detail	
 		echo '["'.$row['object_code'].'"';
-		
-		
 		echo ',"'.$row['account_code'].'"';
-		
 		echo ',"'.$row['Date'].'"';
 		echo ',"'.$row['Description'].'"';
 		echo ',"'.$row['FTE'].'"';
 		echo ',"'.$row['JV'].'"';
 		echo ',"'.$row['TDPrimaryKey'].'"';
-		
-		
-		
-		if ( $row['object_code'] == null ) {
-			$row['budget_name'] = '*** TOTAL ';
-		}
-		
-		if ( $row['account_code'] == null && $row['budget_name'] == null ) {
-			$row['budget_name'] = '*** SUBTOTAL '.$row['object_code'];
-		}
-		
-		if ( $row['budget_name'] == null ) {
-			$row['budget_name'] = '*** SUBTOTAL '.$row['account_code'];
-		}
-		
-		echo ',"'.$row['budget_name'].'"';
+		echo ',"'.$row['BudgetNbr'].'"';
 		echo ',"'.$row['ProjectCode'].'"';
-		
 		echo ',"'.$row['TranAmount'].'"';
-	
 		echo "]";
+		
+		$total=$total+$row['TranAmount'];
+		// set prev
+		$po=$row['object_code']; $pa=$row['account_code']; $pb=$row['budgetnbr'];		
 		$cnt++;
 }}
+
+	echo ',';
+	echo '["'.'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.'>>> SUB '.$pb.'"';
+			echo ',"'.$sb.'"';
+			echo "]";
+			
+	echo ',';
+	echo '["'.'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.'>>> SUB '.$pa.'"';
+			echo ',"'.$sa.'"';
+			echo "]";
+			
+	echo ',';
+	echo '["'.'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['Date'].'"';
+			echo ',"'.$row['Description'].'"';
+			echo ',"'.$row['FTE'].'"';
+			echo ',"'.$row['JV'].'"';
+			echo ',"'.$row['TDPrimaryKey'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.'>>> SUB '.$po.'"';
+			echo ',"'.$so.'"';
+			echo "]";
+			echo ',';
+			
+	echo '["'.'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['Date'].'"';
+			echo ',"'.$row['Description'].'"';
+			echo ',"'.$row['FTE'].'"';
+			echo ',"'.$row['JV'].'"';
+			echo ',"'.$row['TDPrimaryKey'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.'TOTAL '.'"';
+			echo ',"'.$total.'"';
+			echo "]";
+			
+
+
 
    ?>];
 
@@ -202,10 +338,10 @@ var expenseColumnDefs = [
    ,{key:"FTE", label: "<?php tp('FTE');?>", sortable:true, resizeable:true}
    ,{key:"JV", label: "<?php tp('JV');?>", sortable:true, resizeable:true}
    ,{key:"TDPrimaryKey", label: "<?php tp('TDPrimaryKey');?>", sortable:true, resizeable:true}
-   ,{key:"budget_name", label: "<?php tp('Budget Name');?>", sortable:true, resizeable:true}
+   ,{key:"budget_name", label: "<?php tp('Budget');?>", sortable:true, resizeable:true}
    ,{key:"ProjectCode", label: "<?php tp('ProjectCode');?>", sortable:true, resizeable:true}
      
-   ,{key:"TranAmount", label: "<?php tp('TranAmount');?>", sortable:true, resizeable:true}
+   ,{key:"TranAmount", label: "<?php tp('Amount');?>", sortable:true, resizeable:true}
 
 ];
 

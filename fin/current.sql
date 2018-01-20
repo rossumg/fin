@@ -126,7 +126,7 @@ cast(
 concat(trim(split_str(Budget_Begin, '/', 3)),'-',
 concat(trim(split_str(Budget_Begin, '/', 1))),'-',
 trim(split_str(Budget_Begin, '/', 2))) as date)
-where trim(FiscalMonth)in('01','02','03');
+where trim(FiscalMonth)in('06','09','10', '11');
 
 -- fix 2, run once
 update activitydetail set Budget_End = 
@@ -134,7 +134,7 @@ cast(
 concat(trim(split_str(Budget_End, '/', 3)),'-',
 concat(trim(split_str(Budget_End, '/', 1))),'-',
 trim(split_str(Budget_End, '/', 2))) as date)
-where trim(FiscalMonth)in('01','02','03');
+where trim(FiscalMonth)in('06','09','10', '11');
 
 -- fix 3, run once
 update activitydetail set TranDate1 = 
@@ -142,7 +142,7 @@ cast(
 concat(trim(split_str(TranDate1, '/', 3)),'-',
 concat(trim(split_str(TranDate1, '/', 1))),'-',
 trim(split_str(TranDate1, '/', 2))) as date)
-where trim(FiscalMonth)in('01','02','03');
+where trim(FiscalMonth)in('06','09','10', '11');
 
 -- fix 4
 update activitydetail ad set ProjectCode = 
