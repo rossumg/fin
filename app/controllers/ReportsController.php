@@ -4864,7 +4864,6 @@ TranDescMod as "Description",
 TranFTE as "FTE",
 TranReference2 as "JV",
 TDPrimaryKey as "TDPrimaryKey",
-
 ProjectCode as "ProjectCode"
 from activitydetail la';
 
