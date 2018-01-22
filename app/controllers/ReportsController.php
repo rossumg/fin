@@ -4759,8 +4759,18 @@ echo $sql . "<br>";
 				
 		$this->viewAssignEscaped ( 'criteria', $criteria );
         
+        		file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'ReportsCont:barsReport >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+				var_dump("criteria_go=", $criteria['go'], "END");
+				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+        		 
+        
         
         	if ($criteria ['go']) {
+        		
+           		file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'ReportsCont:is go >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+				//var_dump("criteria_go=", $criteria['go'], "END");
+				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+  
         		
         		$criteria ['GFA'] = $this->getSanParam ( 'gfaInput' );
         		$criteria ['BudgetNbr'] = $this->getSanParam ( 'budgetNbrInput' );
@@ -4798,7 +4808,12 @@ echo $sql . "<br>";
 				//$sql .= ' DISTINCT pt.id as "id", pt.facility_name, pt.training_start_date  ';
 			//}
            
-$sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Budget_End, la.BudgetName, la.ProjectCode, la.TranAmount, la.AccountCode, la.PCAProjectCodeOrig, la.PCAProjectCodePosting, la.PCAOptionCodeOrig, la.PCAOptionCodePosting, la.PCATaskCodeOrig, la.PCATaskCodePosting, la.TranFTE, la.Budget_Begin, la.Budget_End, la.TranDate1, la.TranDescMod, la.TranReference1, la.TranReference2, la.TranReference3, la.TranReference4, la.Modified, la.TDPrimaryKey, la.FiscalMonth, la.FiscalYear ';
+$sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Budget_End, ' .
+		'la.BudgetName, la.ProjectCode, la.TranAmount, la.AccountCode, la.PCAProjectCodeOrig, ' .
+		'la.PCAProjectCodePosting, la.PCAOptionCodeOrig, la.PCAOptionCodePosting, la.PCATaskCodeOrig, ' .
+		'la.PCATaskCodePosting, la.TranFTE, la.Budget_Begin, la.Budget_End, la.TranDate1, la.TranDescMod, ' .
+		'la.TranReference1, la.TranReference2, la.TranReference3, la.TranReference4, la.Modified, la.TDPrimaryKey, ' .
+		'la.FiscalMonth, la.FiscalYear ';
            		
            		$sql .= ' FROM activitydetail la';
 				
@@ -4833,10 +4848,12 @@ $sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Bud
            		
        
            		
-           		if ($where)
+           		if ($where) {
 					$sql .= ' WHERE ' . implode(' AND ', $where);
-        		}   
-
+           		}
+        	  
+        		 
+ 
 //select        		
 //left(AccountCode,2) as object_code,
 //right(AccountCode,5) as account_code,
@@ -4865,7 +4882,7 @@ TranFTE as "FTE",
 TranReference2 as "JV",
 TDPrimaryKey as "TDPrimaryKey",
 ProjectCode as "ProjectCode"
-from activitydetail la';
+from activitydetail la ';
 
 if ($where) $try_sql .= ' WHERE ' . implode(' AND ', $where);
 
@@ -4876,32 +4893,10 @@ $try_sql .=
 	budget_name
 	'; 
 
-        		$test_sql = 'select object_code,
-account_code,
-budgetnbr,
-TranAmount as "TranAmount"
-from t ';
-
-if ($where) $test_sql .= ' WHERE ' . implode(' AND ', $where);
-$test_sql .=
-' group by 
-	object_code,
-	account_code,
-	budgetnbr
-	
-'; 
-        		
-//        		file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'ReportsCont:barsReport >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
-//				var_dump("try_sql=", $try_sql, "END");
-//				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
-        		
-        		//$rowArray = $db->fetchAll ( $sql . ' ORDER BY facility_name ASC ' );
         		$rowArray = $db->fetchAll ( $try_sql  );
         		
-//    	   		file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'ReportsCont:barsReport >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
-//				var_dump("rowArray=", $rowArray, "END");
-//				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
-    
+        	} // go
+        		
         		
         		$this->viewAssignEscaped ( 'results', $rowArray ); 
         		$this->viewAssignEscaped ( 'count',  sizeOf($rowArray));
@@ -5212,8 +5207,17 @@ $test_sql .=
 				
 		$this->viewAssignEscaped ( 'criteria', $criteria );
         
+          		file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'ReportsCont:activitydetail >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+				var_dump("criteria_go=", $criteria['go'], "END");
+				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+  
         
         	if ($criteria ['go']) {
+        		
+           		file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'ReportsCont:is go >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+				//var_dump("criteria_go=", $criteria['go'], "END");
+				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+  
         		
         		$criteria ['GFA'] = $this->getSanParam ( 'gfaInput' );
         		$criteria ['BudgetNbr'] = $this->getSanParam ( 'budgetNbrInput' );
@@ -5251,7 +5255,12 @@ $test_sql .=
 				//$sql .= ' DISTINCT pt.id as "id", pt.facility_name, pt.training_start_date  ';
 			//}
            
-$sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Budget_End, la.BudgetName, la.ProjectCode, la.TranAmount, la.AccountCode, la.PCAProjectCodeOrig, la.PCAProjectCodePosting, la.PCAOptionCodeOrig, la.PCAOptionCodePosting, la.PCATaskCodeOrig, la.PCATaskCodePosting, la.TranFTE, la.Budget_Begin, la.Budget_End, la.TranDate1, la.TranDescMod, la.TranReference1, la.TranReference2, la.TranReference3, la.TranReference4, la.Modified, la.TDPrimaryKey, la.FiscalMonth, la.FiscalYear ';
+$sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, ' .
+		'la.Budget_End, la.BudgetName, la.ProjectCode, la.TranAmount, la.AccountCode, la.PCAProjectCodeOrig, ' .
+		'la.PCAProjectCodePosting, la.PCAOptionCodeOrig, la.PCAOptionCodePosting, la.PCATaskCodeOrig, ' .
+		'la.PCATaskCodePosting, la.TranFTE, la.Budget_Begin, la.Budget_End, la.TranDate1, la.TranDescMod, ' .
+		'la.TranReference1, la.TranReference2, la.TranReference3, la.TranReference4, la.Modified, ' .
+		'la.TDPrimaryKey, la.FiscalMonth, la.FiscalYear ';
            		
            		$sql .= ' FROM activitydetail la';
 				
@@ -5291,11 +5300,11 @@ $sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Bud
 					$sql .= ' WHERE ' . implode(' AND ', $where);
         		}   
         		
-//        		file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'ReportsCont:4725 >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
-//				var_dump("sql=", $sql, "END");
-//				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+        		file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'ReportsCont:activitydetail >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+				var_dump("sql=", $sql, "END");
+				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
         		
-        		//$rowArray = $db->fetchAll ( $sql . ' ORDER BY facility_name ASC ' );
+         		//$rowArray = $db->fetchAll ( $sql . ' ORDER BY facility_name ASC ' );
         		$rowArray = $db->fetchAll ( $sql  );
         		
         		$this->viewAssignEscaped ( 'results', $rowArray ); 

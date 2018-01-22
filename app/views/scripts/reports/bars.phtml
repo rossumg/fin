@@ -49,7 +49,6 @@ if ($this->mode == 'search' ) {
     <div class="fieldLabel " ></div>
     <div class="fieldInput criteria-header"><div  class="criteria-label" ><?php echo $checkLabel;?></div><div  class="criteria-label" style="padding-left: 20px;"><?php tp('filter');?></div></div>
 
-
 	
 	<div id="budgetNbrAutoComplete">
 	    <div class="fieldLabel" id="budgetNbrInput_lbl"><?php tp('Budget Number');?></div>
@@ -66,22 +65,7 @@ if ($this->mode == 'search' ) {
 </select>
 	    </div></div>
 	 </div>
-
-	<div id="budgetName">
-	    <div class="fieldLabel" id="budgetNameInput_lbl"><?php tp('Budget Name');?></div>
-	    <div class="fieldInput">
-	    <div  class="leftBorderPad"><input type="checkbox" name="showBudgetName" checked /></div>
-	    <div  class="leftBorder"><select id="budgetNameInput" name="budgetNameInput" >
-	<option value="" selected="selected">--<?php tp('choose');?>--
-	<?php
-	    
-		foreach ( $this->budgetName as $vals ) {
-			echo '<option value="'.$vals['BudgetName'].'" '.($this->criteria['budgetNameInput'] == $vals['id']?'':'').'>'.$vals['BudgetName'].'</option>';
-	}
-	?>
-</select>
-	  	</div></div>
-	 </div>
+	 
 			<div id="fiscalmonth">
 	    <div class="fieldLabel" id="modifiedInput_lbl"><?php tp('Month');?></div>
 	    <div class="fieldInput">
@@ -250,12 +234,13 @@ foreach($this->results as $row) {
 		// detail	
 		echo '["'.$row['object_code'].'"';
 		echo ',"'.$row['account_code'].'"';
+		echo ',"'.$row['BudgetNbr'].'"';
 		echo ',"'.$row['Date'].'"';
 		echo ',"'.$row['Description'].'"';
 		echo ',"'.$row['FTE'].'"';
 		echo ',"'.$row['JV'].'"';
 		echo ',"'.$row['TDPrimaryKey'].'"';
-		echo ',"'.$row['BudgetNbr'].'"';
+		
 		echo ',"'.$row['ProjectCode'].'"';
 		echo ',"'.$row['TranAmount'].'"';
 		echo "]";
@@ -266,6 +251,7 @@ foreach($this->results as $row) {
 		$cnt++;
 }}
 
+/*
 	echo ',';
 	echo '["'.'"';
 			echo ',"'.$row['space'].'"';
@@ -278,6 +264,7 @@ foreach($this->results as $row) {
 			echo ',"'.'>>> SUB '.$pb.'"';
 			echo ',"'.$sb.'"';
 			echo "]";
+			*/
 			
 	echo ',';
 	echo '["'.'"';
@@ -295,11 +282,11 @@ foreach($this->results as $row) {
 	echo ',';
 	echo '["'.'"';
 			echo ',"'.$row['space'].'"';
-			echo ',"'.$row['Date'].'"';
-			echo ',"'.$row['Description'].'"';
-			echo ',"'.$row['FTE'].'"';
-			echo ',"'.$row['JV'].'"';
-			echo ',"'.$row['TDPrimaryKey'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
 			echo ',"'.$row['space'].'"';
 			echo ',"'.'>>> SUB '.$po.'"';
 			echo ',"'.$so.'"';
@@ -308,13 +295,13 @@ foreach($this->results as $row) {
 			
 	echo '["'.'"';
 			echo ',"'.$row['space'].'"';
-			echo ',"'.$row['Date'].'"';
-			echo ',"'.$row['Description'].'"';
-			echo ',"'.$row['FTE'].'"';
-			echo ',"'.$row['JV'].'"';
-			echo ',"'.$row['TDPrimaryKey'].'"';
 			echo ',"'.$row['space'].'"';
-			echo ',"'.'TOTAL '.'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.$row['space'].'"';
+			echo ',"'.'TOTAL '.$pb.'"';
 			echo ',"'.$total.'"';
 			echo "]";
 			
@@ -332,13 +319,14 @@ var expenseColumnDefs = [
 
    {key:"object_code", label: "<?php tp('Object Code');?>", sortable:true, resizeable:true}
    ,{key:"account_code", label: "<?php tp('Account Code');?>", sortable:true, resizeable:true}
+   ,{key:"budget_name", label: "<?php tp('Budget');?>", sortable:true, resizeable:true}
    
    ,{key:"Date", label: "<?php tp('Date');?>", sortable:true, resizeable:true}
    ,{key:"Description", label: "<?php tp('Description');?>", sortable:true, resizeable:true}
    ,{key:"FTE", label: "<?php tp('FTE');?>", sortable:true, resizeable:true}
    ,{key:"JV", label: "<?php tp('JV');?>", sortable:true, resizeable:true}
    ,{key:"TDPrimaryKey", label: "<?php tp('TDPrimaryKey');?>", sortable:true, resizeable:true}
-   ,{key:"budget_name", label: "<?php tp('Budget');?>", sortable:true, resizeable:true}
+   
    ,{key:"ProjectCode", label: "<?php tp('ProjectCode');?>", sortable:true, resizeable:true}
      
    ,{key:"TranAmount", label: "<?php tp('Amount');?>", sortable:true, resizeable:true}

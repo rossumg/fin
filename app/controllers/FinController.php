@@ -838,6 +838,9 @@ $sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Bud
         		$this->viewAssignEscaped ( 'results', $rowArray ); 
         		$this->viewAssignEscaped ( 'count',  sizeOf($rowArray));
         		$this->viewAssignEscaped ( 'criteria', $criteria );
+        		
+        		if ($this->getParam ( 'outputType' ))
+				$this->sendData ( $this->reportHeaders ( false, $rowArray ) );
 	}
 	
 	
