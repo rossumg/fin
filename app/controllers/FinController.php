@@ -831,10 +831,6 @@ $sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Bud
 					$sql .= ' WHERE ' . implode(' AND ', $where);
         		}   
         		
-       		    file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'ReportsCont:activityDetailReport >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
-				var_dump("sql=", $sql, "END");
-				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
-        		
         		//$rowArray = $db->fetchAll ( $sql . ' ORDER BY facility_name ASC ' );
         		$rowArray = $db->fetchAll ( $sql  );
         		

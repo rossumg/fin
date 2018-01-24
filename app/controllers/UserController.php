@@ -29,7 +29,13 @@ class UserController extends ReportFilterHelpers {
 
 	}
 
+
+		
+
+		
 	public function addAction() {
+file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'UserController:37 >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
 		if ((! $user_id = $this->isLoggedIn ()) or (! $this->hasACL ( 'add_edit_users' ))) {
 			$this->doNoAccessError ();
 		}
@@ -162,8 +168,11 @@ class UserController extends ReportFilterHelpers {
 			}
 			*/
 		}
+		
 	}
 
+	
+	
 	protected function saveAclCheckboxes($user_id) {
 		//save Access Level stuff
 		$acl = array ();
@@ -227,6 +236,7 @@ class UserController extends ReportFilterHelpers {
 		}else{
 		    MultiOptionList::updateOptions ( 'user_to_mechanism_access', 'mechanism_option', 'user_id', $user_id, 'mechanism_option_id', $this->getParam ( 'mechanism_option_id' ) );
 		}
+		
 		/////
 		
 		// Capturing the institution access if necessary

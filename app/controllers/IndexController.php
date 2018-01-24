@@ -16,6 +16,7 @@ class IndexController extends ITechController {
 	public function init() {	}
 
 	public function indexAction() {
+		
 
 /*
 

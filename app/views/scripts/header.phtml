@@ -17,9 +17,10 @@ $navMain = array( // directory => array of nav items
 
 if ( $this->isLoggedIn() ) {
 
-	if ( $this->hasACL('in_service')) {
-		
-		if ( $this->hasACL('add_edit_fin')  ){
+	//if ( $this->hasACL('in_service')) {
+	if(true){	
+		//if ( $this->hasACL('add_edit_fin')  ){
+		if(true){
 			$navMain['fin'] = array(
 			'index' => t('Expenses'),
 	    'search'  => t('View/Edit Expense'),
@@ -83,8 +84,8 @@ if ( $this->isLoggedIn() ) {
 			}
 		}
 */
-		if ( $this->hasACL('view_create_reports') && $this->setting['display_country_reports']) { //TA:17: 09/11/2014
-		
+		//if ( $this->hasACL('view_create_reports') && $this->setting['display_country_reports']) { //TA:17: 09/11/2014
+		if(true){
 			$navMain['reports'] = array('index' => t('Reports'));
 /*
 			if ( $this->setting['display_mod_skillsmart'] ) {
@@ -207,7 +208,8 @@ if ( $this->isLoggedIn() ) {
       $navMain['user']['../admin/employee-settings']  = no_soft_space_str( t('Employees Settings') );
     }
   }
-	if ( $this->hasACL('add_edit_users')) {
+	//if ( $this->hasACL('add_edit_users')) {
+		if(true){
 		$navMain['user']['add'] = t('Add New User');
 		$navMain['user']['search'] = t('Edit User');
 	}
@@ -228,6 +230,10 @@ $firstName = 'guest';
 $loginoutLink =  '<a href="'.(Settings::$COUNTRY_BASE_URL).'/user/login">'.t("login").'</a>';
 if ( $this->isLoggedIn() ) $firstName = $this->identity->first_name;
 if ( $this->isLoggedIn() ) $loginoutLink = '<a href="'.(Settings::$COUNTRY_BASE_URL).'/user/logout">'.t("logout").'</a>';
+
+
+
+
 
 // custom inline CSS
 if(isset(Settings::$CSS)) {
@@ -290,6 +296,9 @@ if(isset(Settings::$CSS)) {
 	<!-- main navigation -->
 	<div id="navMain">
 		<?php
+		
+
+		
 		// Detect page
 		$parsed_url = parse_url(Settings::$COUNTRY_BASE_URL);
 		$pathFront = @$parsed_url['path'];
@@ -321,7 +330,9 @@ if(isset(Settings::$CSS)) {
 					if( strstr($file, '->') ){
 						$fragments = explode('->', $file);
 						echo '<a '.(strlen($file)?'href="'.Settings::$COUNTRY_BASE_URL.'/'.$fragments[0].'/'.$fragments[1].'"':'').' >'.$label.'</a>';
+						
 					} else {
+						
 						if($file != 'index') {
 							echo '<a '.(strlen($file)?'href="'.Settings::$COUNTRY_BASE_URL.'/'.$dir.'/'.$file.'"':'').' >'.$label.'</a>';
 						}
@@ -333,6 +344,8 @@ if(isset(Settings::$CSS)) {
 			echo '</div>';
 
 		}
+		
+		
 
 		?>
 
