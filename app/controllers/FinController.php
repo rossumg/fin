@@ -797,7 +797,10 @@ $sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Bud
            		if($criteria['GFA']) $where []= ' trim(la.GFA) = \'' . $criteria ['GFA'] . '\'';
            		if($criteria['BudgetNbr']) $where []= ' trim(la.BudgetNbr) = \'' . $criteria ['BudgetNbr'] . '\'';
            		if($criteria['BudgetName']) $where []= ' trim(la.BudgetName) = \'' . $criteria ['BudgetName'] . '\'';
-           		if($criteria['ProjectCode'] or $criteria['ProjectCode'] == '') $where []= ' trim(la.ProjectCode) = \'' . $criteria ['ProjectCode'] . '\'';
+           		
+           		if( $criteria['ProjectCode'] != 'all' ) { // special case so code can be ''
+           			$where []= ' trim(la.ProjectCode) = \'' . $criteria ['ProjectCode'] . '\'';
+           		} 
            		
            		if($criteria['AccountCode']) $where []= ' trim(la.AccountCode) = \'' . $criteria ['AccountCode'] . '\'';
            		if($criteria['PCAProjectCodeOrig']) $where []= ' trim(la.PCAProjectCodeOrig) = \'' . $criteria ['PCAProjectCodeOrig'] . '\'';
@@ -828,7 +831,7 @@ $sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Bud
 					$sql .= ' WHERE ' . implode(' AND ', $where);
         		}   
         		
-        		file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'ReportsCont:activityDetailReport >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+       		    file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'ReportsCont:activityDetailReport >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
 				var_dump("sql=", $sql, "END");
 				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
         		
