@@ -1,0 +1,211 @@
+<?php
+
+// template for page that contains an EditTable
+
+// need $pageTitle and $nextUri variables from these includes
+
+ob_start();
+require_once('views/scripts/header.phtml');
+$header = ob_get_contents();
+ob_end_clean();
+
+ob_start();
+require_once('views/scripts/nav-admin.phtml');
+$nav = ob_get_contents();
+ob_end_clean();
+
+?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title><?php echo $this->translation['Application Name'];?> | <?php echo t($this->pageTitle); ?></title>
+	<?php
+	require_once('views/helpers/ScriptContainer.php');
+	print ScriptContainer::$instance->renderCSSHead();
+	print ScriptContainer::$instance->renderJSHead();
+	?>
+
+	<style>
+		fieldset input[type=text], fieldset select { margin-bottom:12px; width:95%; padding: .4em; }
+		fieldset { padding:0; border:0; margin-top:25px; text-align : left; font-size : .9em }
+		h1 { font-size: 1.2em; margin: .6em 0; }
+		.ui-dialog .ui-state-error { padding: .3em; }
+		.validateTips { border: 1px solid transparent; padding: 0.3em; }
+	</style>
+	<script>
+		$(function() {
+			$( "#dialog-form" ).dialog({
+				autoOpen: false,
+				width: 350,
+				modal: true,
+				buttons: {
+				    "<?php echo t('Delete'); ?>": function() {
+                        if (confirm("Are you sure you want to delete this record."))
+                        {
+                            $("#_id").val($("#currentid").val());
+                            $("#_action").val("delete");
+                            document.getElementById('adminform').submit();
+                        }
+                    },
+					"<?php echo t('Save') ?>": function() {
+						
+						$("#_BudgetNbr").val($("#BudgetNbr").val());
+						$("#_GFA").val($("#GFA").val());
+						
+						$("#_id").val($("#currentid").val());
+						if ($("#currentid").val() == 0){
+							$("#_action").val("addnew");
+						} else {
+							$("#_action").val("update");
+						}
+ 							$( this ).dialog( "close" );
+ 							document.getElementById("adminform").submit();
+					},
+					"<?php echo t('Cancel') ?>": function() {
+						$( this ).dialog( "close" );
+					}
+				},
+				close: function() {
+
+				}
+			});
+
+			$( "#update" )
+				.button()
+				.click(function() {
+					$('#dialog-form').dialog('option', 'title', '<?php echo t('Add GFA')?>');
+					$("#currentid").val("0");
+					$("#BudgetNbr").val("");
+					$("#GFA").val("");
+					
+					$( "#dialog-form" ).dialog( "open" );
+				});
+		});
+
+		function edititem(d){
+
+			$('#dialog-form').dialog('option', 'title', '<?php echo t('Update GFA')?>');
+			$("#currentid").val(d['id']);
+			$("#BudgetNbr").val(d['BudgetNbr']);
+			$("#GFA").val(d['GFA']);
+
+			$( "#dialog-form" ).dialog( "open" );
+		}
+	</script>
+
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready(function() {
+			$( ".calendarbox" ).datepicker({
+				changeMonth: true,
+				changeYear: true
+			});
+			/* Add a click handler to the rows - this could be used as a callback */
+			$(".tablegrid tbody").click(function(event) {
+				$(oTable.fnSettings().aoData).each(function (){
+					$(this.nTr).removeClass('row_selected');
+				});
+				$(event.target.parentNode).addClass('row_selected');
+			});
+
+			/* Add a click handler for the delete row */
+			$('#delete').click( function() {
+				var anSelected = fnGetSelected( oTable );
+				oTable.fnDeleteRow( anSelected[0] );
+			} );
+
+			/* Init the table */
+			oTable = $('.tablegrid').dataTable({
+				"bJQueryUI": true,
+                "iDisplayLength": 25,
+				"sPaginationType": "full_numbers"
+			});
+			$("#peopleadd").validate();
+
+		} );
+
+		/* Get the rows which are currently selected */
+		function fnGetSelected( oTableLocal ){
+			var aReturn = new Array();
+			var aTrs = oTableLocal.fnGetNodes();
+
+			for ( var i=0 ; i<aTrs.length ; i++ ){
+				if ( $(aTrs[i]).hasClass('row_selected') ){
+					aReturn.push( aTrs[i] );
+				}
+			}
+			return aReturn;
+		}
+
+	</script>
+</head>
+<body  class="yui-skin-sam">
+<div id="dialog-form" title="Update class">
+	<form method="post">
+		<fieldset>
+			<label for="BudgetNbr"><?php echo t('BudgetNbr');?></label>
+			<input type="text" name="BudgetNbr" id="BudgetNbr" class="text ui-widget-content ui-corner-all" />
+			
+			<label for="GFA"><?php echo t('GFA');?></label>
+			<input type="text" name="GFA" id="GFA" class="text ui-widget-content ui-corner-all" />
+		
+		</fieldset>
+		<input type="hidden" name="currentid" id="currentid" class="text ui-widget-content ui-corner-all" />
+	</form>
+</div>
+
+<div id="pageHolder">
+	<div id="header"><?php echo $header; ?></div>
+	<div id="content" class="adminDiv">
+		<div id="navAdmin"><?php echo $nav;?></div>
+		<div id="contentAdmin" style="width : 900px;">
+			<div id="contentheader">
+				<h2><?php echo $this->header; ?></h2>
+			</div>
+
+			<div class="pad20"></div>
+			<div style="width :100%;">
+				<table cellpadding="0" cellspacing="0" border="0" class="display tablegrid" id="" style="width:100%">
+					<thead>
+					<tr>
+						<th><?php echo t('ID');?></th>
+						<th><?php echo t('BudgetNbr');?></th>
+						<th>GFA</th>
+					</tr>
+					</thead>
+					<tbody>
+
+					<?php
+					foreach ($this->lookup as $lookup){
+						?>
+						<tr class="GradeA" style="cursor : pointer;" onclick='edititem(<?php echo json_encode($lookup, JSON_HEX_QUOT|JSON_HEX_APOS); ?>);'>
+
+							<td><?php echo $lookup['id']; ?></td>
+							<td><?php echo $lookup['BudgetNbr']; ?></td>
+							<td><?php echo $lookup['GFA']; ?></td>
+						</tr>
+					<?php
+					}
+					?>
+					</tbody>
+				</table>
+				<div style="text-align : right;">
+					<br>
+					<input type="submit" name="update" id="update" value="<?php echo t('Add GFA');?>" class="tsbutton green large">
+				</div>
+				<?php echo $this->printWindowAndExport("lookup");?>
+			</div>
+
+			<form action="" id="adminform" method="post" class="formvalidate">
+				<input type="hidden" name="_action" id="_action" value="addnew" />
+				<input type="hidden" name="_id" id="_id" value="0" />
+				<input type="hidden" name="_BudgetNbr" id="_BudgetNbr" value="" />
+				<input type="hidden" name="_GFA" id="_GFA" value="" />
+			</form>
+
+		</div>
+		<div class="clear"></div>
+		<div id="footer"><?php require_once('views/scripts/footer.phtml');?></div>
+	</div>
+</div>
+</body>
+</html>

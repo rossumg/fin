@@ -9,7 +9,7 @@
  *
  */
 
-class Zend_View_Helper_PrintAndExport {
+class Zend_View_Helper_PrintWindowAndExport {
     /**
      * @var Zend_View_Interface
      */
@@ -26,7 +26,7 @@ class Zend_View_Helper_PrintAndExport {
         $this->view = $view;
     }
 
-    public function printAndExport($div_id_to_print) {
+    public function printWindowAndExport($div_id_to_print) {
     	if ( strstr($_SERVER['REQUEST_URI'], '?') !== false )
     		$munged = (str_replace('?','/outputType/csv/?',$_SERVER['REQUEST_URI']));
   	    else if ( substr($_SERVER['REQUEST_URI'], strlen($_SERVER['REQUEST_URI']) - 1, 1) == '/' )
@@ -55,8 +55,8 @@ class Zend_View_Helper_PrintAndExport {
         }
        
             
-		//return '<span class="printAndExport"><a href="javascript:window.print();">'.t('Print').'</a>&nbsp;&nbsp;<a href="'.$munged.'">'.t('Export').'</a>&nbsp;&nbsp;<a  href="'.$munged.'"><img src="'.(Settings::$COUNTRY_BASE_URL).'/images/excel.jpg" /></a></span>';
-    	return '<span class="printAndExport"><a href="javascript:print_part()">'.t('Print').'</a>&nbsp;&nbsp;<a href="'.$munged.'">'.t('Export').'</a>&nbsp;&nbsp;<a  href="'.$munged.'"><img src="'.(Settings::$COUNTRY_BASE_URL).'/images/excel.jpg" /></a></span>';
+		return '<span class="printAndExport"><a href="javascript:window.print();">'.t('Print').'</a>&nbsp;&nbsp;<a href="'.$munged.'">'.t('Export').'</a>&nbsp;&nbsp;<a  href="'.$munged.'"><img src="'.(Settings::$COUNTRY_BASE_URL).'/images/excel.jpg" /></a></span>';
+    	//return '<span class="printAndExport"><a href="javascript:print_part()">'.t('Print').'</a>&nbsp;&nbsp;<a href="'.$munged.'">'.t('Export').'</a>&nbsp;&nbsp;<a  href="'.$munged.'"><img src="'.(Settings::$COUNTRY_BASE_URL).'/images/excel.jpg" /></a></span>';
     }
   
 }

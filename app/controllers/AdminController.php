@@ -107,13 +107,17 @@ class AdminController extends UserController
 		$this->view->assign("lookup", $list);
 		$this->view->assign("header",t("Project Codes"));
 		
+		// done, output a csv
+		if ($this->getSanParam ( 'outputType' ) )
+			$this->sendData ( $this->reportHeaders ( false, $list ) );
+		
 	}
 	 
 	 public function tablesGfalistAction(){
 
 		
 		        file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'AdminCont:tablesGfalistAction >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
-//				var_dump("sql=", $sql, "END");
+				var_dump("output=", $this->getSanParam ( 'outputType' ), "END");
 				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
         	
 		$helper = new Helper();
@@ -121,9 +125,9 @@ class AdminController extends UserController
 		if ($this->getRequest()->isPost()) {
 			$params = $this->getAllParams();
 
-	        file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'AdminCont:56 >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
-				var_dump("params=", $params, "END");
-				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+	        //file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'AdminCont:56 >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+			//var_dump("params=", $params, "END");
+			//$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
     
 
 			$map = array(
@@ -154,8 +158,6 @@ class AdminController extends UserController
 			}
 			$this->_redirect ( 'admin/tables-gfalist' );
 		}
-		
-		
 
 		$db = $this->dbfunc();
 		
@@ -170,6 +172,10 @@ class AdminController extends UserController
 		$this->view->assign("lookup", $list);
 		$this->view->assign("header",t("GFA"));
 		
+		// done, output a csv
+		if ($this->getSanParam ( 'outputType' ) )
+			$this->sendData ( $this->reportHeaders ( false, $list ) );
+
 	}
 
 	public function indexAction()

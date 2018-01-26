@@ -337,7 +337,6 @@ $activitydetailRow->ModifiedBy = $user->first_name . " " . $user->last_name;
 //	file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinCont:edit:330 >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
 //	var_dump("activitydetailRow=", $activitydetailRow["id"], $activitydetailRow["PCAProjectCodeOrig"], $activitydetailRow["PCAProjectCodePosting"], "END");
 //	$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
-	
 		
 	}
 	

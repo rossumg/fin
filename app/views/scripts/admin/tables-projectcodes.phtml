@@ -1,0 +1,268 @@
+<?php
+
+// template for page that contains an EditTable
+
+// need $pageTitle and $nextUri variables from these includes
+
+ob_start();
+require_once('views/scripts/header.phtml');
+$header = ob_get_contents();
+ob_end_clean();
+
+ob_start();
+require_once('views/scripts/nav-admin.phtml');
+$nav = ob_get_contents();
+ob_end_clean();
+
+?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title><?php echo $this->translation['Application Name'];?> | <?php echo t($this->pageTitle); ?></title>
+	<?php
+	require_once('views/helpers/ScriptContainer.php');
+	print ScriptContainer::$instance->renderCSSHead();
+	print ScriptContainer::$instance->renderJSHead();
+	?>
+
+	<style>
+		fieldset input[type=text], fieldset select { margin-bottom:12px; width:95%; padding: .4em; }
+		fieldset { padding:0; border:0; margin-top:25px; text-align : left; font-size : .9em }
+		h1 { font-size: 1.2em; margin: .6em 0; }
+		.ui-dialog .ui-state-error { padding: .3em; }
+		.validateTips { border: 1px solid transparent; padding: 0.3em; }
+	</style>
+	<script>
+		$(function() {
+			$( "#dialog-form" ).dialog({
+				autoOpen: false,
+				width: 350,
+				modal: true,
+				buttons: {
+				    "<?php echo t('Delete'); ?>": function() {
+                        if (confirm("Are you sure you want to delete this record."))
+                        {
+                            $("#_id").val($("#currentid").val());
+                            $("#_action").val("delete");
+                            document.getElementById('adminform').submit();
+                        }
+                    },
+					"<?php echo t('Save') ?>": function() {
+						
+						$("#_id").val($("#id").val());
+						$("#_timestamp").val($("#timestamp").val());
+						$("#_Project_Code").val($("#Project_Code").val());
+						$("#_Project_Status").val($("#Project_Status").val());
+						$("#_BudgetNbr").val($("#BudgetNbr").val());
+						$("#_Location").val($("#Location").val());
+						$("#_Country").val($("#Country").val());
+						$("#_Management").val($("#Management").val());
+						$("#_Project_Training").val($("#Project_Training ").val());
+						
+						$("#_id").val($("#currentid").val());
+						if ($("#currentid").val() == 0){
+							$("#_action").val("addnew");
+						} else {
+							$("#_action").val("update");
+						}
+ 							$( this ).dialog( "close" );
+ 							document.getElementById("adminform").submit();
+					},
+					"<?php echo t('Cancel') ?>": function() {
+						$( this ).dialog( "close" );
+					}
+				},
+				close: function() {
+
+				}
+			});
+
+			$( "#update" )
+				.button()
+				.click(function() {
+					$('#dialog-form').dialog('option', 'title', '<?php echo t('Add Project Code')?>');
+					$("#currentid").val("0");
+					
+					$("#timestamp").val("");
+					$("#Project_Code").val("");
+					$("#Project_Status").val("");
+					$("#BudgetNbr").val("");
+					$("#Location").val("");
+					$("#Country").val("");
+					$("#Management").val("");
+					$("#Project_Training").val("");
+					
+					$( "#dialog-form" ).dialog( "open" );
+				});
+		});
+
+		function edititem(d){
+
+			$('#dialog-form').dialog('option', 'title', '<?php echo t('Update GFA')?>');
+			$("#currentid").val(d['id']);
+			
+			$("#timestamp").val(d['timestamp']);
+			$("#Project_Code").val(d['Project_Code']);
+			$("#Project_Status").val(d['Project_Status']);
+			$("#BudgetNbr").val(d['BudgetNbr']);
+			$("#Location").val(d['Location']);
+			$("#Country").val(d['Country']);
+			$("#Management").val(d['Management']);
+			$("#Project_Training").val(d['Project_Training']);
+
+			$( "#dialog-form" ).dialog( "open" );
+		}
+	</script>
+
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready(function() {
+			$( ".calendarbox" ).datepicker({
+				changeMonth: true,
+				changeYear: true
+			});
+			/* Add a click handler to the rows - this could be used as a callback */
+			$(".tablegrid tbody").click(function(event) {
+				$(oTable.fnSettings().aoData).each(function (){
+					$(this.nTr).removeClass('row_selected');
+				});
+				$(event.target.parentNode).addClass('row_selected');
+			});
+
+			/* Add a click handler for the delete row */
+			$('#delete').click( function() {
+				var anSelected = fnGetSelected( oTable );
+				oTable.fnDeleteRow( anSelected[0] );
+			} );
+
+			/* Init the table */
+			oTable = $('.tablegrid').dataTable({
+				"bJQueryUI": true,
+                "iDisplayLength": 25,
+				"sPaginationType": "full_numbers"
+			});
+			$("#peopleadd").validate();
+
+		} );
+
+		/* Get the rows which are currently selected */
+		function fnGetSelected( oTableLocal ){
+			var aReturn = new Array();
+			var aTrs = oTableLocal.fnGetNodes();
+
+			for ( var i=0 ; i<aTrs.length ; i++ ){
+				if ( $(aTrs[i]).hasClass('row_selected') ){
+					aReturn.push( aTrs[i] );
+				}
+			}
+			return aReturn;
+		}
+
+	</script>
+</head>
+<body  class="yui-skin-sam">
+<div id="dialog-form" title="Update class">
+	<form method="post">
+		<fieldset>
+			<label for="timestamp"><?php echo t('timestamp');?></label>
+<input type="text" name="timestamp" id="timestamp" class="text ui-widget-content ui-corner-all" />
+
+<label for="Project_Code"><?php echo t('Project_Code');?></label>
+<input type="text" name="Project_Code" id="Project_Code" class="text ui-widget-content ui-corner-all" />
+
+<label for="Project_Status"><?php echo t('Project_Status');?></label>
+<input type="text" name="Project_Status" id="Project_Status" class="text ui-widget-content ui-corner-all" />
+
+<label for="BudgetNbr"><?php echo t('BudgetNbr');?></label>
+<input type="text" name="BudgetNbr" id="BudgetNbr" class="text ui-widget-content ui-corner-all" />
+
+<label for="Location"><?php echo t('Location');?></label>
+<input type="text" name="Location" id="Location" class="text ui-widget-content ui-corner-all" />
+
+<label for="Country"><?php echo t('Country');?></label>
+<input type="text" name="Country" id="Country" class="text ui-widget-content ui-corner-all" />
+
+<label for="Management"><?php echo t('Management');?></label>
+<input type="text" name="Management" id="Management" class="text ui-widget-content ui-corner-all" />
+
+<label for="Project_Training"><?php echo t('Project_Training');?></label>
+<input type="text" name="Project_Training" id="Project_Training" class="text ui-widget-content ui-corner-all" />
+		
+		</fieldset>
+		<input type="hidden" name="currentid" id="currentid" class="text ui-widget-content ui-corner-all" />
+	</form>
+</div>
+
+<div id="pageHolder">
+	<div id="header"><?php echo $header; ?></div>
+	<div id="content" class="adminDiv">
+		<div id="navAdmin"><?php echo $nav;?></div>
+		<div id="contentAdmin" style="width : 900px;">
+			<div id="contentheader">
+				<h2><?php echo $this->header; ?></h2>
+			</div>
+
+			<div class="pad20"></div>
+			<div style="width :100%;">
+				<table cellpadding="0" cellspacing="0" border="0" class="display tablegrid" id="" style="width:100%">
+					<thead>
+					<tr>
+						<th><?php echo t('ID');?></th>
+<th><?php echo t('timestamp');?></th>
+<th><?php echo t('Project_Code');?></th>
+<th><?php echo t('Project_Status');?></th>
+<th><?php echo t('BudgetNbr');?></th>
+<th><?php echo t('Location');?></th>
+<th><?php echo t('Country');?></th>
+<th><?php echo t('Management');?></th>
+<th><?php echo t('Project_Training');?></th>
+					</tr>
+					</thead>
+					<tbody>
+
+					<?php
+					foreach ($this->lookup as $lookup){
+						?>
+						<tr class="GradeA" style="cursor : pointer;" onclick='edititem(<?php echo json_encode($lookup, JSON_HEX_QUOT|JSON_HEX_APOS); ?>);'>
+
+							<td><?php echo $lookup['id'];?></td>
+<td><?php echo $lookup['timestamp'];?></td>
+<td><?php echo $lookup['Project_Code'];?></td>
+<td><?php echo $lookup['Project_Status'];?></td>
+<td><?php echo $lookup['BudgetNbr'];?></td>
+<td><?php echo $lookup['Location'];?></td>
+<td><?php echo $lookup['Country'];?></td>
+<td><?php echo $lookup['Management'];?></td>
+<td><?php echo $lookup['Project_Training'];?></td>
+						</tr>
+					<?php
+					}
+					?>
+					</tbody>
+				</table>
+				<div style="text-align : right;">
+					<br>
+					<input type="submit" name="update" id="update" value="<?php echo t('Add Project Code');?>" class="tsbutton green large">
+				</div>
+				<?php echo $this->printWindowAndExport("lookup");?>
+			</div>
+
+			<form action="" id="adminform" method="post" class="formvalidate">
+				<input type="hidden" name="_action" id="_action" value="addnew" />
+				<input type="hidden" name="_id" id="_id" value="0" />
+				<input type="hidden" name="_timestamp" id="_timestamp" value="" />
+<input type="hidden" name="_Project_Code" id="_Project_Code" value="" />
+<input type="hidden" name="_Project_Status" id="_Project_Status" value="" />
+<input type="hidden" name="_BudgetNbr" id="_BudgetNbr" value="" />
+<input type="hidden" name="_Location" id="_Location" value="" />
+<input type="hidden" name="_Country" id="_Country" value="" />
+<input type="hidden" name="_Management" id="_Management" value="" />
+<input type="hidden" name="_Project_Training" id="_Project_Training" value="" />
+			</form>
+
+		</div>
+		<div class="clear"></div>
+		<div id="footer"><?php require_once('views/scripts/footer.phtml');?></div>
+	</div>
+</div>
+</body>
+</html>

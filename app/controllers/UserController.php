@@ -34,8 +34,6 @@ class UserController extends ReportFilterHelpers {
 
 		
 	public function addAction() {
-file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'UserController:37 >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
-$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
 		if ((! $user_id = $this->isLoggedIn ()) or (! $this->hasACL ( 'add_edit_users' ))) {
 			$this->doNoAccessError ();
 		}
