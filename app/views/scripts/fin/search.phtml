@@ -97,6 +97,14 @@ if ($this->mode == 'search' ) {
 </select>
 	    </div></div>
 	 </div>
+	 
+	 <div id="tdprimarykey">
+	    	<div class="fieldLabel" id="tdprimarykeyInput_lbl"><?php tp('TDPrimaryKey');?></div>
+	    	<div class="fieldInput">
+	    	<div  class="leftBorderPad"><input type="checkbox" name="showTDPrimaryKey" checked /></div>
+	    	<div  class="leftBorder"><input type="text" name="tdprimarykeyInput" id="tdprimarykeyInput" size="16" maxlength="16" value=""></div>
+		</div>
+	</div>
 
 	<div id="projectCode">
 	    <div class="fieldLabel" id="projectCodeInput_lbl"><?php tp('Project Code');?></div>
@@ -364,14 +372,7 @@ if ($this->mode == 'search' ) {
 	    </div></div>
 	</div>
 	
-		<div id="tdprimarykey">
-	    	<div class="fieldLabel" id="tdprimarykeyInput_lbl"><?php tp('TDPrimaryKey');?></div>
-	    	<div class="fieldInput">
-	    	<div  class="leftBorderPad"><input type="checkbox" name="showTDPrimaryKey" checked /></div>
-	    	<div  class="leftBorder"><input type="text" name="tdprimarykeyInput" id="tdprimarykeyInput" size="16" maxlength="16" value=""></div>
-		</div>
-	</div>
-	
+
 			<div id="fiscalmonth">
 	    <div class="fieldLabel" id="modifiedInput_lbl"><?php tp('Month');?></div>
 	    <div class="fieldInput">
@@ -482,6 +483,8 @@ foreach($this->results as $row) {
 			echo ',"'.$row['BudgetNbr'].'"';
 		if ( $this->criteria['showBudgetName'] )
 			echo ',"'.$row['BudgetName'].'"';
+		if ( $this->criteria['showTDPrimaryKey'] )
+			echo ',"'.$row['TDPrimaryKey'].'"';
 		if ( $this->criteria['showProjectCode'] )
 			echo ',"'.$row['ProjectCode'].'"';
 		if ( $this->criteria['showTranAmount'] )
@@ -516,8 +519,6 @@ foreach($this->results as $row) {
 			echo ',"'.$row['TranReference4'].'"';
 		if ( $this->criteria['showModified'] )
 			echo ',"'.$row['Modified'].'"';
-		if ( $this->criteria['showTDPrimaryKey'] )
-			echo ',"'.$row['TDPrimaryKey'].'"';
 		if ( $this->criteria['showFiscalMonth'] )
 			echo ',"'.$row['FiscalMonth'].'"';
 		if ( $this->criteria['showFiscalYear'] )
@@ -549,6 +550,9 @@ var expenseColumnDefs = [
  <?php }  ?>
  <?php if ( $this->criteria['showBudgetName'] ) { ?>
    ,{key:"BudgetName", label: "<?php tp('BudgetName');?>", sortable:true, resizeable:true}
+ <?php }  ?>
+ <?php if ( $this->criteria['showTDPrimaryKey'] ) { ?>
+   ,{key:"TDPrimaryKey", label: "<?php tp('TDPrimaryKey');?>", sortable:true, resizeable:true}
  <?php }  ?>
  <?php if ( $this->criteria['showProjectCode'] ) { ?>
    ,{key:"ProjectCode", label: "<?php tp('ProjectCode');?>", sortable:true, resizeable:true}
@@ -600,10 +604,6 @@ var expenseColumnDefs = [
  <?php }  ?>
  <?php if ( $this->criteria['showModified'] ) { ?>
    ,{key:"Modified", label: "<?php tp('Modified');?>", sortable:true, resizeable:true}
- <?php }  ?>
- 
- <?php if ( $this->criteria['showTDPrimaryKey'] ) { ?>
-   ,{key:"TDPrimaryKey", label: "<?php tp('TDPrimaryKey');?>", sortable:true, resizeable:true}
  <?php }  ?>
  <?php if ( $this->criteria['showFiscalMonth'] ) { ?>
    ,{key:"FiscalMonth", label: "<?php tp('Month');?>", sortable:true, resizeable:true}
