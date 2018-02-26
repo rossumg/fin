@@ -220,6 +220,8 @@ $activitydetailRow->TranReference4 = $this->getSanParam ( 'TranReference4' );
 $activitydetailRow->TDPrimaryKey = $this->getSanParam ( 'TDPrimaryKey' );
 $activitydetailRow->FiscalMonth = $this->getSanParam ( 'FiscalMonth' );
 $activitydetailRow->FiscalYear = $this->getSanParam ( 'FiscalYear' );
+$activitydetailRow->ItechMonth = $this->getSanParam ( 'ItechMonth' );
+$activitydetailRow->ItechYear = $this->getSanParam ( 'ItechYear' );
 
 $activitydetailRow->Modified = $this->getSanParam ( 'Modified' );
 $user = Zend_Auth::getInstance()->getIdentity();
@@ -648,6 +650,24 @@ $activitydetailRow->ModifiedBy = $user->first_name . " " . $user->last_name;
 		}
 		$this->viewAssignEscaped ( 'fiscalyear', $gfaArray );
 		
+		//distinct ItechMonth list
+		$gArray = OptionList::suggestionList ( 'activitydetail', 'ItechMonth', false, 999, false, false, true );
+		$gfaArray = array ();
+		foreach ( $gArray as $key => $val ) {
+		    //if ($val ['id'] != 0)
+		    $gfaArray [] = $val;
+		}
+		$this->viewAssignEscaped ( 'itechmonth', $gfaArray );
+		
+		//distinct ItechYear list
+		$gArray = OptionList::suggestionList ( 'activitydetail', 'ItechYear', false, 999, false, false, true );
+		$gfaArray = array ();
+		foreach ( $gArray as $key => $val ) {
+		    //if ($val ['id'] != 0)
+		    $gfaArray [] = $val;
+		}
+		$this->viewAssignEscaped ( 'itechyear', $gfaArray );
+		
 		// TDPrimary key
 		
 		$this->activityDetailReport ();
@@ -719,6 +739,8 @@ $activitydetailRow->ModifiedBy = $user->first_name . " " . $user->last_name;
         $criteria ['TDPrimaryKey'] = $this->getSanParam ( 'tdprimarykeyInput' );
         $criteria ['FiscalMonth'] = $this->getSanParam ( 'fiscalmonthInput' );
         $criteria ['FiscalYear'] = $this->getSanParam ( 'fiscalyearInput' );
+        $criteria ['ItechMonth'] = $this->getSanParam ( 'itechmonthInput' );
+        $criteria ['ItechYear'] = $this->getSanParam ( 'itechyearInput' );
         
         $criteria ['showGFA'] =       true;
         $criteria ['showBudgetNbr'] =       true;
@@ -746,6 +768,8 @@ $activitydetailRow->ModifiedBy = $user->first_name . " " . $user->last_name;
         $criteria ['showTDPrimaryKey'] = ($this->getSanParam ( 'showTDPrimaryKey' ));
         $criteria ['showFiscalMonth'] = ($this->getSanParam ( 'showFiscalMonth' ));
         $criteria ['showFiscalYear'] = ($this->getSanParam ( 'showFiscalYear' ));
+        $criteria ['showItechMonth'] = ($this->getSanParam ( 'showItechMonth' ));
+        $criteria ['showItechYear'] = ($this->getSanParam ( 'showItechYear' ));
         
 		$criteria ['TranDate1_Begin'] = $beginDate;
 	    $criteria ['TranDate1_End'] =   $endDate;
@@ -778,6 +802,8 @@ $activitydetailRow->ModifiedBy = $user->first_name . " " . $user->last_name;
                 $criteria ['TDPrimaryKey'] = $this->getSanParam ( 'tdprimarykeyInput' );
                 $criteria ['FiscalMonth'] = $this->getSanParam ( 'fiscalmonthInput' );
                 $criteria ['FiscalYear'] = $this->getSanParam ( 'fiscalyearInput' );
+                $criteria ['ItechMonth'] = $this->getSanParam ( 'itechmonthInput' );
+                $criteria ['ItechYear'] = $this->getSanParam ( 'itechyearInput' );
         		
         	    $sql = 'SELECT '; //todo test
 
@@ -787,7 +813,7 @@ $activitydetailRow->ModifiedBy = $user->first_name . " " . $user->last_name;
 				//$sql .= ' DISTINCT pt.id as "id", pt.facility_name, pt.training_start_date  ';
 			//}
            
-$sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Budget_End, la.BudgetName, la.ProjectCode, la.TranAmount, la.AccountCode, la.PCAProjectCodeOrig, la.PCAProjectCodePosting, la.PCAOptionCodeOrig, la.PCAOptionCodePosting, la.PCATaskCodeOrig, la.PCATaskCodePosting, la.TranFTE, la.Budget_Begin, la.Budget_End, la.TranDate1, la.TranDescMod, la.TranReference1, la.TranReference2, la.TranReference3, la.TranReference4, la.Modified, la.TDPrimaryKey, la.FiscalMonth, la.FiscalYear ';
+$sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Budget_End, la.BudgetName, la.ProjectCode, la.TranAmount, la.AccountCode, la.PCAProjectCodeOrig, la.PCAProjectCodePosting, la.PCAOptionCodeOrig, la.PCAOptionCodePosting, la.PCATaskCodeOrig, la.PCATaskCodePosting, la.TranFTE, la.Budget_Begin, la.Budget_End, la.TranDate1, la.TranDescMod, la.TranReference1, la.TranReference2, la.TranReference3, la.TranReference4, la.Modified, la.TDPrimaryKey, la.FiscalMonth, la.FiscalYear, la.ItechMonth, la.ItechYear ';
            		
            		$sql .= ' FROM activitydetail la';
 				
@@ -822,6 +848,8 @@ $sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Bud
            		if($criteria['TDPrimaryKey']) $where []= ' trim(la.TDPrimaryKey) = \'' . $criteria ['TDPrimaryKey'] . '\'';
            		if($criteria['FiscalMonth']) $where []= ' trim(la.FiscalMonth) = \'' . $criteria ['FiscalMonth'] . '\'';
            		if($criteria['FiscalYear']) $where []= ' trim(la.FiscalYear) = \'' . $criteria ['FiscalYear'] . '\'';
+           		if($criteria['ItechMonth']) $where []= ' trim(la.ItechMonth) = \'' . $criteria ['ItechMonth'] . '\'';
+           		if($criteria['ItechYear']) $where []= ' trim(la.ItechYear) = \'' . $criteria ['ItechYear'] . '\'';
            		
            		$where []= ' la.TranDate1 >= \'' . $criteria ['TranDate1_Begin'] . '\'';
            		$where []= ' la.TranDate1 <= \'' . $criteria ['TranDate1_End'] . '\'';

@@ -48,7 +48,9 @@ if ($this->mode == 'search' ) {
   <div id="dividers">
     <div class="fieldLabel " ></div>
     <div class="fieldInput criteria-header"><div  class="criteria-label" ><?php echo $checkLabel;?></div><div  class="criteria-label" style="padding-left: 20px;"><?php tp('filter');?></div></div>
-
+    
+    <input type="hidden" name="limit" id="limit" value="1" />
+   	<input type="submit" class="submitNoArrow" name="go" value="<?php tp('Preview');?>" />
 
 <div id="gfaAutoComplete">
 	    <div class="fieldLabel" id="gfaInput_lbl"><?php tp('GFA');?></div>
@@ -372,7 +374,6 @@ if ($this->mode == 'search' ) {
 	    </div></div>
 	</div>
 	
-
 			<div id="fiscalmonth">
 	    <div class="fieldLabel" id="modifiedInput_lbl"><?php tp('Month');?></div>
 	    <div class="fieldInput">
@@ -399,6 +400,38 @@ if ($this->mode == 'search' ) {
 	    
 		foreach ( $this->fiscalyear as $vals ) {
 			echo '<option value="'.$vals['FiscalYear'].'" '.($this->criteria['fiscalyearInput'] == $vals['id']?'':'').'>'.$vals['FiscalYear'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+
+			<div id="itechmonth">
+	    <div class="fieldLabel" id="itechmonthInput_lbl"><?php tp('Adjusted Month');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showItechMonth" checked /></div>
+	    <div  class="leftBorder"><select id="itechmonthInput" name="itechmonthInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->itechmonth as $vals ) {
+			echo '<option value="'.$vals['ItechMonth'].'" '.($this->criteria['itechmonthInput'] == $vals['id']?'':'').'>'.$vals['ItechMonth'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
+			<div id="itechyear">
+	    <div class="fieldLabel" id="itechyearInput_lbl"><?php tp('Adjusted Year');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showItechYear" checked /></div>
+	    <div  class="leftBorder"><select id="itechyearInput" name="itechyearInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	    
+		foreach ( $this->itechyear as $vals ) {
+			echo '<option value="'.$vals['ItechYear'].'" '.($this->criteria['itechyearInput'] == $vals['id']?'':'').'>'.$vals['ItechYear'].'</option>';
 	}
 	?>
 </select>
@@ -523,6 +556,10 @@ foreach($this->results as $row) {
 			echo ',"'.$row['FiscalMonth'].'"';
 		if ( $this->criteria['showFiscalYear'] )
 			echo ',"'.$row['FiscalYear'].'"';
+		if ( $this->criteria['showItechMonth'] )
+		    echo ',"'.$row['ItechMonth'].'"';
+		if ( $this->criteria['showItechYear'] )
+		    echo ',"'.$row['ItechYear'].'"';
 			
 		if ( 1 )
 			echo ',"'.$row['Budget_Begin'].'"';
@@ -606,10 +643,16 @@ var expenseColumnDefs = [
    ,{key:"Modified", label: "<?php tp('Modified');?>", sortable:true, resizeable:true}
  <?php }  ?>
  <?php if ( $this->criteria['showFiscalMonth'] ) { ?>
-   ,{key:"FiscalMonth", label: "<?php tp('Month');?>", sortable:true, resizeable:true}
+ ,{key:"FiscalMonth", label: "<?php tp('Month');?>", sortable:true, resizeable:true}
+<?php }  ?>
+<?php if ( $this->criteria['showFiscalYear'] ) { ?>
+ ,{key:"FiscalYear", label: "<?php tp('Year');?>", sortable:true, resizeable:true}
+<?php }  ?>
+ <?php if ( $this->criteria['showItechMonth'] ) { ?>
+   ,{key:"ItechMonth", label: "<?php tp('Adjusted Month');?>", sortable:true, resizeable:true}
  <?php }  ?>
- <?php if ( $this->criteria['showFiscalYear'] ) { ?>
-   ,{key:"FiscalYear", label: "<?php tp('Year');?>", sortable:true, resizeable:true}
+ <?php if ( $this->criteria['showItechYear'] ) { ?>
+   ,{key:"ItechYear", label: "<?php tp('Adjusted Year');?>", sortable:true, resizeable:true}
  <?php }  ?>
  
  <?php if ( 1 ) { ?>

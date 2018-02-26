@@ -16,14 +16,22 @@
 		<div id="content">
 			<h1><?php tp('Edit Expense');?></h1>
 			<div class="clear"></div>
-			<form action="" id="activitydetailForm" method="post">
 			
+			<form action="" id="activitydetailForm" method="post">
+				
+				<button type="button" id="FinishedTop" title="save this record"
+					class="submitNoArrow" /><?php tp('Save changes');?></button>
+				<div class="clear"></div>
 				<?php if ( true ) { require_once('history.phtml'); }  ?>
+				
+				
+					
+				
 				
 				<div class="fieldLabel" id="GFA_lbl"> <?php tp('GFA');?></div>
 				<div class="fieldInput">
 					<input type="text" name="GFA" size="32" maxlength="255" 
-						value="<?php echo $this->activitydetail['GFA'];?>" readonly="readonly"  />
+						value="<?php echo $this->activitydetail['GFA'];?>"  />
 				</div>
 				
 				<div class="fieldLabel" id="BudgetNbr_lbl"> <?php tp('BudgetNbr');?></div>
@@ -158,9 +166,21 @@
 						value="<?php echo $this->activitydetail['FiscalYear'];?>"  />
 				</div>
 				
+				<div class="fieldLabel" id="ItechMonth_lbl"> <?php tp('Adjusted Month');?></div>
+				<div class="fieldInput">
+					<input type="text" name="ItechMonth" size="32" maxlength="255"
+						value="<?php echo $this->activitydetail['ItechMonth'];?>"  />
+				</div>
+				
+				<div class="fieldLabel" id="ItechYear_lbl"> <?php tp('Adjusted Year');?></div>
+				<div class="fieldInput">
+					<input type="text" name="ItechYear" size="32" maxlength="255"
+						value="<?php echo $this->activitydetail['ItechYear'];?>"  />
+				</div>
+				
 				<div class="clear"></div>
 
-					<button type="button" id="Finished" title="save this record"
+					<button type="button" id="FinishedBottom" title="save this record"
 					class="submitNoArrow" /><?php tp('Save changes');?></button>
 				<div class="clear"></div>
 
@@ -168,7 +188,10 @@
 			</form>
 			<div class="clear"></div>
 			<script type="text/javascript">
-					addAjaxSubmit('Finished','activitydetailForm','<?php echo $this->base_url;?>/fin/edit/id/<?php echo $this->activitydetail['id'];?>/outputType/json');
+					addAjaxSubmit('FinishedTop','activitydetailForm','<?php echo $this->base_url;?>/fin/edit/id/<?php echo $this->activitydetail['id'];?>/outputType/json');
+				</script>
+				<script type="text/javascript">
+					addAjaxSubmit('FinishedBottom','activitydetailForm','<?php echo $this->base_url;?>/fin/edit/id/<?php echo $this->activitydetail['id'];?>/outputType/json');
 				</script>
 
 		</div>
