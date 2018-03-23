@@ -489,7 +489,27 @@ if ($this->mode == 'search' ) {
    
 <?php if ( $this->criteria['go'] ) { ?>
 <div class="hrGrey"></div>
-    <div class="fieldIndentNoMargin"><?php echo t('Expenses');?> <span class="total"><?php echo $this->count;?> <?php if ( $this->mode == 'count' ) echo t('Records'); else echo '';?></span><?php echo $this->printAndExport("expenses");?></div>
+    <div class="fieldIndentNoMargin"><?php echo t('Expenses');?> <span class="total"><?php echo $this->count;?> <?php if ( $this->mode == 'count' ) echo t('Records'); else echo '';?></span><?php echo $this->printAndExport("expenses");?><?php echo $this->bulkExport("expenses");?>
+    
+    
+    
+    
+    
+       
+    <span id="importExpense" class="yui-button yui-push-button" style="float:left;">
+      <span class="first-child">
+        <button onclick="location.href='<?php echo $this->base_url; ?>/fin/import-expense';return false;" type="button" tabindex=1 id="locationImportBtn" class="yui-button yui-push-button"><?php tp('Bulk Import');?></button>
+      </span>
+    </span>
+   
+   
+    
+    
+    
+    
+    
+    
+    </div>
 <?php } ?>
 	<a href="<?php echo $this->base_url;?>/fin/add"><?php tp('Add New Expense');?></a><br/><br/>
     <div id="expenses" class="itechTable"></div>

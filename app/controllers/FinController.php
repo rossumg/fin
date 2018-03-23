@@ -688,6 +688,7 @@ $activitydetailRow->ModifiedBy = $user->first_name . " " . $user->last_name;
 		$criteria ['start-day'] = $parts [2];
 		
 		$sql = "SELECT MAX(TranDate1) as \"end\" FROM activitydetail ";
+		$bulkSql = "SELECT MAX(TranDate1) as \"end\" FROM activitydetail ";
 		$rowArray = $db->fetchAll ( $sql );
 		$end_default = $rowArray [0] ['end'];
 		$parts = explode('-', $end_default );
@@ -773,6 +774,7 @@ $activitydetailRow->ModifiedBy = $user->first_name . " " . $user->last_name;
         
 		$criteria ['TranDate1_Begin'] = $beginDate;
 	    $criteria ['TranDate1_End'] =   $endDate;
+	    
 				
 		$this->viewAssignEscaped ( 'criteria', $criteria );
         
@@ -805,17 +807,14 @@ $activitydetailRow->ModifiedBy = $user->first_name . " " . $user->last_name;
                 $criteria ['ItechMonth'] = $this->getSanParam ( 'itechmonthInput' );
                 $criteria ['ItechYear'] = $this->getSanParam ( 'itechyearInput' );
         		
-        	    $sql = 'SELECT '; //todo test
-
-			//if ($criteria ['doCount']) {
-				//$sql .= ' COUNT(pt.person_id) as "cnt", pt.facility_name ';
-			//} else {
-				//$sql .= ' DISTINCT pt.id as "id", pt.facility_name, pt.training_start_date  ';
-			//}
+        	    $sql = 'SELECT '; 
+        	    $bulkSql = 'SELECT '; 
            
 $sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Budget_End, la.BudgetName, la.ProjectCode, la.TranAmount, la.AccountCode, la.PCAProjectCodeOrig, la.PCAProjectCodePosting, la.PCAOptionCodeOrig, la.PCAOptionCodePosting, la.PCATaskCodeOrig, la.PCATaskCodePosting, la.TranFTE, la.Budget_Begin, la.Budget_End, la.TranDate1, la.TranDescMod, la.TranReference1, la.TranReference2, la.TranReference3, la.TranReference4, la.Modified, la.TDPrimaryKey, la.FiscalMonth, la.FiscalYear, la.ItechMonth, la.ItechYear ';
+$bulkSql .= ' DISTINCT la.TDPrimaryKey, la.ItechMonth, la.ItechYear, la.ProjectCode ';
            		
            		$sql .= ' FROM activitydetail la';
+           		$bulkSql .= ' FROM activitydetail la';
 				
            		$where = array();
            		
@@ -856,64 +855,183 @@ $sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Bud
            		
            		if ($where)
 					$sql .= ' WHERE ' . implode(' AND ', $where);
+					$bulkSql .= ' WHERE ' . implode(' AND ', $where);
         		}   
         		
-        		//$rowArray = $db->fetchAll ( $sql . ' ORDER BY facility_name ASC ' );
+//         		file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:237 >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+//         		var_dump("this->getParam:start-month=", $this->getParam ( 'start-month' ), "END");
+//         		$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+        		
         		$rowArray = $db->fetchAll ( $sql  );
+        		$bulkArray = $db->fetchAll ( $bulkSql  );
         		
         		$this->viewAssignEscaped ( 'results', $rowArray ); 
         		$this->viewAssignEscaped ( 'count',  sizeOf($rowArray));
         		$this->viewAssignEscaped ( 'criteria', $criteria );
         		
-        		if ($this->getParam ( 'outputType' ))
-				$this->sendData ( $this->reportHeaders ( false, $rowArray ) );
+        		if ($this->getParam ( 'bulk' ))
+        		    $this->sendData ( $this->reportHeaders ( false, $bulkArray ) );
+        		else if ($this->getParam ( 'outputType' ))
+				    $this->sendData ( $this->reportHeaders ( false, $rowArray ) );
 	}
 	
-	
+	public function importExpenseAction() {
+	    $this->view->assign ( 'pageTitle', t ( 'Import Expenses' ) );
+	    require_once ('models/table/ActivityDetail.php');
+	    
+	    file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:importExpenseAction >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+	    $toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+	    
+	    // template redirect
+	    if ($this->getSanParam ( 'download' ))
+	        return $this->importLocationTemplateAction ();
+	        
+	        
+// 	        if (! $this->hasACL ( 'import_' )) $this->doNoAccessError ();
+	            
+	            // CSV STUFF
+	            $filename = ($_FILES ['upload'] ['tmp_name']);
+	            if ($filename) {
+	                $activityDetailObj = new ActivityDetail ();
+	                $errs = array ();
+	                while ( $row = $this->_csv_get_row ( $filename ) ) {
 
-	function addLocationAction() {
-		require_once 'views/helpers/DropDown.php';
-		
-		// locations
-		$this->viewAssignEscaped ( 'locations', Location::getAll () );
-	}
-	
-	function viewLocationAction() {
-		if (! $this->hasACL ( 'edit_course' )) {
-			$this->view->assign ( 'viewonly', 'disabled="disabled"' );
-		}
-		
-		require_once 'models/table/TrainingLocation.php';
-		
-		$this->view->assign ( 'id', $this->getParam ( 'id' ) );
-		
-		if ($this->getParam ( 'id' )) {
-			require_once 'views/helpers/DropDown.php';
-			
-			$rowLocation = TrainingLocation::selectLocation ( $this->getParam ( 'id' ) )->toArray ();
-			
-			// locations
-			$this->viewAssignEscaped ( 'locations', Location::getAll () );
-			$region_ids = Location::getCityInfo ( $rowLocation ['location_id'], $this->setting ( 'num_location_tiers' ) );
-			$rowLocation ['city_name'] = $region_ids [0];
-			$region_ids = Location::regionsToHash ( $region_ids );
-			$rowLocation = array_merge ( $rowLocation, $region_ids );
-			
-			$this->viewAssignEscaped ( 'rowLocation', $rowLocation );
-			
-			// see if it is referenced anywhere
-			$this->view->assign ( 'okToDelete', (! TrainingLocation::isReferenced ( $this->getParam ( 'id' ) )) );
-		}
-		
-		// location drop-down
-		$locations = TrainingLocation::selectAllLocations ( $this->setting ( 'num_location_tiers' ) );
-		$this->viewAssignEscaped ( 'tlocations', $locations );
+// 	                    file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:importExpenseAction:row >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+// 	                    var_dump("row=", $row, "END");
+// 	                    $toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+	                    
+	                    $values = array ();
+	                    if (! is_array ( $row ))
+	                        continue; // sanity?
+	                        if (! isset ( $cols )) { // set headers (field names)
+	                            $cols = $row; // first row is headers (field names)
+	                            continue;
+	                        }
+	                        $countValidFields = 0;
+	                        if (! empty ( $row )) { // add
+	                            foreach ( $row as $i => $v ) { // proccess each column
+	                                if (empty ( $v ) && $v !== '0')
+	                                    continue;
+	                                    if ($v == 'n/a') // has to be able to process values from a data export
+	                                        $v = NULL;
+	                                        $countValidFields ++;
+	                                        $delimiter = strpos ( $v, ',' ); // is this field a comma seperated list too (or array)?
+	                                        if ($delimiter && $v [$delimiter - 1] != '\\') // handle arrays as field values(Export), and comma seperated values(import manual entry), and strings or int
+	                                            $values [$cols [$i]] = explode ( ',', $this->sanitize ( $v ) );
+	                                            else
+	                                                $values [$cols [$i]] = $this->sanitize ( $v );
+	                            }
+	                        }
+	                        // done now all fields are named and in $values['my_field']
+	                        
+	                        file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:importExpenseAction:values >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+	                        var_dump("values=", $values, "END");
+	                        $toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+	                        
+	                        
+	                        if ($countValidFields) {
+	                            // validate
+// 	                            if (isset ( $values ['uuid'] )) {
+// 	                                unset ( $values ['uuid'] );
+// 	                            }
+// 	                            if (isset ( $values ['id'] )) {
+// 	                                unset ( $values ['id'] );
+// 	                            }
+// 	                            if (isset ( $values ['is_deleted'] )) {
+// 	                                unset ( $values ['is_deleted'] );
+// 	                            }
+// 	                            if (isset ( $values ['created_by'] )) {
+// 	                                unset ( $values ['created_by'] );
+// 	                            }
+// 	                            if (isset ( $values ['modified_by'] )) {
+// 	                                unset ( $values ['modified_by'] );
+// 	                            }
+// 	                            if (isset ( $values ['timestamp_created'] )) {
+// 	                                unset ( $values ['timestamp_created'] );
+// 	                            }
+// 	                            if (isset ( $values ['timestamp_updated'] )) {
+// 	                                unset ( $values ['timestamp_updated'] );
+// 	                            }
+	                            // required
+// 	                            if (empty ( $values ['training_location_name'] )) {
+// 	                                $errs [] = t ( 'Error adding training location, training location name cannot be empty.' );
+// 	                            }
+	                            // locations
+// 	                            $num_location_tiers = $this->setting ( 'num_location_tiers' );
+// 	                            $bSuccess = true;
+// 	                            $location_id = null;
+// 	                            if ($values ['location_id'])
+// 	                                $location_id = $values ['location_id'];
+// 	                                $tier = 1;
+// 	                                if (! $location_id) {
+// 	                                    for($i = 0; $i <= $num_location_tiers; $i ++) { // insert/find locations
+// 	                                        $r = 1 + $i; // first location field in csv row // could use this too: $values[t('Region A (Province)')]
+// 	                                        if (empty ( $row [$r] ) || $bSuccess == false)
+// 	                                            continue;
+// 	                                            $location_id = Location::insertIfNotFound ( $row [$r], $location_id, $tier );
+// 	                                            if (! $location_id) {
+// 	                                                $bSuccess = false;
+// 	                                                break;
+// 	                                            }
+// 	                                            $tier ++;
+// 	                                    }
+// 	                                }
+// 	                                if (! $bSuccess || ! $location_id) {
+// 	                                    $errs [] = t ( 'Error locating/creating region or city:' ) . ' ' . $row [$r] . ' ' . t ( 'Training Location' ) . ': ' . $values ['training_location_name'];
+// 	                                    continue; // couldnt save location
+// 	                                }
+// 	                                $values ['location_id'] = $location_id;
+// 	                                // dupecheck
+// 	                                $dupe = new TrainingLocation ();
+// 	                                $select = $dupe->select ()->where ( 'location_id =' . $location_id . ' and is_deleted = 0 and training_location_name = "' . $values ['training_location_name'] . '"' );
+// 	                                if ($dupe->fetchRow ( $select )) {
+// 	                                    $errs [] = t ( 'The training location could not be saved. A training location with this name already exists in that location.' ) . ' ' . t ( 'training location' ) . ': ' . $values ['training_location_name'];
+// 	                                    $bSuccess = false;
+// 	                                }
+// 	                                if (! $bSuccess)
+// 	                                    continue;
+// 	                                    // save
+// 	                                    try {
+// 	                                        $tableObj = $trainingLocationObj->createRow ();
+// 	                                        $tableObj->training_location_name = $values ['training_location_name'];
+// 	                                        $tableObj->location_id = $location_id;
+// 	                                        $row_id = $tableObj->save ();
+// 	                                    } catch ( Exception $e ) {
+// 	                                        $errored = 1;
+// 	                                        $errs [] = nl2br ( $e->getMessage () ) . ' ' . t ( 'ERROR: The training location could not be saved.' );
+// 	                                    }
+// 	                                    if (! $row_id)
+// 	                                        $errored = 1;
+	                                        // sucess - done
+	                        } 
+	                } // loop
+	                // done processing rows
+	                $_POST ['redirect'] = null;
+	                $status = ValidationContainer::instance ();
+	                if (empty ( $errored ) && empty ( $errs ))
+	                    $stat = t ( 'Your changes have been saved.' );
+	                    else
+	                        $stat = t ( 'Error importing data. Some data may have been imported and some may not have.' );
+	                        
+	                        foreach ( $errs as $errmsg )
+	                            $stat .= '<br>' . 'Error: ' . htmlspecialchars ( $errmsg, ENT_QUOTES );
+	                            
+	                            $status->setStatusMessage ( $stat );
+	                            $this->view->assign ( 'status', $status );
+	            }
+	            // done with import
 	}
 	
 	/**
 	 * Import a facility
 	 */
 	public function importAction() {
+	    
+	    file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:importAction >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+	    $toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+	    
+	    
+	    
 		$this->view->assign ( 'pageTitle', t ( 'Import a facility' ) );
 		require_once ('models/table/Location.php');
 		require_once ('models/table/Facility.php');
@@ -1091,6 +1209,46 @@ $sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Bud
 			$this->view->assign ( 'status', $status );
 		}
 		// done with import
+	}
+	
+	
+	function addLocationAction() {
+	    require_once 'views/helpers/DropDown.php';
+	    
+	    // locations
+	    $this->viewAssignEscaped ( 'locations', Location::getAll () );
+	}
+	
+	function viewLocationAction() {
+	    if (! $this->hasACL ( 'edit_course' )) {
+	        $this->view->assign ( 'viewonly', 'disabled="disabled"' );
+	    }
+	    
+	    require_once 'models/table/TrainingLocation.php';
+	    
+	    $this->view->assign ( 'id', $this->getParam ( 'id' ) );
+	    
+	    if ($this->getParam ( 'id' )) {
+	        require_once 'views/helpers/DropDown.php';
+	        
+	        $rowLocation = TrainingLocation::selectLocation ( $this->getParam ( 'id' ) )->toArray ();
+	        
+	        // locations
+	        $this->viewAssignEscaped ( 'locations', Location::getAll () );
+	        $region_ids = Location::getCityInfo ( $rowLocation ['location_id'], $this->setting ( 'num_location_tiers' ) );
+	        $rowLocation ['city_name'] = $region_ids [0];
+	        $region_ids = Location::regionsToHash ( $region_ids );
+	        $rowLocation = array_merge ( $rowLocation, $region_ids );
+	        
+	        $this->viewAssignEscaped ( 'rowLocation', $rowLocation );
+	        
+	        // see if it is referenced anywhere
+	        $this->view->assign ( 'okToDelete', (! TrainingLocation::isReferenced ( $this->getParam ( 'id' ) )) );
+	    }
+	    
+	    // location drop-down
+	    $locations = TrainingLocation::selectAllLocations ( $this->setting ( 'num_location_tiers' ) );
+	    $this->viewAssignEscaped ( 'tlocations', $locations );
 	}
 	
 	/**
