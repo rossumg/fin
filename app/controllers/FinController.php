@@ -811,7 +811,7 @@ $activitydetailRow->ModifiedBy = $user->first_name . " " . $user->last_name;
         	    $bulkSql = 'SELECT '; 
            
 $sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Budget_End, la.BudgetName, la.ProjectCode, la.TranAmount, la.AccountCode, la.PCAProjectCodeOrig, la.PCAProjectCodePosting, la.PCAOptionCodeOrig, la.PCAOptionCodePosting, la.PCATaskCodeOrig, la.PCATaskCodePosting, la.TranFTE, la.Budget_Begin, la.Budget_End, la.TranDate1, la.TranDescMod, la.TranReference1, la.TranReference2, la.TranReference3, la.TranReference4, la.Modified, la.TDPrimaryKey, la.FiscalMonth, la.FiscalYear, la.ItechMonth, la.ItechYear ';
-$bulkSql .= ' DISTINCT la.TDPrimaryKey, la.ItechMonth, la.ItechYear, la.ProjectCode ';
+$bulkSql .= ' DISTINCT concat(\'\'\'\', la.TDPrimaryKey) as TDPrimaryKey, concat(\'\'\'\', la.ItechMonth) as ItechMonth, la.ItechYear as ItechYear, la.ProjectCode, la.GFA, la.BudgetNbr , la.Budget_Begin, la.Budget_End, la.BudgetName, la.TranAmount, la.AccountCode, la.PCAProjectCodeOrig, la.PCAProjectCodePosting, la.PCAOptionCodeOrig, la.PCAOptionCodePosting, la.PCATaskCodeOrig, la.PCATaskCodePosting, la.TranFTE, la.Budget_Begin, la.Budget_End, la.TranDate1, la.TranDescMod, la.TranReference1, la.TranReference2, la.TranReference3, la.TranReference4, la.Modified, la.FiscalMonth, la.FiscalYear ';
            		
            		$sql .= ' FROM activitydetail la';
            		$bulkSql .= ' FROM activitydetail la';
@@ -1068,6 +1068,7 @@ $bulkSql .= ' DISTINCT la.TDPrimaryKey, la.ItechMonth, la.ItechYear, la.ProjectC
 	            if ($filename) {
 	                $activityDetailObj = new ActivityDetail ();
 	                $errs = array ();
+	                $errored = 0;
 	                while ( $row = $this->_csv_get_row ( $filename ) ) {
 
 // 	                    file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:importExpenseAction:row >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
@@ -1105,6 +1106,7 @@ $bulkSql .= ' DISTINCT la.TDPrimaryKey, la.ItechMonth, la.ItechYear, la.ProjectC
                                
                                 // dupecheck
                                 $dupe = new ActivityDetail ();
+                                $values ['TDPrimaryKey'] = str_replace("'", "", $values ['TDPrimaryKey'] );
                                 $select = $dupe->select ()->where ( 'TDPrimaryKey = "' . $values ['TDPrimaryKey'] . '"' );
                                 
                                 if (!$dupe->fetchRow ( $select )) {
@@ -1114,18 +1116,21 @@ $bulkSql .= ' DISTINCT la.TDPrimaryKey, la.ItechMonth, la.ItechYear, la.ProjectC
                                 if ($bSuccess) continue;
 	                            
                                 try {
-                                    $dupe->ItechMonth = $values ['ItechMonth'];
-                                    $dupe->ItechYear = $values ['ItechYear'];
-                                    $dupe->ProjectCode = $values ['ProjectCode'];
                                     
-                                    $where = $dupe->getAdapter()->quoteInto('TDPrimaryKey = ?', $values['TDPrimaryKey']);
+                                    $values->ItechMonth = str_replace("'", "", $values ['ItechMonth'] );
+                                    $where = $dupe->getAdapter()->quoteInto('TDPrimaryKey = ?', $values ['TDPrimaryKey']);
                                     
                                     file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:importExpenseAction:values >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
-                                    var_dump("save:dupe=", $dupe, "END");
+                                    var_dump("save:values=", $values, "END");
                                     $toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
-                                    
-                                    $row_id = $dupe->update($values, $where);
-                                    
+
+                                    $cleansed_values = array ();
+                                    $cleansed_values['TDPrimaryKey'] = $values['TDPrimaryKey'];
+                                    $cleansed_values['ItechMonth'] = $values['ItechMonth'];
+                                    $cleansed_values['ItechYear'] = $values['ItechYear'];
+                                    $cleansed_values['ProjectCode'] = $values['ProjectCode'];
+
+                                    $row_id = $dupe->update($cleansed_values, $where);
                                     
                                 } catch ( Exception $e ) {
                                     $errored = 1;
@@ -1138,10 +1143,12 @@ $bulkSql .= ' DISTINCT la.TDPrimaryKey, la.ItechMonth, la.ItechYear, la.ProjectC
 	                       
 	                       $_POST ['redirect'] = null;
 	                       $status = ValidationContainer::instance ();
-	                       if (empty ( $errored ) && empty ( $errs ))
+	                       $stat = "";
+	                    
+	                       if ($errored == 0 && empty ( $errs ))
 	                           $stat = t ( 'Your changes have been saved.' );
 	                       else
-	                           $stat = t ( 'Error importing data. Some data may have been imported and some may not have.' );
+	                           $stat = t ( 'Your changes have been saved. Some records were not changed.' );
 	                        
 	                       foreach ( $errs as $errmsg )
 	                            $stat .= '<br>' . 'Error: ' . htmlspecialchars ( $errmsg, ENT_QUOTES );
