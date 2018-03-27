@@ -1117,7 +1117,7 @@ $bulkSql .= ' DISTINCT concat(\'\'\'\', la.TDPrimaryKey) as TDPrimaryKey, concat
 	                            
                                 try {
                                     
-                                    $values->ItechMonth = str_replace("'", "", $values ['ItechMonth'] );
+                                    $values['ItechMonth'] = str_replace("'", "", $values ['ItechMonth'] );
                                     $where = $dupe->getAdapter()->quoteInto('TDPrimaryKey = ?', $values ['TDPrimaryKey']);
                                     
                                     file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:importExpenseAction:values >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
