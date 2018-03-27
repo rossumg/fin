@@ -875,6 +875,187 @@ $bulkSql .= ' DISTINCT la.TDPrimaryKey, la.ItechMonth, la.ItechYear, la.ProjectC
 				    $this->sendData ( $this->reportHeaders ( false, $rowArray ) );
 	}
 	
+	public function importGfalistAction() {
+	    $this->view->assign ( 'pageTitle', t ( 'Import GFA List - Existing table will be DELETED and REPLACED' ) );
+	    require_once ('models/table/GfaList.php');
+	    
+	    file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:importGfaListAction >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+	    $toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+	    
+	    $deleteObj = new GfaList ();
+	    $where = '1=1';
+	    $deleteObj->delete($where);
+	    
+	    // CSV STUFF
+	    $filename = ($_FILES ['upload'] ['tmp_name']);
+	    if ($filename) {
+	        date_default_timezone_set('America/Los_Angeles');
+	        $now = new DateTime();
+	        $gfaListObj = new GfaList ();
+	        $errs = array ();
+	        while ( $row = $this->_csv_get_row ( $filename ) ) {
+	            
+	            // 	                	file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:importProjectcodesAction:row >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+	            // 	                	var_dump("row=", $row, "END");
+	            // 	                	$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+	            
+	            $values = array ();
+	            if (! is_array ( $row ))
+	                continue; // sanity?
+	                if (! isset ( $cols )) { // set headers (field names)
+	                    $cols = $row; // first row is headers (field names)
+	                    continue;
+	                }
+	                $countValidFields = 0;
+	                if (! empty ( $row )) { // add
+	                    foreach ( $row as $i => $v ) { // proccess each column
+	                        if (empty ( $v ) && $v !== '0')
+	                            continue;
+	                            if ($v == 'n/a') // has to be able to process values from a data export
+	                                $v = NULL;
+	                                $countValidFields ++;
+	                                $delimiter = strpos ( $v, ',' ); // is this field a comma seperated list too (or array)?
+	                                if ($delimiter && $v [$delimiter - 1] != '\\') // handle arrays as field values(Export), and comma seperated values(import manual entry), and strings or int
+	                                    $values [$cols [$i]] = explode ( ',', $this->sanitize ( $v ) );
+	                                    else
+	                                        $values [$cols [$i]] = $this->sanitize ( $v );
+	                    }
+	                }
+	                // required
+	                $bSuccess = true;
+	                if (empty ( $values ['BudgetNbr'] ) || empty ( $values ['GFA'] )) {
+	                    $errs [] = t ( 'Error updating GFA List, BudgetNbr and/or GFA cannot be empty.' );
+	                    $bSuccess = false;
+	                }
+	                
+	                if (!$bSuccess) continue;
+	                
+	                try {
+	                    $tableObj = $gfaListObj->createRow();
+	                    $tableObj->BudgetNbr = $values['BudgetNbr'];
+	                    $tableObj->GFA = $values['GFA'];
+	                    
+	                    $row_id = $tableObj->save ();
+	                    
+	                } catch ( Exception $e ) {
+	                    $errored = 1;
+	                    $errs [] = nl2br ( $e->getMessage () ) . ' ' . t ( 'ERROR: GFA List entry could not be saved.' );
+	                }
+	                if (! $row_id ) $errored = 1;
+	                
+	        } // loop
+	        // done processing rows
+	        
+	        $_POST ['redirect'] = null;
+	        $status = ValidationContainer::instance ();
+	        if (empty ( $errored ) && empty ( $errs ))
+	            $stat = t ( 'Your changes have been saved.' );
+	            else
+	                $stat = t ( 'Error importing data. Some data may have been imported and some may not have.' );
+	                
+	                foreach ( $errs as $errmsg )
+	                    $stat .= '<br>' . 'Error: ' . htmlspecialchars ( $errmsg, ENT_QUOTES );
+	                    
+	                    $status->setStatusMessage ( $stat );
+	                    $this->view->assign ( 'status', $status );
+	    }
+	    // done with import
+	}
+	
+	public function importProjectcodesAction() {
+	    $this->view->assign ( 'pageTitle', t ( 'Import Project Codes - Existing table will be DELETED and REPLACED' ) );
+	    require_once ('models/table/ProjectCodes.php');
+	    
+	    file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:importProjectCodesAction >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+	    $toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+	    
+	    $deleteObj = new ProjectCodes ();
+	    $where = '1=1';
+	    $deleteObj->delete($where);
+	    
+	        // CSV STUFF
+	        $filename = ($_FILES ['upload'] ['tmp_name']);
+	        if ($filename) {
+	            date_default_timezone_set('America/Los_Angeles');
+	            $now = new DateTime();
+	            $projectCodesObj = new ProjectCodes ();
+	            $errs = array ();
+	            while ( $row = $this->_csv_get_row ( $filename ) ) {
+	                
+// 	                	file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:importProjectcodesAction:row >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+// 	                	var_dump("row=", $row, "END");
+// 	                	$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+	                
+	                $values = array ();
+	                if (! is_array ( $row ))
+	                    continue; // sanity?
+	                    if (! isset ( $cols )) { // set headers (field names)
+	                        $cols = $row; // first row is headers (field names)
+	                        continue;
+	                    }
+	                    $countValidFields = 0;
+	                    if (! empty ( $row )) { // add
+	                        foreach ( $row as $i => $v ) { // proccess each column
+	                            if (empty ( $v ) && $v !== '0')
+	                                continue;
+	                                if ($v == 'n/a') // has to be able to process values from a data export
+	                                    $v = NULL;
+	                                    $countValidFields ++;
+	                                    $delimiter = strpos ( $v, ',' ); // is this field a comma seperated list too (or array)?
+	                                    if ($delimiter && $v [$delimiter - 1] != '\\') // handle arrays as field values(Export), and comma seperated values(import manual entry), and strings or int
+	                                        $values [$cols [$i]] = explode ( ',', $this->sanitize ( $v ) );
+	                                        else
+	                                            $values [$cols [$i]] = $this->sanitize ( $v );
+	                        }
+	                    }
+	                    // required
+	                    $bSuccess = true;
+	                    if (empty ( $values ['Project_Code'] )) {
+	                        $errs [] = t ( 'Error updating Project Codes, Project Code cannot be empty.' );
+	                        $bSuccess = false;
+	                    }
+	                    
+	                    if (!$bSuccess) continue;
+	                    
+	                    try {
+	                        $tableObj = $projectCodesObj->createRow();
+	                        $tableObj->timestamp = date('Y-m-d h:i:s', $now->getTimestamp());
+	                        $tableObj->Project_Code = $values['Project_Code'];
+	                        $tableObj->Project_Status = $values['Project_Status'];
+	                        $tableObj->BudgetNbr = $values['BudgetNbr'];
+	                        $tableObj->Location = $values['Location'];
+	                        $tableObj->Country = $values['Country'];
+	                        $tableObj->Management = $values['Management'];
+	                        $tableObj->Project_Training = $values['Project_Training'];
+	                        
+ 	                        $row_id = $tableObj->save ();
+	                        
+	                    } catch ( Exception $e ) {
+	                        $errored = 1;
+	                        $errs [] = nl2br ( $e->getMessage () ) . ' ' . t ( 'ERROR: Project Code could not be saved.' );
+	                    }
+	                    if (! $row_id ) $errored = 1;
+	                    
+	            } // loop
+	            // done processing rows
+	            
+	            $_POST ['redirect'] = null;
+	            $status = ValidationContainer::instance ();
+	            if (empty ( $errored ) && empty ( $errs ))
+	                $stat = t ( 'Your changes have been saved.' );
+	                else
+	                    $stat = t ( 'Error importing data. Some data may have been imported and some may not have.' );
+	                    
+	                    foreach ( $errs as $errmsg )
+	                        $stat .= '<br>' . 'Error: ' . htmlspecialchars ( $errmsg, ENT_QUOTES );
+	                        
+	                        $status->setStatusMessage ( $stat );
+	                        $this->view->assign ( 'status', $status );
+	        }
+	        // done with import
+	}
+	
+	
 	public function importExpenseAction() {
 	    $this->view->assign ( 'pageTitle', t ( 'Import Expenses' ) );
 	    require_once ('models/table/ActivityDetail.php');
@@ -882,13 +1063,6 @@ $bulkSql .= ' DISTINCT la.TDPrimaryKey, la.ItechMonth, la.ItechYear, la.ProjectC
 	    file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:importExpenseAction >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
 	    $toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
 	    
-	    // template redirect
-	    if ($this->getSanParam ( 'download' ))
-	        return $this->importLocationTemplateAction ();
-	        
-	        
-// 	        if (! $this->hasACL ( 'import_' )) $this->doNoAccessError ();
-	            
 	            // CSV STUFF
 	            $filename = ($_FILES ['upload'] ['tmp_name']);
 	            if ($filename) {
@@ -924,103 +1098,60 @@ $bulkSql .= ' DISTINCT la.TDPrimaryKey, la.ItechMonth, la.ItechYear, la.ProjectC
 	                        }
 	                        // done now all fields are named and in $values['my_field']
 	                        
-	                        file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:importExpenseAction:values >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
-	                        var_dump("values=", $values, "END");
-	                        $toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
-	                        
-	                        
-	                        if ($countValidFields) {
-	                            // validate
-// 	                            if (isset ( $values ['uuid'] )) {
-// 	                                unset ( $values ['uuid'] );
-// 	                            }
-// 	                            if (isset ( $values ['id'] )) {
-// 	                                unset ( $values ['id'] );
-// 	                            }
-// 	                            if (isset ( $values ['is_deleted'] )) {
-// 	                                unset ( $values ['is_deleted'] );
-// 	                            }
-// 	                            if (isset ( $values ['created_by'] )) {
-// 	                                unset ( $values ['created_by'] );
-// 	                            }
-// 	                            if (isset ( $values ['modified_by'] )) {
-// 	                                unset ( $values ['modified_by'] );
-// 	                            }
-// 	                            if (isset ( $values ['timestamp_created'] )) {
-// 	                                unset ( $values ['timestamp_created'] );
-// 	                            }
-// 	                            if (isset ( $values ['timestamp_updated'] )) {
-// 	                                unset ( $values ['timestamp_updated'] );
-// 	                            }
 	                            // required
-// 	                            if (empty ( $values ['training_location_name'] )) {
-// 	                                $errs [] = t ( 'Error adding training location, training location name cannot be empty.' );
-// 	                            }
-	                            // locations
-// 	                            $num_location_tiers = $this->setting ( 'num_location_tiers' );
-// 	                            $bSuccess = true;
-// 	                            $location_id = null;
-// 	                            if ($values ['location_id'])
-// 	                                $location_id = $values ['location_id'];
-// 	                                $tier = 1;
-// 	                                if (! $location_id) {
-// 	                                    for($i = 0; $i <= $num_location_tiers; $i ++) { // insert/find locations
-// 	                                        $r = 1 + $i; // first location field in csv row // could use this too: $values[t('Region A (Province)')]
-// 	                                        if (empty ( $row [$r] ) || $bSuccess == false)
-// 	                                            continue;
-// 	                                            $location_id = Location::insertIfNotFound ( $row [$r], $location_id, $tier );
-// 	                                            if (! $location_id) {
-// 	                                                $bSuccess = false;
-// 	                                                break;
-// 	                                            }
-// 	                                            $tier ++;
-// 	                                    }
-// 	                                }
-// 	                                if (! $bSuccess || ! $location_id) {
-// 	                                    $errs [] = t ( 'Error locating/creating region or city:' ) . ' ' . $row [$r] . ' ' . t ( 'Training Location' ) . ': ' . $values ['training_location_name'];
-// 	                                    continue; // couldnt save location
-// 	                                }
-// 	                                $values ['location_id'] = $location_id;
-// 	                                // dupecheck
-// 	                                $dupe = new TrainingLocation ();
-// 	                                $select = $dupe->select ()->where ( 'location_id =' . $location_id . ' and is_deleted = 0 and training_location_name = "' . $values ['training_location_name'] . '"' );
-// 	                                if ($dupe->fetchRow ( $select )) {
-// 	                                    $errs [] = t ( 'The training location could not be saved. A training location with this name already exists in that location.' ) . ' ' . t ( 'training location' ) . ': ' . $values ['training_location_name'];
-// 	                                    $bSuccess = false;
-// 	                                }
-// 	                                if (! $bSuccess)
-// 	                                    continue;
-// 	                                    // save
-// 	                                    try {
-// 	                                        $tableObj = $trainingLocationObj->createRow ();
-// 	                                        $tableObj->training_location_name = $values ['training_location_name'];
-// 	                                        $tableObj->location_id = $location_id;
-// 	                                        $row_id = $tableObj->save ();
-// 	                                    } catch ( Exception $e ) {
-// 	                                        $errored = 1;
-// 	                                        $errs [] = nl2br ( $e->getMessage () ) . ' ' . t ( 'ERROR: The training location could not be saved.' );
-// 	                                    }
-// 	                                    if (! $row_id)
-// 	                                        $errored = 1;
-	                                        // sucess - done
-	                        } 
-	                } // loop
-	                // done processing rows
-	                $_POST ['redirect'] = null;
-	                $status = ValidationContainer::instance ();
-	                if (empty ( $errored ) && empty ( $errs ))
-	                    $stat = t ( 'Your changes have been saved.' );
-	                    else
-	                        $stat = t ( 'Error importing data. Some data may have been imported and some may not have.' );
-	                        
-	                        foreach ( $errs as $errmsg )
-	                            $stat .= '<br>' . 'Error: ' . htmlspecialchars ( $errmsg, ENT_QUOTES );
+	                            if (empty ( $values ['TDPrimaryKey'] )) {
+	                                $errs [] = t ( 'Error updating expenses, TDPrimaryKey cannot be empty.' );
+	                            }
+                               
+                                // dupecheck
+                                $dupe = new ActivityDetail ();
+                                $select = $dupe->select ()->where ( 'TDPrimaryKey = "' . $values ['TDPrimaryKey'] . '"' );
+                                
+                                if (!$dupe->fetchRow ( $select )) {
+                                    $errs [] = t ( 'The expense could not be saved. An expense with this TDPrimaryKey could not be found.' ) . ' ' . t ( 'TDPrimaryKey' ) . ': ' . $values ['TDPrimaryKey'];
+                                    $bSuccess = false;
+                                }
+                                if ($bSuccess) continue;
 	                            
-	                            $status->setStatusMessage ( $stat );
-	                            $this->view->assign ( 'status', $status );
+                                try {
+                                    $dupe->ItechMonth = $values ['ItechMonth'];
+                                    $dupe->ItechYear = $values ['ItechYear'];
+                                    $dupe->ProjectCode = $values ['ProjectCode'];
+                                    
+                                    $where = $dupe->getAdapter()->quoteInto('TDPrimaryKey = ?', $values['TDPrimaryKey']);
+                                    
+                                    file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:importExpenseAction:values >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+                                    var_dump("save:dupe=", $dupe, "END");
+                                    $toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+                                    
+                                    $row_id = $dupe->update($values, $where);
+                                    
+                                    
+                                } catch ( Exception $e ) {
+                                    $errored = 1;
+                                    $errs [] = nl2br ( $e->getMessage () ) . ' ' . t ( 'ERROR: The expense could not be saved.' );
+                                }
+                                if (! $row_id ) $errored = 1;
+                        
+	                       } // loop
+	                       // done processing rows
+	                       
+	                       $_POST ['redirect'] = null;
+	                       $status = ValidationContainer::instance ();
+	                       if (empty ( $errored ) && empty ( $errs ))
+	                           $stat = t ( 'Your changes have been saved.' );
+	                       else
+	                           $stat = t ( 'Error importing data. Some data may have been imported and some may not have.' );
+	                        
+	                       foreach ( $errs as $errmsg )
+	                            $stat .= '<br>' . 'Error: ' . htmlspecialchars ( $errmsg, ENT_QUOTES );
+	                       
+	                       $status->setStatusMessage ( $stat );
+	                       $this->view->assign ( 'status', $status );
 	            }
 	            // done with import
 	}
+	
 	
 	/**
 	 * Import a facility

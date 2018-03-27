@@ -193,6 +193,16 @@ ob_end_clean();
 					<input type="submit" name="update" id="update" value="<?php echo t('Add GFA');?>" class="tsbutton green large">
 				</div>
 				<?php echo $this->printWindowAndExport("lookup");?>
+				
+		  <span id="importGfaList" class="yui-button yui-push-button" style="float:right;">
+	        <span class="first-child">
+	          <button onclick="location.href='<?php echo $this->base_url; ?>/fin/import-gfalist';return false;" type="button" tabindex=1 id="locationImportBtn" class="yui-button yui-push-button"><?php tp('Bulk Import');?></button>
+	        </span>
+	      </span>
+				
+				
+				
+				
 			</div>
 
 			<form action="" id="adminform" method="post" class="formvalidate">
