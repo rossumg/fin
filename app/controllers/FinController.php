@@ -882,13 +882,14 @@ $bulkSql .= ' DISTINCT concat(\'\'\'\', la.TDPrimaryKey) as TDPrimaryKey, concat
 	    file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:importGfaListAction >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
 	    $toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
 	    
-	    $deleteObj = new GfaList ();
-	    $where = '1=1';
-	    $deleteObj->delete($where);
-	    
 	    // CSV STUFF
 	    $filename = ($_FILES ['upload'] ['tmp_name']);
 	    if ($filename) {
+	        
+	        $deleteObj = new GfaList ();
+	        $where = '1=1';
+	        $deleteObj->delete($where);
+	        
 	        date_default_timezone_set('America/Los_Angeles');
 	        $now = new DateTime();
 	        $gfaListObj = new GfaList ();
@@ -969,13 +970,14 @@ $bulkSql .= ' DISTINCT concat(\'\'\'\', la.TDPrimaryKey) as TDPrimaryKey, concat
 	    file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:importProjectCodesAction >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
 	    $toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
 	    
-	    $deleteObj = new ProjectCodes ();
-	    $where = '1=1';
-	    $deleteObj->delete($where);
-	    
 	        // CSV STUFF
 	        $filename = ($_FILES ['upload'] ['tmp_name']);
 	        if ($filename) {
+	            
+	            $deleteObj = new ProjectCodes ();
+	            $where = '1=1';
+	            $deleteObj->delete($where);
+	            
 	            date_default_timezone_set('America/Los_Angeles');
 	            $now = new DateTime();
 	            $projectCodesObj = new ProjectCodes ();
