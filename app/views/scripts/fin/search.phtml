@@ -148,6 +148,70 @@ if ($this->mode == 'search' ) {
 	    </div></div>
 	</div>
 	
+		<div id="budgetBegin">
+	    <div class="fieldLabel" id="budgetBeginInput_lbl"><?php tp('BudgetBegin');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showBudgetBegin" checked /></div>
+	    <div  class="leftBorder"><select id="budgetBeginInput" name="budgetBeginInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	
+		foreach ( $this->budgetBegin as $vals ) {
+			echo '<option value="'.$vals['Budget_Begin'].'" '.($this->criteria['budgetBeginInput'] == $vals['id']?'':'').'>'.$vals['Budget_Begin'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
+		<div id="budgetEnd">
+	    <div class="fieldLabel" id="budgetEndInput_lbl"><?php tp('BudgetEnd');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showBudgetEnd" checked /></div>
+	    <div  class="leftBorder"><select id="budgetEndInput" name="budgetEndInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	
+		foreach ( $this->budgetEnd as $vals ) {
+			echo '<option value="'.$vals['Budget_End'].'" '.($this->criteria['budgetEndInput'] == $vals['id']?'':'').'>'.$vals['Budget_End'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
+		<div id="budgetStatus">
+	    <div class="fieldLabel" id="budgetStatusInput_lbl"><?php tp('BudgetStatus');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showBudgetStatus" checked /></div>
+	    <div  class="leftBorder"><select id="budgetStatusInput" name="budgetStatusInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	
+		foreach ( $this->budgetStatus as $vals ) {
+			echo '<option value="'.$vals['Budget_Status'].'" '.($this->criteria['budgetStatusInput'] == $vals['id']?'':'').'>'.$vals['Budget_Status'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
+		<div id="idcRate">
+	    <div class="fieldLabel" id="budgetStatusInput_lbl"><?php tp('IDCRate');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showIDCRate" checked /></div>
+	    <div  class="leftBorder"><select id="idcRateInput" name="idcRateInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	
+	foreach ( $this->idcRate as $vals ) {
+			echo '<option value="'.$vals['IDC_Rate'].'" '.($this->criteria['idcRateInput'] == $vals['id']?'':'').'>'.$vals['IDC_Rate'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
 		<div id="pcaProjectCodeOrig">
 	    <div class="fieldLabel" id="pcaProjectCodeOrigInput_lbl"><?php tp('PCAProjectCodeOrig');?></div>
 	    <div class="fieldInput">
@@ -539,6 +603,16 @@ foreach($this->results as $row) {
 			echo ',"'.$row['TranAmount'].'"';
 		if ( $this->criteria['showAccountCode'] )
 			echo ',"'.$row['AccountCode'].'"';
+		
+		if ( $this->criteria['showBudgetBegin'] )
+		    echo ',"'.$row['Budget_Begin'].'"';
+		if ( $this->criteria['showBudgetEnd'] )
+		    echo ',"'.$row['Budget_End'].'"';
+		if ( $this->criteria['showBudgetStatus'] )
+		    echo ',"'.$row['Budget_Status'].'"';
+		if ( $this->criteria['showIDCRate'] )
+		    echo ',"'.$row['IDC_Rate'].'"';
+			
 		if ( $this->criteria['showPCAProjectCodeOrig'] )
 			echo ',"'.$row['PCAProjectCodeOrig'].'"';
 		if ( $this->criteria['showPCAProjectCodePosting'] )
@@ -576,10 +650,7 @@ foreach($this->results as $row) {
 		if ( $this->criteria['showItechYear'] )
 		    echo ',"'.$row['ItechYear'].'"';
 			
-		if ( 1 )
-			echo ',"'.$row['Budget_Begin'].'"';
-		if ( 1 )
-			echo ',"'.$row['Budget_End'].'"';
+		
 	
 		echo "]";
 		$cnt++;
@@ -615,6 +686,20 @@ var expenseColumnDefs = [
  <?php if ( $this->criteria['showAccountCode'] ) { ?>
    ,{key:"AccountCode", label: "<?php tp('AccountCode');?>", sortable:true, resizeable:true}
  <?php }  ?>
+
+ <?php if ( $this->criteria['showBudgetBegin'] ) { ?>
+ ,{key:"BudgetBegin", label: "<?php tp('BudgetBegin');?>", sortable:true, resizeable:true}
+<?php }  ?>
+<?php if ( $this->criteria['showBudgetEnd'] ) { ?>
+,{key:"BudgetEnd", label: "<?php tp('BudgetEnd');?>", sortable:true, resizeable:true}
+<?php }  ?>
+<?php if ( $this->criteria['showBudgetStatus'] ) { ?>
+,{key:"BudgetStatus", label: "<?php tp('BudgetStatus');?>", sortable:true, resizeable:true}
+<?php }  ?>
+<?php if ( $this->criteria['showIDCRate'] ) { ?>
+,{key:"IDCRate", label: "<?php tp('IDCRate');?>", sortable:true, resizeable:true}
+<?php }  ?>
+
  <?php if ( $this->criteria['showPCAProjectCodeOrig'] ) { ?>
    ,{key:"PCAProjectCodeOrig", label: "<?php tp('PCAProjectCodeOrig');?>", sortable:true, resizeable:true}
  <?php }  ?>
@@ -668,13 +753,6 @@ var expenseColumnDefs = [
  <?php }  ?>
  <?php if ( $this->criteria['showItechYear'] ) { ?>
    ,{key:"ItechYear", label: "<?php tp('Adjusted Year');?>", sortable:true, resizeable:true}
- <?php }  ?>
- 
- <?php if ( 1 ) { ?>
-   ,{key:"Budget_Begin", label: "<?php tp('Budget_Begin');?>", sortable:true, resizeable:true}
- <?php }  ?>
- <?php if ( 1 ) { ?>
-   ,{key:"Budget_End", label: "<?php tp('Budget_End');?>", sortable:true, resizeable:true}
  <?php }  ?>
 
 ];

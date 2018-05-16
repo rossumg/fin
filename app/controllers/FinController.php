@@ -203,6 +203,12 @@ $activitydetailRow->GFA = $this->getSanParam ( 'GFA' );
 $activitydetailRow->BudgetNbr = $this->getSanParam ( 'BudgetNbr' );
 $activitydetailRow->BudgetName = $this->getSanParam ( 'BudgetName' );
 $activitydetailRow->AccountCode = $this->getSanParam ( 'AccountCode' );
+
+$activitydetailRow->BudgetBegin = $this->getSanParam ( 'BudgetBegin' );
+$activitydetailRow->BudgetEnd = $this->getSanParam ( 'BudgetEnd' );
+$activitydetailRow->BudgetStatus = $this->getSanParam ( 'BudgetStatus' );
+$activitydetailRow->IDCRate = $this->getSanParam ( 'IDCRate' );
+
 $activitydetailRow->PCAProjectCodeOrig = $this->getSanParam ( 'PCAProjectCodeOrig' );
 $activitydetailRow->PCAProjectCodePosting = $this->getSanParam ( 'PCAProjectCodePosting' );
 $activitydetailRow->PCAOptionCodeOrig = $this->getSanParam ( 'PCAOptionCodeOrig' );
@@ -506,6 +512,42 @@ $activitydetailRow->ModifiedBy = $user->first_name . " " . $user->last_name;
 		}
 		$this->viewAssignEscaped ( 'accountCode', $gfaArray );
 		
+		//distinct BudgetBegin list
+		$gArray = OptionList::suggestionList ( 'activitydetail', 'Budget_Begin', false, 999, false, false, true );
+		$gfaArray = array ();
+		foreach ( $gArray as $key => $val ) {
+		    //if ($val ['id'] != 0)
+		    $gfaArray [] = $val;
+		}
+		$this->viewAssignEscaped ( 'budgetBegin', $gfaArray );
+		
+		//distinct BudgetEnd list
+		$gArray = OptionList::suggestionList ( 'activitydetail', 'Budget_End', false, 999, false, false, true );
+		$gfaArray = array ();
+		foreach ( $gArray as $key => $val ) {
+		    //if ($val ['id'] != 0)
+		    $gfaArray [] = $val;
+		}
+		$this->viewAssignEscaped ( 'budgetEnd', $gfaArray );
+		
+		//distinct BudgetStatus list
+		$gArray = OptionList::suggestionList ( 'activitydetail', 'Budget_Status', false, 999, false, false, true );
+		$gfaArray = array ();
+		foreach ( $gArray as $key => $val ) {
+		    //if ($val ['id'] != 0)
+		    $gfaArray [] = $val;
+		}
+		$this->viewAssignEscaped ( 'budgetStatus', $gfaArray );
+		
+		//distinct IDCRate list
+		$gArray = OptionList::suggestionList ( 'activitydetail', 'IDC_Rate', false, 999, false, false, true );
+		$gfaArray = array ();
+		foreach ( $gArray as $key => $val ) {
+		    //if ($val ['id'] != 0)
+		    $gfaArray [] = $val;
+		}
+		$this->viewAssignEscaped ( 'idcRate', $gfaArray );
+		
 		//distinct PCAProjectCodeOrig list
 		$gArray = OptionList::suggestionList ( 'activitydetail', 'PCAProjectCodeOrig', false, 999, false, false, true );
 		$gfaArray = array ();
@@ -720,6 +762,12 @@ $activitydetailRow->ModifiedBy = $user->first_name . " " . $user->last_name;
         $criteria ['ProjectCode'] = $this->getSanParam ( 'projectCodeInput' );
         $criteria ['TranAmount'] = $this->getSanParam ( 'tranAmountInput' );
         $criteria ['AccountCode'] = $this->getSanParam ( 'accountCodeInput' );
+        
+        $criteria ['BudgetBegin'] = $this->getSanParam ( 'budgetBeginInput' );
+        $criteria ['BudgetEnd'] = $this->getSanParam ( 'budgetEndInput' );
+        $criteria ['BudgetStatus'] = $this->getSanParam ( 'budgetStatusInput' );
+        $criteria ['IDCRate'] = $this->getSanParam ( 'idcRateInput' );
+        
         $criteria ['PCAProjectCodeOrig'] = $this->getSanParam ( 'pcaProjectCodeOrigInput' );
         $criteria ['PCAProjectCodePosting'] = $this->getSanParam ( 'pcaProjectCodePostingInput' );
            
@@ -749,6 +797,12 @@ $activitydetailRow->ModifiedBy = $user->first_name . " " . $user->last_name;
         $criteria ['showProjectCode'] = ($this->getSanParam ( 'showProjectCode' ));
         $criteria ['showTranAmount'] = ($this->getSanParam ( 'showTranAmount' ));
         $criteria ['showAccountCode'] = ($this->getSanParam ( 'showAccountCode' ));
+        
+        $criteria ['showBudgetBegin'] = ($this->getSanParam ( 'showBudgetBegin' ));
+        $criteria ['showBudgetEnd'] = ($this->getSanParam ( 'showBudgetEnd' ));
+        $criteria ['showBudgetStatus'] = ($this->getSanParam ( 'showBudgetStatus' ));
+        $criteria ['showIDCRate'] = ($this->getSanParam ( 'showIDCRate' ));
+        
         $criteria ['showPCAProjectCodeOrig'] = ($this->getSanParam ( 'showPCAProjectCodeOrig' ));
         $criteria ['showPCAProjectCodePosting'] = ($this->getSanParam ( 'showPCAProjectCodePosting' ));
         
@@ -786,6 +840,12 @@ $activitydetailRow->ModifiedBy = $user->first_name . " " . $user->last_name;
         		$criteria ['ProjectCode'] = $this->getSanParam ( 'projectCodeInput' );
         		$criteria ['TranAmount'] = $this->getSanParam ( 'tranAmountInput' );
         		$criteria ['AccountCode'] = $this->getSanParam ( 'accountCodeInput' );
+        		
+        		$criteria ['BudgetBegin'] = $this->getSanParam ( 'budgetBeginInput' );
+        		$criteria ['BudgetEnd'] = $this->getSanParam ( 'budgetEndInput' );
+        		$criteria ['BudgetStatus'] = $this->getSanParam ( 'budgetStatusInput' );
+        		$criteria ['IDCRate'] = $this->getSanParam ( 'idcRateInput' );
+        		
           		$criteria ['PCAProjectCodeOrig'] = $this->getSanParam ( 'pcaProjectCodeOrigInput' );
            		$criteria ['PCAProjectCodePosting'] = $this->getSanParam ( 'pcaProjectCodePostingInput' );
            
@@ -810,8 +870,8 @@ $activitydetailRow->ModifiedBy = $user->first_name . " " . $user->last_name;
         	    $sql = 'SELECT '; 
         	    $bulkSql = 'SELECT '; 
            
-$sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Budget_End, la.BudgetName, la.ProjectCode, la.TranAmount, la.AccountCode, la.PCAProjectCodeOrig, la.PCAProjectCodePosting, la.PCAOptionCodeOrig, la.PCAOptionCodePosting, la.PCATaskCodeOrig, la.PCATaskCodePosting, la.TranFTE, la.Budget_Begin, la.Budget_End, la.TranDate1, la.TranDescMod, la.TranReference1, la.TranReference2, la.TranReference3, la.TranReference4, la.Modified, la.TDPrimaryKey, la.FiscalMonth, la.FiscalYear, la.ItechMonth, la.ItechYear ';
-$bulkSql .= ' DISTINCT concat(\'\'\'\', la.TDPrimaryKey) as TDPrimaryKey, concat(\'\'\'\', la.ItechMonth) as ItechMonth, la.ItechYear as ItechYear, la.ProjectCode, la.GFA, la.BudgetNbr , la.Budget_Begin, la.Budget_End, la.BudgetName, la.TranAmount, la.AccountCode, la.PCAProjectCodeOrig, la.PCAProjectCodePosting, la.PCAOptionCodeOrig, la.PCAOptionCodePosting, la.PCATaskCodeOrig, la.PCATaskCodePosting, la.TranFTE, la.Budget_Begin, la.Budget_End, la.TranDate1, la.TranDescMod, la.TranReference1, la.TranReference2, la.TranReference3, la.TranReference4, la.Modified, la.FiscalMonth, la.FiscalYear ';
+$sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Budget_End, la.Budget_Status, la.IDC_Rate, la.BudgetName, la.ProjectCode, la.TranAmount, la.AccountCode, la.PCAProjectCodeOrig, la.PCAProjectCodePosting, la.PCAOptionCodeOrig, la.PCAOptionCodePosting, la.PCATaskCodeOrig, la.PCATaskCodePosting, la.TranFTE, la.Budget_Begin, la.Budget_End, la.TranDate1, la.TranDescMod, la.TranReference1, la.TranReference2, la.TranReference3, la.TranReference4, la.Modified, la.TDPrimaryKey, la.FiscalMonth, la.FiscalYear, la.ItechMonth, la.ItechYear ';
+$bulkSql .= ' DISTINCT concat(\'\'\'\', la.TDPrimaryKey) as TDPrimaryKey, concat(\'\'\'\', la.ItechMonth) as AdjustedMonth, la.ItechYear as AdjustedYear, la.ProjectCode, la.GFA, la.BudgetNbr , concat(\'\'\'\', la.Budget_Begin) as Budget_Begin, concat(\'\'\'\', la.Budget_End) as Budget_End, la.Budget_Status, la.IDC_Rate, la.BudgetName, la.TranAmount, la.AccountCode, la.PCAProjectCodeOrig, la.PCAProjectCodePosting, la.PCAOptionCodeOrig, la.PCAOptionCodePosting, la.PCATaskCodeOrig, la.PCATaskCodePosting, la.TranFTE, la.TranDate1, la.TranDescMod, la.TranReference1, la.TranReference2, la.TranReference3, la.TranReference4, la.Modified, la.FiscalMonth as Month, la.FiscalYear as Year ';
            		
            		$sql .= ' FROM activitydetail la';
            		$bulkSql .= ' FROM activitydetail la';
@@ -827,6 +887,12 @@ $bulkSql .= ' DISTINCT concat(\'\'\'\', la.TDPrimaryKey) as TDPrimaryKey, concat
            		} 
            		
            		if($criteria['AccountCode']) $where []= ' trim(la.AccountCode) = \'' . $criteria ['AccountCode'] . '\'';
+           		
+           		if($criteria['BudgetBegin']) $where []= ' trim(la.Budget_Begin) = \'' . $criteria ['BudgetBegin'] . '\'';
+           		if($criteria['BudgetEnd']) $where []= ' trim(la.Budget_End) = \'' . $criteria ['BudgetEnd'] . '\'';
+           		if($criteria['BudgetStatus']) $where []= ' trim(la.Budget_Status) = \'' . $criteria ['BudgetStatus'] . '\'';
+           		if($criteria['IDCRate']) $where []= ' trim(la.IDC_Rate) = \'' . $criteria ['IDCRate'] . '\'';
+           		
            		if($criteria['PCAProjectCodeOrig']) $where []= ' trim(la.PCAProjectCodeOrig) = \'' . $criteria ['PCAProjectCodeOrig'] . '\'';
            		if($criteria['PCAProjectCodePosting']) $where []= ' trim(la.PCAProjectCodePosting) = \'' . $criteria ['PCAProjectCodePosting'] . '\'';
            		
@@ -844,7 +910,7 @@ $bulkSql .= ' DISTINCT concat(\'\'\'\', la.TDPrimaryKey) as TDPrimaryKey, concat
            		if($criteria['TranReference4']) $where []= ' trim(la.TranReference4) = \'' . $criteria ['TranReference4'] . '\'';
            		if($criteria['Modified']) $where []= ' trim(la.Modified) = \'' . $criteria ['Modified'] . '\'';
            		
-           		if($criteria['TDPrimaryKey']) $where []= ' trim(la.TDPrimaryKey) = \'' . $criteria ['TDPrimaryKey'] . '\'';
+           		if($criteria['TDPrimaryKey']) $where []= ' trim(la.TDPrimaryKey) like \'' . $criteria ['TDPrimaryKey'] . '\'';
            		if($criteria['FiscalMonth']) $where []= ' trim(la.FiscalMonth) = \'' . $criteria ['FiscalMonth'] . '\'';
            		if($criteria['FiscalYear']) $where []= ' trim(la.FiscalYear) = \'' . $criteria ['FiscalYear'] . '\'';
            		if($criteria['ItechMonth']) $where []= ' trim(la.ItechMonth) = \'' . $criteria ['ItechMonth'] . '\'';
@@ -863,14 +929,15 @@ $bulkSql .= ' DISTINCT concat(\'\'\'\', la.TDPrimaryKey) as TDPrimaryKey, concat
 //         		$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
         		
         		$rowArray = $db->fetchAll ( $sql  );
-        		$bulkArray = $db->fetchAll ( $bulkSql  );
         		
         		$this->viewAssignEscaped ( 'results', $rowArray ); 
         		$this->viewAssignEscaped ( 'count',  sizeOf($rowArray));
         		$this->viewAssignEscaped ( 'criteria', $criteria );
         		
-        		if ($this->getParam ( 'bulk' ))
+        		if ($this->getParam ( 'bulk' )) {
+        		    $bulkArray = $db->fetchAll ( $bulkSql  );
         		    $this->sendData ( $this->reportHeaders ( false, $bulkArray ) );
+        		}
         		else if ($this->getParam ( 'outputType' ))
 				    $this->sendData ( $this->reportHeaders ( false, $rowArray ) );
 	}
@@ -1074,7 +1141,8 @@ $bulkSql .= ' DISTINCT concat(\'\'\'\', la.TDPrimaryKey) as TDPrimaryKey, concat
 	                while ( $row = $this->_csv_get_row ( $filename ) ) {
 
 // 	                    file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:importExpenseAction:row >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
-// 	                    var_dump("row=", $row, "END");
+// 	                    var_dump("row.AdjustedMonth=", $row[AdjustedMonth], "END");
+// 	                    var_dump("row.AdjustedYear=", $row[AdjustedYear], "END");
 // 	                    $toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
 	                    
 	                    $values = array ();
@@ -1100,6 +1168,17 @@ $bulkSql .= ' DISTINCT concat(\'\'\'\', la.TDPrimaryKey) as TDPrimaryKey, concat
 	                            }
 	                        }
 	                        // done now all fields are named and in $values['my_field']
+                            // gnr: db:FiscalMonth/Year -> Month/Year for export/inport
+	                        //      db:ItechMonth/Year -> AdjustedMonth/AdjustedYear for export/inport
+	                        // see bulksql for headers
+	                        
+	                        
+//	                        file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:importExpenseAction:row >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+//	                        var_dump("values.AdjustedMonth=", $values[AdjustedMonth], "END");
+//	                        var_dump("values.AdjustedYear=", $values[AdjustedYear], "END");
+//	                        var_dump("values.Month=", $values[Month], "END");
+//	                        var_dump("values.Year=", $values[Year], "END");
+//	                        $toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
 	                        
 	                            // required
 	                            if (empty ( $values ['TDPrimaryKey'] )) {
@@ -1119,18 +1198,28 @@ $bulkSql .= ' DISTINCT concat(\'\'\'\', la.TDPrimaryKey) as TDPrimaryKey, concat
 	                            
                                 try {
                                     
-                                    $values['ItechMonth'] = str_replace("'", "", $values ['ItechMonth'] );
+                                    $values['AdjustedMonth'] = str_replace("'", "", $values ['AdjustedMonth'] );
+                                    $values['Budget_Begin'] = str_replace("'", "", $values ['Budget_Begin'] );
+                                    $values['Budget_End'] = str_replace("'", "", $values ['Budget_End'] );
                                     $where = $dupe->getAdapter()->quoteInto('TDPrimaryKey = ?', $values ['TDPrimaryKey']);
                                     
-                                    file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:importExpenseAction:values >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
-                                    var_dump("save:values=", $values, "END");
-                                    $toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+                                     file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:importExpenseAction:values >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+                                     var_dump("save:values=", $values['TDPrimaryKey'], "END");
+                                     var_dump("save:values=", $values['AdjustedMonth'], "END");
+                                     var_dump("save:values=", $values['AdjustedYear'], "END");
+                                     var_dump("save:values=", $values['ProjectCode'], "END");
+                                     $toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
 
                                     $cleansed_values = array ();
                                     $cleansed_values['TDPrimaryKey'] = $values['TDPrimaryKey'];
-                                    $cleansed_values['ItechMonth'] = $values['ItechMonth'];
-                                    $cleansed_values['ItechYear'] = $values['ItechYear'];
+                                    $cleansed_values['ItechMonth'] = $values['AdjustedMonth'];
+                                    $cleansed_values['ItechYear'] = $values['AdjustedYear'];
                                     $cleansed_values['ProjectCode'] = $values['ProjectCode'];
+                                    
+                                    $cleansed_values['Budget_Begin'] = $values['Budget_Begin'];
+                                    $cleansed_values['Budget_End'] = $values['Budget_End'];
+                                    $cleansed_values['Budget_Status'] = $values['Budget_Status'];
+                                    $cleansed_values['IDC_Rate'] = $values['IDC_Rate'];
 
                                     $row_id = $dupe->update($cleansed_values, $where);
                                     
