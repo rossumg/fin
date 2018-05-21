@@ -58,9 +58,11 @@ if ($this->mode == 'search' ) {
 	    <div  class="leftBorderPad"><input type="checkbox"  disabled="disabled" name="showGFA" checked /></div>
 	    <div  class="leftBorder"><select id="gfaInput" name="gfaInput" >
 	<option value="" selected="selected">--<?php tp('choose');?>--
+	
 	<?php
 	    
-		foreach ( $this->gfa as $vals ) {
+	echo '<option value="'.'All GFA\'s'.'" '.(true?'':'').'>'.'All GFA\'s'.'</option>';
+	foreach ( $this->gfa as $vals ) {
 			echo '<option value="'.$vals['GFA'].'" '.($this->criteria['gfaInput'] == $vals['id']?'':'').'>'.$vals['GFA'].'</option>';
 	}
 	?>
@@ -174,38 +176,6 @@ if ($this->mode == 'search' ) {
 	
 		foreach ( $this->budgetEnd as $vals ) {
 			echo '<option value="'.$vals['Budget_End'].'" '.($this->criteria['budgetEndInput'] == $vals['id']?'':'').'>'.$vals['Budget_End'].'</option>';
-	}
-	?>
-</select>
-	    </div></div>
-	</div>
-	
-		<div id="budgetStatus">
-	    <div class="fieldLabel" id="budgetStatusInput_lbl"><?php tp('BudgetStatus');?></div>
-	    <div class="fieldInput">
-	    <div  class="leftBorderPad"><input type="checkbox" name="showBudgetStatus" checked /></div>
-	    <div  class="leftBorder"><select id="budgetStatusInput" name="budgetStatusInput" >
-	<option value="" selected="selected">--<?php tp('choose');?>--
-	<?php
-	
-		foreach ( $this->budgetStatus as $vals ) {
-			echo '<option value="'.$vals['Budget_Status'].'" '.($this->criteria['budgetStatusInput'] == $vals['id']?'':'').'>'.$vals['Budget_Status'].'</option>';
-	}
-	?>
-</select>
-	    </div></div>
-	</div>
-	
-		<div id="idcRate">
-	    <div class="fieldLabel" id="budgetStatusInput_lbl"><?php tp('IDCRate');?></div>
-	    <div class="fieldInput">
-	    <div  class="leftBorderPad"><input type="checkbox" name="showIDCRate" checked /></div>
-	    <div  class="leftBorder"><select id="idcRateInput" name="idcRateInput" >
-	<option value="" selected="selected">--<?php tp('choose');?>--
-	<?php
-	
-	foreach ( $this->idcRate as $vals ) {
-			echo '<option value="'.$vals['IDC_Rate'].'" '.($this->criteria['idcRateInput'] == $vals['id']?'':'').'>'.$vals['IDC_Rate'].'</option>';
 	}
 	?>
 </select>
@@ -608,10 +578,6 @@ foreach($this->results as $row) {
 		    echo ',"'.$row['Budget_Begin'].'"';
 		if ( $this->criteria['showBudgetEnd'] )
 		    echo ',"'.$row['Budget_End'].'"';
-		if ( $this->criteria['showBudgetStatus'] )
-		    echo ',"'.$row['Budget_Status'].'"';
-		if ( $this->criteria['showIDCRate'] )
-		    echo ',"'.$row['IDC_Rate'].'"';
 			
 		if ( $this->criteria['showPCAProjectCodeOrig'] )
 			echo ',"'.$row['PCAProjectCodeOrig'].'"';
@@ -650,8 +616,6 @@ foreach($this->results as $row) {
 		if ( $this->criteria['showItechYear'] )
 		    echo ',"'.$row['ItechYear'].'"';
 			
-		
-	
 		echo "]";
 		$cnt++;
 }}

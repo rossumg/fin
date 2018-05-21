@@ -53,6 +53,11 @@ ob_end_clean();
 						$("#_timestamp").val($("#timestamp").val());
 						$("#_Project_Code").val($("#Project_Code").val());
 						$("#_Project_Status").val($("#Project_Status").val());
+						$("#_IDC_Rate").val($("#IDC_Rate").val());
+						$("#_BudgetName").val($("#BudgetName").val());
+						$("#_Budget_Begin").val($("#Budget_Begin").val());
+						$("#_Budget_End").val($("#Budget_End").val());
+						$("#_Budget_Status").val($("#Budget_Status").val());
 						$("#_BudgetNbr").val($("#BudgetNbr").val());
 						$("#_Location").val($("#Location").val());
 						$("#_Country").val($("#Country").val());
@@ -86,6 +91,11 @@ ob_end_clean();
 					$("#timestamp").val("");
 					$("#Project_Code").val("");
 					$("#Project_Status").val("");
+					$("#IDC_Rate").val("");
+					$("#BudgetName").val("");
+					$("#Budget_Begin").val("");
+					$("#Budget_End").val("");
+					$("#Budget_Status").val("");
 					$("#BudgetNbr").val("");
 					$("#Location").val("");
 					$("#Country").val("");
@@ -98,12 +108,17 @@ ob_end_clean();
 
 		function edititem(d){
 
-			$('#dialog-form').dialog('option', 'title', '<?php echo t('Update GFA')?>');
+			$('#dialog-form').dialog('option', 'title', '<?php echo t('Update Project Codes')?>');
 			$("#currentid").val(d['id']);
 			
 			$("#timestamp").val(d['timestamp']);
 			$("#Project_Code").val(d['Project_Code']);
 			$("#Project_Status").val(d['Project_Status']);
+			$("#IDC_Rate").val(d['IDC_Rate']);
+			$("#BudgetName").val(d['BudgetName']);
+			$("#Budget_Begin").val(d['Budget_Begin']);
+			$("#Budget_End").val(d['Budget_End']);
+			$("#Budget_Status").val(d['Budget_Status']);
 			$("#BudgetNbr").val(d['BudgetNbr']);
 			$("#Location").val(d['Location']);
 			$("#Country").val(d['Country']);
@@ -172,6 +187,21 @@ ob_end_clean();
 <label for="Project_Status"><?php echo t('Project_Status');?></label>
 <input type="text" name="Project_Status" id="Project_Status" class="text ui-widget-content ui-corner-all" />
 
+<label for="IDC_Rate"><?php echo t('IDC_Rate');?></label>
+<input type="text" name="IDC_Rate" id="IDC_Rate" class="text ui-widget-content ui-corner-all" />
+
+<label for="BudgetName"><?php echo t('BudgetName');?></label>
+<input type="text" name="BudgetName" id="BudgetName" class="text ui-widget-content ui-corner-all" />
+
+<label for="Budget_Begin"><?php echo t('Budget_Begin');?></label>
+<input type="text" name="Budget_Begin" id="Budget_Begin" class="text ui-widget-content ui-corner-all" />
+
+<label for="Budget_End"><?php echo t('Budget_End');?></label>
+<input type="text" name="Budget_End" id="Budget_End" class="text ui-widget-content ui-corner-all" />
+
+<label for="Budget_Status"><?php echo t('Budget_Status');?></label>
+<input type="text" name="Budget_Status" id="Budget_Status" class="text ui-widget-content ui-corner-all" />
+
 <label for="BudgetNbr"><?php echo t('BudgetNbr');?></label>
 <input type="text" name="BudgetNbr" id="BudgetNbr" class="text ui-widget-content ui-corner-all" />
 
@@ -210,6 +240,11 @@ ob_end_clean();
 <th><?php echo t('timestamp');?></th>
 <th><?php echo t('Project_Code');?></th>
 <th><?php echo t('Project_Status');?></th>
+<th><?php echo t('IDC_Rate');?></th>
+<th><?php echo t('BudgetName');?></th>
+<th><?php echo t('Budget_Begin');?></th>
+<th><?php echo t('Budget_End');?></th>
+<th><?php echo t('Budget_Status');?></th>
 <th><?php echo t('BudgetNbr');?></th>
 <th><?php echo t('Location');?></th>
 <th><?php echo t('Country');?></th>
@@ -228,6 +263,11 @@ ob_end_clean();
 <td><?php echo $lookup['timestamp'];?></td>
 <td><?php echo $lookup['Project_Code'];?></td>
 <td><?php echo $lookup['Project_Status'];?></td>
+<td><?php echo $lookup['IDC_Rate'];?></td>
+<td><?php echo $lookup['BudgetName'];?></td>
+<td><?php echo $lookup['Budget_Begin'];?></td>
+<td><?php echo $lookup['Budget_End'];?></td>
+<td><?php echo $lookup['Budget_Status'];?></td>
 <td><?php echo $lookup['BudgetNbr'];?></td>
 <td><?php echo $lookup['Location'];?></td>
 <td><?php echo $lookup['Country'];?></td>
@@ -259,6 +299,11 @@ ob_end_clean();
 				<input type="hidden" name="_timestamp" id="_timestamp" value="" />
 <input type="hidden" name="_Project_Code" id="_Project_Code" value="" />
 <input type="hidden" name="_Project_Status" id="_Project_Status" value="" />
+<input type="hidden" name="_IDC_Rate" id="_IDC_Rate" value="" />
+<input type="hidden" name="_BudgetName" id="_BudgetName" value="" />
+<input type="hidden" name="_Budget_Begin" id="_Budget_Begin" value="" />
+<input type="hidden" name="_Budget_End" id="_Budget_End" value="" />
+<input type="hidden" name="_Budget_Status" id="_Budget_Status" value="" />
 <input type="hidden" name="_BudgetNbr" id="_BudgetNbr" value="" />
 <input type="hidden" name="_Location" id="_Location" value="" />
 <input type="hidden" name="_Country" id="_Country" value="" />

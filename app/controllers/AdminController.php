@@ -43,18 +43,18 @@ class AdminController extends UserController
 	 */
  public function tablesProjectcodesAction(){
 		
-		        file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'AdminCont:tablesProjectcodesAction >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+//		        file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'AdminCont:tablesProjectcodesAction >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
 //				var_dump("sql=", $sql, "END");
-				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+//				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
         	
 		$helper = new Helper();
 
 		if ($this->getRequest()->isPost()) {
 			$params = $this->getAllParams();
 
-	        file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'AdminCont:tablesProjectcodesAction >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
-				var_dump("params=", $params, "END");
-				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+//	        file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'AdminCont:tablesProjectcodesAction >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+//				var_dump("params=", $params, "END");
+//				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
     
 
 			$map = array(
@@ -62,6 +62,11 @@ class AdminController extends UserController
 				  '_timestamp' => 'timestamp',
   				  '_Project_Code' => 'Project_Code',
   				  '_Project_Status' => 'Project_Status',
+			    '_IDC_Rate' => 'IDC_Rate',
+			    '_BudgetName' => 'BudgetName',
+			    '_Budget_Begin' => 'Budget_Begin',
+			    '_Budget_End' => 'Budget_End',
+			    '_Budget_Status' => 'Budget_Status',
   				  '_BudgetNbr' => 'BudgetNbr',
   				  '_Location' => 'Location' ,
   				  '_Country' => 'Country' ,
@@ -97,19 +102,24 @@ class AdminController extends UserController
 		$db = $this->dbfunc();
 		
         $select = $db->select()
-            ->from('Project_Codes', array())
-            ->order('Project_Code')
-            ->columns(array('Project_Codes.id', 'timestamp', 'Project_Code', 'Project_Status', 'BudgetNbr', 'Location', 'Country', 'Management', 'Project_Training' 
-            ));
-
+          ->from('Project_Codes', array())
+          ->order('Project_Code')
+          ->columns(array('Project_Codes.id', 'timestamp', 'Project_Code', 'Project_Status', 'IDC_Rate', 'BudgetName', 'Budget_Begin', 'Budget_End', 'Budget_Status', 'BudgetNbr', 'Location', 'Country', 'Management', 'Project_Training' 
+          ));
+            
+        $bulkSelect .= ' SELECT DISTINCT id, timestamp, Project_Code, Project_Status, IDC_Rate, BudgetName, concat(\'\'\'\', Budget_Begin) as Budget_Begin, concat(\'\'\'\', Budget_End) as Budget_End, Budget_Status, BudgetNbr, Location, Country, Management, Project_Training '; 
+        $bulkSelect .= ' FROM Project_Codes ';
+        
         $list = $this->dbfunc()->fetchAll($select);
         
 		$this->view->assign("lookup", $list);
 		$this->view->assign("header",t("Project Codes"));
 		
 		// done, output a csv
-		if ($this->getSanParam ( 'outputType' ) )
-			$this->sendData ( $this->reportHeaders ( false, $list ) );
+		if ($this->getSanParam ( 'outputType' ) ){
+		    $bulkList = $this->dbfunc()->fetchAll($bulkSelect);
+		    $this->sendData ( $this->reportHeaders ( false, $bulkList ) );
+		}
 		
 	}
 	 

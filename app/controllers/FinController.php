@@ -530,24 +530,6 @@ $activitydetailRow->ModifiedBy = $user->first_name . " " . $user->last_name;
 		}
 		$this->viewAssignEscaped ( 'budgetEnd', $gfaArray );
 		
-		//distinct BudgetStatus list
-		$gArray = OptionList::suggestionList ( 'activitydetail', 'Budget_Status', false, 999, false, false, true );
-		$gfaArray = array ();
-		foreach ( $gArray as $key => $val ) {
-		    //if ($val ['id'] != 0)
-		    $gfaArray [] = $val;
-		}
-		$this->viewAssignEscaped ( 'budgetStatus', $gfaArray );
-		
-		//distinct IDCRate list
-		$gArray = OptionList::suggestionList ( 'activitydetail', 'IDC_Rate', false, 999, false, false, true );
-		$gfaArray = array ();
-		foreach ( $gArray as $key => $val ) {
-		    //if ($val ['id'] != 0)
-		    $gfaArray [] = $val;
-		}
-		$this->viewAssignEscaped ( 'idcRate', $gfaArray );
-		
 		//distinct PCAProjectCodeOrig list
 		$gArray = OptionList::suggestionList ( 'activitydetail', 'PCAProjectCodeOrig', false, 999, false, false, true );
 		$gfaArray = array ();
@@ -870,15 +852,25 @@ $activitydetailRow->ModifiedBy = $user->first_name . " " . $user->last_name;
         	    $sql = 'SELECT '; 
         	    $bulkSql = 'SELECT '; 
            
-$sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Budget_End, la.Budget_Status, la.IDC_Rate, la.BudgetName, la.ProjectCode, la.TranAmount, la.AccountCode, la.PCAProjectCodeOrig, la.PCAProjectCodePosting, la.PCAOptionCodeOrig, la.PCAOptionCodePosting, la.PCATaskCodeOrig, la.PCATaskCodePosting, la.TranFTE, la.Budget_Begin, la.Budget_End, la.TranDate1, la.TranDescMod, la.TranReference1, la.TranReference2, la.TranReference3, la.TranReference4, la.Modified, la.TDPrimaryKey, la.FiscalMonth, la.FiscalYear, la.ItechMonth, la.ItechYear ';
-$bulkSql .= ' DISTINCT concat(\'\'\'\', la.TDPrimaryKey) as TDPrimaryKey, concat(\'\'\'\', la.ItechMonth) as AdjustedMonth, la.ItechYear as AdjustedYear, la.ProjectCode, la.GFA, la.BudgetNbr , concat(\'\'\'\', la.Budget_Begin) as Budget_Begin, concat(\'\'\'\', la.Budget_End) as Budget_End, la.Budget_Status, la.IDC_Rate, la.BudgetName, la.TranAmount, la.AccountCode, la.PCAProjectCodeOrig, la.PCAProjectCodePosting, la.PCAOptionCodeOrig, la.PCAOptionCodePosting, la.PCATaskCodeOrig, la.PCATaskCodePosting, la.TranFTE, la.TranDate1, la.TranDescMod, la.TranReference1, la.TranReference2, la.TranReference3, la.TranReference4, la.Modified, la.FiscalMonth as Month, la.FiscalYear as Year ';
+$sql .= ' DISTINCT la.id as "id", la.GFA, la.BudgetNbr , la.Budget_Begin, la.Budget_End, la.BudgetName, la.ProjectCode, la.TranAmount, la.AccountCode, la.PCAProjectCodeOrig, la.PCAProjectCodePosting, la.PCAOptionCodeOrig, la.PCAOptionCodePosting, la.PCATaskCodeOrig, la.PCATaskCodePosting, la.TranFTE, la.Budget_Begin, la.Budget_End, la.TranDate1, la.TranDescMod, la.TranReference1, la.TranReference2, la.TranReference3, la.TranReference4, la.Modified, la.TDPrimaryKey, la.FiscalMonth, la.FiscalYear, la.ItechMonth, la.ItechYear ';
+$bulkSql .= ' DISTINCT concat(\'\'\'\', la.TDPrimaryKey) as TDPrimaryKey, concat(\'\'\'\', la.ItechMonth) as AdjustedMonth, la.ItechYear as AdjustedYear, la.ProjectCode, la.GFA, la.BudgetNbr, la.Budget_Begin, la.Budget_End, la.BudgetName, la.TranAmount, la.AccountCode, la.PCAProjectCodeOrig, la.PCAProjectCodePosting, la.PCAOptionCodeOrig, la.PCAOptionCodePosting, la.PCATaskCodeOrig, la.PCATaskCodePosting, la.TranFTE, la.TranDate1, la.TranDescMod, la.TranReference1, la.TranReference2, la.TranReference3, la.TranReference4, la.Modified, la.FiscalMonth as Month, la.FiscalYear as Year ';
            		
            		$sql .= ' FROM activitydetail la';
            		$bulkSql .= ' FROM activitydetail la';
 				
            		$where = array();
            		
-           		if($criteria['GFA']) $where []= ' trim(la.GFA) = \'' . $criteria ['GFA'] . '\'';
+           		if(strcmp($criteria['GFA'],'All GFA\'s') == 0) {
+           		    $where []= ' trim(la.GFA) != \' \' and trim(la.GFA) is not null ';
+           		} else {
+           		   if($criteria['GFA']) $where []= ' trim(la.GFA) = \'' . $criteria ['GFA'] . '\'';
+           		}
+           		
+           		//file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:883 >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+           		//var_dump("where", $where, "END");
+           		//$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+           		
+           		
            		if($criteria['BudgetNbr']) $where []= ' trim(la.BudgetNbr) = \'' . $criteria ['BudgetNbr'] . '\'';
            		if($criteria['BudgetName']) $where []= ' trim(la.BudgetName) = \'' . $criteria ['BudgetName'] . '\'';
            		
@@ -890,8 +882,6 @@ $bulkSql .= ' DISTINCT concat(\'\'\'\', la.TDPrimaryKey) as TDPrimaryKey, concat
            		
            		if($criteria['BudgetBegin']) $where []= ' trim(la.Budget_Begin) = \'' . $criteria ['BudgetBegin'] . '\'';
            		if($criteria['BudgetEnd']) $where []= ' trim(la.Budget_End) = \'' . $criteria ['BudgetEnd'] . '\'';
-           		if($criteria['BudgetStatus']) $where []= ' trim(la.Budget_Status) = \'' . $criteria ['BudgetStatus'] . '\'';
-           		if($criteria['IDCRate']) $where []= ' trim(la.IDC_Rate) = \'' . $criteria ['IDCRate'] . '\'';
            		
            		if($criteria['PCAProjectCodeOrig']) $where []= ' trim(la.PCAProjectCodeOrig) = \'' . $criteria ['PCAProjectCodeOrig'] . '\'';
            		if($criteria['PCAProjectCodePosting']) $where []= ' trim(la.PCAProjectCodePosting) = \'' . $criteria ['PCAProjectCodePosting'] . '\'';
@@ -1034,8 +1024,8 @@ $bulkSql .= ' DISTINCT concat(\'\'\'\', la.TDPrimaryKey) as TDPrimaryKey, concat
 	    $this->view->assign ( 'pageTitle', t ( 'Import Project Codes - Existing table will be DELETED and REPLACED' ) );
 	    require_once ('models/table/ProjectCodes.php');
 	    
-	    file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:importProjectCodesAction >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
-	    $toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+	    // file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:importProjectCodesAction >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+	    // $toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
 	    
 	        // CSV STUFF
 	        $filename = ($_FILES ['upload'] ['tmp_name']);
@@ -1086,11 +1076,19 @@ $bulkSql .= ' DISTINCT concat(\'\'\'\', la.TDPrimaryKey) as TDPrimaryKey, concat
 	                    
 	                    if (!$bSuccess) continue;
 	                    
+	                    $values['Budget_Begin'] = str_replace("'", "", $values ['Budget_Begin'] );
+	                    $values['Budget_End'] = str_replace("'", "", $values ['Budget_End'] );
+	                    
 	                    try {
 	                        $tableObj = $projectCodesObj->createRow();
 	                        $tableObj->timestamp = date('Y-m-d h:i:s', $now->getTimestamp());
 	                        $tableObj->Project_Code = $values['Project_Code'];
 	                        $tableObj->Project_Status = $values['Project_Status'];
+	                        $tableObj->IDC_Rate = $values['IDC_Rate'];
+	                        $tableObj->BudgetName = $values['BudgetName'];
+	                        $tableObj->Budget_Begin = $values['Budget_Begin'];
+	                        $tableObj->Budget_End = $values['Budget_End'];
+	                        $tableObj->Budget_Status = $values['Budget_Status'];
 	                        $tableObj->BudgetNbr = $values['BudgetNbr'];
 	                        $tableObj->Location = $values['Location'];
 	                        $tableObj->Country = $values['Country'];
@@ -1203,12 +1201,12 @@ $bulkSql .= ' DISTINCT concat(\'\'\'\', la.TDPrimaryKey) as TDPrimaryKey, concat
                                     $values['Budget_End'] = str_replace("'", "", $values ['Budget_End'] );
                                     $where = $dupe->getAdapter()->quoteInto('TDPrimaryKey = ?', $values ['TDPrimaryKey']);
                                     
-                                     file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:importExpenseAction:values >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
-                                     var_dump("save:values=", $values['TDPrimaryKey'], "END");
-                                     var_dump("save:values=", $values['AdjustedMonth'], "END");
-                                     var_dump("save:values=", $values['AdjustedYear'], "END");
-                                     var_dump("save:values=", $values['ProjectCode'], "END");
-                                     $toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+                                     //file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:importExpenseAction:values >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+                                     //var_dump("save:values=", $values['TDPrimaryKey'], "END");
+                                     //var_dump("save:values=", $values['AdjustedMonth'], "END");
+                                     //var_dump("save:values=", $values['AdjustedYear'], "END");
+                                     //var_dump("save:values=", $values['ProjectCode'], "END");
+                                     //$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
 
                                     $cleansed_values = array ();
                                     $cleansed_values['TDPrimaryKey'] = $values['TDPrimaryKey'];
@@ -1216,11 +1214,6 @@ $bulkSql .= ' DISTINCT concat(\'\'\'\', la.TDPrimaryKey) as TDPrimaryKey, concat
                                     $cleansed_values['ItechYear'] = $values['AdjustedYear'];
                                     $cleansed_values['ProjectCode'] = $values['ProjectCode'];
                                     
-                                    $cleansed_values['Budget_Begin'] = $values['Budget_Begin'];
-                                    $cleansed_values['Budget_End'] = $values['Budget_End'];
-                                    $cleansed_values['Budget_Status'] = $values['Budget_Status'];
-                                    $cleansed_values['IDC_Rate'] = $values['IDC_Rate'];
-
                                     $row_id = $dupe->update($cleansed_values, $where);
                                     
                                 } catch ( Exception $e ) {
