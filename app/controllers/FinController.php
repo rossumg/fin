@@ -185,6 +185,12 @@ class FinController extends ReportFilterHelpers {
 //		
 //		// end validation
 
+// unique TDPrimaryKey
+if ($this->getParam ( 'TDPrimaryKey' ) and ! ActivityDetail::isUnique ( $this->getParam ( 'TDPrimaryKey' ), $this->getParam ( 'id' ) )) {
+    //$status->addError ( 'TDPrimaryKey', t ( 'That TDPrimaryKey already exists.' ) );
+    $status->setStatusMessage ( t ( 'The expense could not be saved. TDPrimaryKey ' . $this->getSanParam ( 'TDPrimaryKey' ) . ' already exists.' ) );
+    return false;
+} 
 
 		if ($status->hasError ()) {
 			$status->setStatusMessage ( t ( 'The record could not be saved.' ) );
@@ -192,7 +198,7 @@ class FinController extends ReportFilterHelpers {
 			// save row
 			if ( 1 ) {
 				// map db field names to FORM field names
-
+				
 $activitydetailRow->ProjectCode = $this->getSanParam ( 'ProjectCode' );
 date_default_timezone_set('America/Los_Angeles');
 $now = new DateTime();
@@ -203,12 +209,6 @@ $activitydetailRow->GFA = $this->getSanParam ( 'GFA' );
 $activitydetailRow->BudgetNbr = $this->getSanParam ( 'BudgetNbr' );
 $activitydetailRow->BudgetName = $this->getSanParam ( 'BudgetName' );
 $activitydetailRow->AccountCode = $this->getSanParam ( 'AccountCode' );
-
-$activitydetailRow->BudgetBegin = $this->getSanParam ( 'BudgetBegin' );
-$activitydetailRow->BudgetEnd = $this->getSanParam ( 'BudgetEnd' );
-$activitydetailRow->BudgetStatus = $this->getSanParam ( 'BudgetStatus' );
-$activitydetailRow->IDCRate = $this->getSanParam ( 'IDCRate' );
-
 $activitydetailRow->PCAProjectCodeOrig = $this->getSanParam ( 'PCAProjectCodeOrig' );
 $activitydetailRow->PCAProjectCodePosting = $this->getSanParam ( 'PCAProjectCodePosting' );
 $activitydetailRow->PCAOptionCodeOrig = $this->getSanParam ( 'PCAOptionCodeOrig' );
@@ -216,8 +216,8 @@ $activitydetailRow->PCAOptionCodePosting = $this->getSanParam ( 'PCAOptionCodePo
 $activitydetailRow->PCATaskCodeOrig = $this->getSanParam ( 'PCATaskCodeOrig' );
 $activitydetailRow->PCATaskCodePosting = $this->getSanParam ( 'PCATaskCodePosting' );
 $activitydetailRow->TranFTE = $this->getSanParam ( 'TranFTE' );
-//$activitydetailRow->Budget_Begin = $this->getSanParam ( 'Budget_Begin' );
-//$activitydetailRow->Budget_End = $this->getSanParam ( 'Budget_End' );
+$activitydetailRow->Budget_Begin = $this->getSanParam ( 'Budget_Begin' );
+$activitydetailRow->Budget_End = $this->getSanParam ( 'Budget_End' );
 $activitydetailRow->TranDate1 = $this->getSanParam ( 'TranDate1' );
 $activitydetailRow->TranDescMod = $this->getSanParam ( 'TranDescMod' );
 $activitydetailRow->TranReference2 = $this->getSanParam ( 'TranReference2' );
@@ -232,24 +232,13 @@ $activitydetailRow->ItechYear = $this->getSanParam ( 'ItechYear' );
 $activitydetailRow->Modified = $this->getSanParam ( 'Modified' );
 $user = Zend_Auth::getInstance()->getIdentity();
 $activitydetailRow->ModifiedBy = $user->first_name . " " . $user->last_name;
-				
-//				// dupecheck
-//				$dupe = new Facility ();
-//				$select = $dupe->select ()->where ( 'location_id =' . $facilityRow->location_id . ' and is_deleted = 0 and facility_name = "' . $facilityRow->facility_name . '"' );
-//				if (! $facilityRow->id && $dupe->fetchRow ( $select )) {
-//					$status->status = '';
-//					$status->setStatusMessage ( t ( 'The facility could not be saved. A facility with this name already exists in that location.' ) );
-//					return false;
-//				}
-
-
-//file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:237 >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
-//var_dump("activitydetailRow=", $activitydetailRow, "END");
-//var_dump("identity=", $identity, "END");
-//var_dump("user=", $user, "END");
-//$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
 
 				$obj_id = $activitydetailRow->save ();
+				
+				file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:191:after >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+				$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+				
+				
 				
 				//$_SESSION ['status'] = t ( 'The record was saved.' );
 				if ($obj_id) {
@@ -264,6 +253,7 @@ $activitydetailRow->ModifiedBy = $user->first_name . " " . $user->last_name;
 		
 		return false;
 	}
+	
 	public function listAction() {
 		require_once ('models/table/Facility.php');
 		$rowArray = Facility::suggestionList ( $this->getParam ( 'query' ) );
