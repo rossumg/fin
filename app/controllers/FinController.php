@@ -890,7 +890,7 @@ $bulkSql .= ' DISTINCT concat(\'\'\'\', la.TDPrimaryKey) as TDPrimaryKey, concat
            		if($criteria['TranReference4']) $where []= ' trim(la.TranReference4) = \'' . $criteria ['TranReference4'] . '\'';
            		if($criteria['Modified']) $where []= ' trim(la.Modified) = \'' . $criteria ['Modified'] . '\'';
            		
-           		if($criteria['TDPrimaryKey']) $where []= ' trim(la.TDPrimaryKey) like \'' . $criteria ['TDPrimaryKey'] . '\'';
+           		if($criteria['TDPrimaryKey']) $where []= ' trim(la.TDPrimaryKey) like \'' . $criteria ['TDPrimaryKey'] . '%' . '\'';
            		if($criteria['FiscalMonth']) $where []= ' trim(la.FiscalMonth) = \'' . $criteria ['FiscalMonth'] . '\'';
            		if($criteria['FiscalYear']) $where []= ' trim(la.FiscalYear) = \'' . $criteria ['FiscalYear'] . '\'';
            		if($criteria['ItechMonth']) $where []= ' trim(la.ItechMonth) = \'' . $criteria ['ItechMonth'] . '\'';
@@ -904,9 +904,11 @@ $bulkSql .= ' DISTINCT concat(\'\'\'\', la.TDPrimaryKey) as TDPrimaryKey, concat
 					$bulkSql .= ' WHERE ' . implode(' AND ', $where);
         		}   
         		
-//         		file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:237 >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
-//         		var_dump("this->getParam:start-month=", $this->getParam ( 'start-month' ), "END");
-//         		$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+         		file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:907 >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+         		var_dump("criteria(ItechMonth)=", $criteria['ItechMonth'], "END");
+         		var_dump("criteria=", $criteria, "END");
+         		// var_dump("this->getParam:start-month=", $this->getParam ( 'start-month' ), "END");
+         		$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
         		
         		$rowArray = $db->fetchAll ( $sql  );
         		
