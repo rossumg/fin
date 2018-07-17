@@ -80,7 +80,7 @@ class FinController extends ReportFilterHelpers {
 		if ($request->isPost ()) {
 			
 			$adObj = new ActivityDetail ();
-			$obj_id = $this->validateAndSave ( $adObj->createRow (), false );
+			$obj_id = $this->validateAndSave ( $adObj->createRow (), true );
 			
 			// validate
 			$status = ValidationContainer::instance ();
@@ -186,11 +186,19 @@ class FinController extends ReportFilterHelpers {
 //		// end validation
 
 // unique TDPrimaryKey
-if ($this->getParam ( 'TDPrimaryKey' ) and ! ActivityDetail::isUnique ( $this->getParam ( 'TDPrimaryKey' ), $this->getParam ( 'id' ) )) {
+
+file_put_contents('/vagrant/vagrant/logs/php_debug.log', 'FinController:189: >' . PHP_EOL, FILE_APPEND | LOCK_EX); ob_start();
+var_dump($this->getParam ( 'TDPrimaryKey' ));
+var_dump(ActivityDetail::isUnique ( $this->getParam ( 'TDPrimaryKey' ), $this->getParam ( 'id' ) ));
+$toss = ob_get_clean(); file_put_contents('/vagrant/vagrant/logs/php_debug.log', $toss . PHP_EOL, FILE_APPEND | LOCK_EX);
+
+
+if ($checkName and $this->getParam ( 'TDPrimaryKey' ) and ! ActivityDetail::isUnique ( $this->getParam ( 'TDPrimaryKey' ), $this->getParam ( 'id' ) )) {
     //$status->addError ( 'TDPrimaryKey', t ( 'That TDPrimaryKey already exists.' ) );
     $status->setStatusMessage ( t ( 'The expense could not be saved. TDPrimaryKey ' . $this->getSanParam ( 'TDPrimaryKey' ) . ' already exists.' ) );
     return false;
 } 
+
 
 		if ($status->hasError ()) {
 			$status->setStatusMessage ( t ( 'The record could not be saved.' ) );
