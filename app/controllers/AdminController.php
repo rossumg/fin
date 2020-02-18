@@ -66,6 +66,7 @@ class AdminController extends UserController
 			    '_BudgetName' => 'BudgetName',
 			    '_Budget_Begin' => 'Budget_Begin',
 			    '_Budget_End' => 'Budget_End',
+			    '_AccountingIndirectCostBase' => 'AccountingIndirectCostBase',
 			    '_Budget_Status' => 'Budget_Status',
   				  '_BudgetNbr' => 'BudgetNbr',
   				  '_Location' => 'Location' ,
@@ -104,10 +105,10 @@ class AdminController extends UserController
         $select = $db->select()
           ->from('Project_Codes', array())
           ->order('Project_Code')
-          ->columns(array('Project_Codes.id', 'timestamp', 'Project_Code', 'Project_Status', 'IDC_Rate', 'BudgetName', 'Budget_Begin', 'Budget_End', 'Budget_Status', 'BudgetNbr', 'Location', 'Country', 'Management', 'Project_Training' 
+          ->columns(array('Project_Codes.id', 'timestamp', 'Project_Code', 'Project_Status', 'IDC_Rate', 'BudgetName', 'Budget_Begin', 'Budget_End', 'AccountingIndirectCostBase', 'Budget_Status', 'BudgetNbr', 'Location', 'Country', 'Management', 'Project_Training' 
           ));
             
-        $bulkSelect .= ' SELECT DISTINCT id, timestamp, Project_Code, Project_Status, IDC_Rate, BudgetName, concat(\'\'\'\', Budget_Begin) as Budget_Begin, concat(\'\'\'\', Budget_End) as Budget_End, Budget_Status, BudgetNbr, Location, Country, Management, Project_Training '; 
+        $bulkSelect .= ' SELECT DISTINCT id, timestamp, Project_Code, Project_Status, IDC_Rate, BudgetName, concat(\'\'\'\', Budget_Begin) as Budget_Begin, concat(\'\'\'\', Budget_End) as Budget_End, AccountingIndirectCostBase, Budget_Status, BudgetNbr, Location, Country, Management, Project_Training '; 
         $bulkSelect .= ' FROM Project_Codes ';
         
         $list = $this->dbfunc()->fetchAll($select);

@@ -57,6 +57,7 @@ ob_end_clean();
 						$("#_BudgetName").val($("#BudgetName").val());
 						$("#_Budget_Begin").val($("#Budget_Begin").val());
 						$("#_Budget_End").val($("#Budget_End").val());
+						$("#_AccountingIndirectCostBase").val($("#AccountingIndirectCostBase").val());
 						$("#_Budget_Status").val($("#Budget_Status").val());
 						$("#_BudgetNbr").val($("#BudgetNbr").val());
 						$("#_Location").val($("#Location").val());
@@ -95,6 +96,7 @@ ob_end_clean();
 					$("#BudgetName").val("");
 					$("#Budget_Begin").val("");
 					$("#Budget_End").val("");
+					$("#AccountingIndirectCostBase").val("");
 					$("#Budget_Status").val("");
 					$("#BudgetNbr").val("");
 					$("#Location").val("");
@@ -118,6 +120,7 @@ ob_end_clean();
 			$("#BudgetName").val(d['BudgetName']);
 			$("#Budget_Begin").val(d['Budget_Begin']);
 			$("#Budget_End").val(d['Budget_End']);
+			$("#AccountingIndirectCostBase").val(d['AccountingIndirectCostBase']);
 			$("#Budget_Status").val(d['Budget_Status']);
 			$("#BudgetNbr").val(d['BudgetNbr']);
 			$("#Location").val(d['Location']);
@@ -199,6 +202,9 @@ ob_end_clean();
 <label for="Budget_End"><?php echo t('Budget_End');?></label>
 <input type="text" name="Budget_End" id="Budget_End" class="text ui-widget-content ui-corner-all" />
 
+<label for="AccountingIndirectCostBase"><?php echo t('AccountingIndirectCostBase');?></label>
+<input type="text" name="AccountingIndirectCostBase" id="AccountingIndirectCostBase" class="text ui-widget-content ui-corner-all" />
+
 <label for="Budget_Status"><?php echo t('Budget_Status');?></label>
 <input type="text" name="Budget_Status" id="Budget_Status" class="text ui-widget-content ui-corner-all" />
 
@@ -244,6 +250,7 @@ ob_end_clean();
 <th><?php echo t('BudgetName');?></th>
 <th><?php echo t('Budget_Begin');?></th>
 <th><?php echo t('Budget_End');?></th>
+<th><?php echo t('AccountingIndirectCostBase');?></th>
 <th><?php echo t('Budget_Status');?></th>
 <th><?php echo t('BudgetNbr');?></th>
 <th><?php echo t('Location');?></th>
@@ -267,6 +274,7 @@ ob_end_clean();
 <td><?php echo $lookup['BudgetName'];?></td>
 <td><?php echo $lookup['Budget_Begin'];?></td>
 <td><?php echo $lookup['Budget_End'];?></td>
+<td><?php echo $lookup['AccountingIndirectCostBase'];?></td>
 <td><?php echo $lookup['Budget_Status'];?></td>
 <td><?php echo $lookup['BudgetNbr'];?></td>
 <td><?php echo $lookup['Location'];?></td>
@@ -303,6 +311,7 @@ ob_end_clean();
 <input type="hidden" name="_BudgetName" id="_BudgetName" value="" />
 <input type="hidden" name="_Budget_Begin" id="_Budget_Begin" value="" />
 <input type="hidden" name="_Budget_End" id="_Budget_End" value="" />
+<input type="hidden" name="_AccountingIndirectCostBase" id="_AccountingIndirectCostBase" value="" />
 <input type="hidden" name="_Budget_Status" id="_Budget_Status" value="" />
 <input type="hidden" name="_BudgetNbr" id="_BudgetNbr" value="" />
 <input type="hidden" name="_Location" id="_Location" value="" />

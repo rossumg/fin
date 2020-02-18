@@ -182,6 +182,22 @@ if ($this->mode == 'search' ) {
 	    </div></div>
 	</div>
 	
+		<div id="accountingIndirectCostBase">
+	    <div class="fieldLabel" id="accountingIndirectCostBaseInput_lbl"><?php tp('AccountingIndirectCostBase');?></div>
+	    <div class="fieldInput">
+	    <div  class="leftBorderPad"><input type="checkbox" name="showAccountingIndirectCostBase" checked /></div>
+	    <div  class="leftBorder"><select id="accountingIndirectCostBaseInput" name="accountingIndirectCostBaseInput" >
+	<option value="" selected="selected">--<?php tp('choose');?>--
+	<?php
+	
+		foreach ( $this->accountingIndirectCostBase as $vals ) {
+			echo '<option value="'.$vals['AccountingIndirectCostBase'].'" '.($this->criteria['accountingIndirectCostBaseInput'] == $vals['id']?'':'').'>'.$vals['AccountingIndirectCostBase'].'</option>';
+	}
+	?>
+</select>
+	    </div></div>
+	</div>
+	
 		<div id="pcaProjectCodeOrig">
 	    <div class="fieldLabel" id="pcaProjectCodeOrigInput_lbl"><?php tp('PCAProjectCodeOrig');?></div>
 	    <div class="fieldInput">
@@ -579,6 +595,9 @@ foreach($this->results as $row) {
 		if ( $this->criteria['showBudgetEnd'] )
 		    echo ',"'.$row['Budget_End'].'"';
 			
+		if ( $this->criteria['showAccountingIndirectCostBase'] )
+		    echo ',"'.$row['AccountingIndirectCostBase'].'"';
+			
 		if ( $this->criteria['showPCAProjectCodeOrig'] )
 			echo ',"'.$row['PCAProjectCodeOrig'].'"';
 		if ( $this->criteria['showPCAProjectCodePosting'] )
@@ -654,9 +673,15 @@ var expenseColumnDefs = [
  <?php if ( $this->criteria['showBudgetBegin'] ) { ?>
  ,{key:"BudgetBegin", label: "<?php tp('BudgetBegin');?>", sortable:true, resizeable:true}
 <?php }  ?>
+
 <?php if ( $this->criteria['showBudgetEnd'] ) { ?>
 ,{key:"BudgetEnd", label: "<?php tp('BudgetEnd');?>", sortable:true, resizeable:true}
 <?php }  ?>
+
+<?php if ( $this->criteria['showAccountingIndirectCostBase'] ) { ?>
+,{key:"AccountingIndirectCostBase", label: "<?php tp('AccountingIndirectCostBase');?>", sortable:true, resizeable:true}
+<?php }  ?>
+
 <?php if ( $this->criteria['showBudgetStatus'] ) { ?>
 ,{key:"BudgetStatus", label: "<?php tp('BudgetStatus');?>", sortable:true, resizeable:true}
 <?php }  ?>
